@@ -6,7 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -29,9 +29,9 @@ public class RobotContainer {
   private final Joystick driver = new Joystick(0);
 
   /* Drive Controls */
-  // private final int translationAxis = XboxController.Axis.kLeftY.value;
-  // private final int strafeAxis = XboxController.Axis.kLeftX.value;
-  // private final int rotationAxis = XboxController.Axis.kRightX.value;
+  // private final int translationAxis = PS4Controller.Axis.kLeftY.value;
+  // private final int strafeAxis = PS4Controller.Axis.kLeftX.value;
+  // private final int rotationAxis = PS4Controller.Axis.kRightX.value;
 
   private final int translationAxis = Joystick.AxisType.kY.value;
   private final int strafeAxis = Joystick.AxisType.kX.value;

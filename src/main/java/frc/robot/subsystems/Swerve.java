@@ -37,6 +37,10 @@ public class Swerve extends SubsystemBase {
         swerveOdometry = new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, getYaw(), getModulePositions());
     }
 
+    /**
+     * DANGEROUS!! Do NOT use this unless testing the robot. It is set to work with
+     * the absolute encoders, this method is only for if they are not working.
+     */
     public void resetEncoders() {
         for (SwerveModule mod : mSwerveMods) {
             mSwerveMods[mod.moduleNumber].resetEncoder();

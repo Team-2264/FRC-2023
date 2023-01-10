@@ -4,7 +4,9 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import frc.lib.math.Conversions;
 import frc.lib.util.CTREModuleState;
 import frc.lib.util.SwerveModuleConstants;
@@ -23,7 +25,7 @@ public class SwerveModule {
     private TalonFX mDriveMotor;
     private CANCoder angleEncoder;
 
-    SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(Constants.Swerve.driveKS, Constants.Swerve.driveKV,
+    SimpleMotorFeedforward feedForward = new SimpleMotorFeedforward(Constants.Swerve.driveKS, Constants.Swerve.driveKV,
             Constants.Swerve.driveKA);
 
     public static double falconToMeters(double positionCounts, double circumference, double gearRatio) {
@@ -36,8 +38,8 @@ public class SwerveModule {
         // this.angleOffset = Constants.Swerve.mod;
 
         /* Angle Encoder Config */
-        angleEncoder = new CANCoder(moduleConstants.cancoderID);
-        configAngleEncoder();
+        // angleEncoder = new CANCoder(moduleConstants.cancoderID);
+        // configAngleEncoder();
 
         /* Angle Motor Config */
         mAngleMotor = new TalonFX(moduleConstants.angleMotorID);
@@ -58,6 +60,16 @@ public class SwerveModule {
         desiredState = CTREModuleState.optimize(desiredState, getState().angle);
         setAngle(desiredState);
         setSpeed(desiredState, isOpenLoop);
+
+        /*
+         * This puts the current position that the module thinks it's facing
+         */
+        // SmartDashboard.putNumber(("Module #" + moduleNumber),
+        // angleEncoder.getAbsolutePosition());
+        SmartDashboard.putStringArray(("Module #" + moduleNumber), new String[] {
+                angleEncoder.getAbsolutePosition() + " encoder units", Conversions
+                        .falconToDegrees(mAngleMotor.getSelectedSensorPosition(), Constants.Swerve.angleGearRatio)
+                        + " Degrees" });
     }
 
     private void setSpeed(SwerveModuleState desiredState, boolean isOpenLoop) {
@@ -68,7 +80,7 @@ public class SwerveModule {
             double velocity = Conversions.MPSToFalcon(desiredState.speedMetersPerSecond,
                     Constants.Swerve.wheelCircumference, Constants.Swerve.driveGearRatio);
             mDriveMotor.set(ControlMode.Velocity, velocity, DemandType.ArbitraryFeedForward,
-                    feedforward.calculate(desiredState.speedMetersPerSecond));
+                    feedForward.calculate(desiredState.speedMetersPerSecond));
         }
     }
 
@@ -99,6 +111,11 @@ public class SwerveModule {
         mAngleMotor.setSelectedSensorPosition(absolutePosition);
     }
 
+    /**
+     * NOTE: Do NOT use this method at competition, it is purely for reseting the
+     * encoder to 0 while we are testing without absolute encoders. Using this any
+     * other time can disrupt the alignment and cause problems.
+     */
     public void resetEncoder() {
         double absolutePosition = 0;
         mAngleMotor.setSelectedSensorPosition(absolutePosition);
