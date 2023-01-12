@@ -14,6 +14,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -21,10 +22,18 @@ public class Swerve extends SubsystemBase {
     public SwerveDriveOdometry swerveOdometry;
     public SwerveModule[] mSwerveMods;
     public Pigeon2 gyro;
+    public ADXRS450_Gyro gyroTwo;
+
+    private Rotation2d gyroOffset;
 
     public Swerve() {
-        gyro = new Pigeon2(Constants.Swerve.pigeonID);
-        gyro.configFactoryDefault();
+        // gyro = new Pigeon2(Constants.Swerve.pigeonID);
+        // gyro.configFactoryDefault();
+        // zeroGyro();
+
+        gyroTwo = new ADXRS450_Gyro();
+        gyroTwo.calibrate();
+        gyroOffset = new Rotation2d();
         zeroGyro();
 
         mSwerveMods = new SwerveModule[] {
@@ -99,12 +108,16 @@ public class Swerve extends SubsystemBase {
     }
 
     public void zeroGyro() {
-        gyro.setYaw(0);
+        // gyro.setYaw(0);
+
+        gyroOffset = gyroTwo.getRotation2d();
     }
 
     public Rotation2d getYaw() {
-        return (Constants.Swerve.invertGyro) ? Rotation2d.fromDegrees(360 - gyro.getYaw())
-                : Rotation2d.fromDegrees(gyro.getYaw());
+        return gyroTwo.getRotation2d().minus(gyroOffset);
+
+        // return (Constants.Swerve.invertGyro) ? Rotation2d.fromDegrees(360 - gyro.getYaw())
+        //         : Rotation2d.fromDegrees(gyro.getYaw());
     }
 
     @Override
@@ -115,6 +128,8 @@ public class Swerve extends SubsystemBase {
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Integrated", mod.getPosition().angle.getDegrees());
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);
+            SmartDashboard.putNumber("Gyro",  gyroTwo.getAngle());
+            SmartDashboard.putNumber("Gyro Offset",  gyroOffset.getDegrees());
         }
     }
 }
