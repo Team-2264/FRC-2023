@@ -34,6 +34,7 @@ public class Swerve extends SubsystemBase {
         gyroTwo = new ADXRS450_Gyro();
         gyroTwo.calibrate();
         gyroOffset = new Rotation2d();
+
         zeroGyro();
 
         mSwerveMods = new SwerveModule[] {
@@ -47,8 +48,11 @@ public class Swerve extends SubsystemBase {
     }
 
     /**
-     * DANGEROUS!! Do NOT use this unless testing the robot. It is set to work with
-     * the absolute encoders, this method is only for if they are not working.
+     * @Deprecated
+     *             DANGEROUS!! Do NOT use this unless testing the robot. It is set
+     *             to work with
+     *             the absolute encoders, this method is only for if they are not
+     *             working.
      */
     public void resetEncoders() {
         for (SwerveModule mod : mSwerveMods) {
@@ -116,20 +120,23 @@ public class Swerve extends SubsystemBase {
     public Rotation2d getYaw() {
         return gyroTwo.getRotation2d().minus(gyroOffset);
 
-        // return (Constants.Swerve.invertGyro) ? Rotation2d.fromDegrees(360 - gyro.getYaw())
-        //         : Rotation2d.fromDegrees(gyro.getYaw());
+        // return (Constants.Swerve.invertGyro) ? Rotation2d.fromDegrees(360 -
+        // gyro.getYaw())
+        // : Rotation2d.fromDegrees(gyro.getYaw());
     }
 
     @Override
     public void periodic() {
         swerveOdometry.update(getYaw(), getModulePositions());
 
+        SmartDashboard.putNumber("Gyro", gyroTwo.getAngle());
+        SmartDashboard.putNumber("Gyro Offset", gyroOffset.getDegrees());
+
         for (SwerveModule mod : mSwerveMods) {
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Integrated", mod.getPosition().angle.getDegrees());
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);
-            SmartDashboard.putNumber("Gyro",  gyroTwo.getAngle());
-            SmartDashboard.putNumber("Gyro Offset",  gyroOffset.getDegrees());
+
         }
     }
 }

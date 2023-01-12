@@ -33,7 +33,6 @@ public class SwerveModule {
     }
 
     public SwerveModule(int moduleNumber, SwerveModuleConstants moduleConstants) {
-
         this.moduleNumber = moduleNumber;
         // this.angleOffset = Constants.Swerve.mod;
 
