@@ -34,11 +34,11 @@ public class SwerveModule {
 
     public SwerveModule(int moduleNumber, SwerveModuleConstants moduleConstants) {
         this.moduleNumber = moduleNumber;
-        // this.angleOffset = Constants.Swerve.mod;
+        this.angleOffset = Rotation2d.fromDegrees(moduleConstants.angleOffset);
 
         /* Angle Encoder Config */
-        // angleEncoder = new CANCoder(moduleConstants.cancoderID);
-        // configAngleEncoder();
+        angleEncoder = new CANCoder(moduleConstants.cancoderID);
+        configAngleEncoder();
 
         /* Angle Motor Config */
         mAngleMotor = new TalonFX(moduleConstants.angleMotorID);
@@ -63,8 +63,8 @@ public class SwerveModule {
         /*
          * This puts the current position that the module thinks it's facing
          */
-        // SmartDashboard.putNumber(("Module #" + moduleNumber),
-        // angleEncoder.getAbsolutePosition());
+        SmartDashboard.putNumber(("Module #" + moduleNumber),
+                angleEncoder.getAbsolutePosition());
         SmartDashboard.putStringArray(("Module #" + moduleNumber), new String[] {
                 angleEncoder.getAbsolutePosition() + " encoder units", Conversions
                         .falconToDegrees(mAngleMotor.getSelectedSensorPosition(), Constants.Swerve.angleGearRatio)
