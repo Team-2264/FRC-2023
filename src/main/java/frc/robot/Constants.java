@@ -11,6 +11,14 @@ import frc.lib.util.SwerveModuleConstants;
 public final class Constants {
     public static final double stickDeadband = 0.1;
 
+    public static final class AprilTag {
+        public static final double CAMERA_HEIGHT_METERS = 0;
+        public static final double TARGET_HEIGHT_METERS = 0;
+        public static final double CAMERA_PITCH_RADIANS = 0;
+        public static final double GOAL_RANGE_METERS = 0;
+
+    }
+
     public static final class Swerve {
         public static final int pigeonID = 0;
         public static final boolean invertGyro = false; // Always ensure Gyro is CCW+ CW-
