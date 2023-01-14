@@ -40,6 +40,8 @@ public class RobotContainer {
   /* Driver Buttons */
   private final JoystickButton zeroGyro = new JoystickButton(driver, 11);
   private final JoystickButton resetEncoder = new JoystickButton(driver, 12);
+  private final JoystickButton openClawButton = new JoystickButton(driver, 10);
+  private final JoystickButton closeClawButton = new JoystickButton(driver, 9);
 
   /* Subsystems */
   private final Swerve s_Swerve = new Swerve();
@@ -69,7 +71,8 @@ public class RobotContainer {
     /* Driver Buttons */
     zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
     resetEncoder.onTrue(new InstantCommand(() -> s_Swerve.resetEncoders()));
-
+    openClawButton.whenPressed(new InstantCommand(() -> s_Arm.openClaw()));
+    closeClawButton.whenPressed(new InstantCommand(() -> s_Arm.closeClaw()));
   }
 
   /**
