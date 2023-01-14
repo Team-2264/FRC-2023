@@ -7,9 +7,13 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import frc.lib.util.SwerveModuleConstants;
+import frc.robot.Constants.Swerve.Mod0;
+import frc.robot.Constants.Swerve.Mod1;
+import frc.robot.Constants.Swerve.Mod2;
+import frc.robot.Constants.Swerve.Mod3;
 
 public final class Constants {
-    public static final double stickDeadband = 0.1;
+    public static final double stickDeadband = 0.25;
 
     public static final class AprilTag {
         public static final double CAMERA_HEIGHT_METERS = 0;
@@ -111,7 +115,7 @@ public final class Constants {
             public static final int driveMotorID = 6;
             public static final int angleMotorID = 7;
             public static final int canCoderID = 10;
-            public static final double angleOffset = 136.05;
+            public static final double angleOffset = 116.61;
             public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID,
                     canCoderID, angleOffset);
         }
@@ -121,7 +125,7 @@ public final class Constants {
             public static final int driveMotorID = 4;
             public static final int angleMotorID = 5;
             public static final int canCoderID = 11;
-            public static final double angleOffset = 79.27;
+            public static final double angleOffset = 212.51;
             public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID,
                     canCoderID, angleOffset);
         }
@@ -145,4 +149,27 @@ public final class Constants {
                 kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
     }
 
+    public static double returnEncoderAngle(int Mod) {
+        double temp = 90;
+        switch (Mod) {
+            case 0:
+                temp= Mod0.angleOffset;
+                break;
+            case 1:
+                temp= Mod1.angleOffset;
+                break;
+            case 2:
+                temp= Mod2.angleOffset;
+                break;
+            case 3:
+                temp= Mod3.angleOffset;
+                break;
+        
+            default:
+                break;
+        }
+        return temp;
+
+        
+    }
 }

@@ -46,9 +46,9 @@ public class Swerve extends SubsystemBase {
      *             working.
      */
     public void resetEncoders() {
-        for (SwerveModule mod : mSwerveMods) {
-            mSwerveMods[mod.moduleNumber].resetToAbsolute();
-        }
+        // for (SwerveModule mod : mSwerveMods) {
+        //     mSwerveMods[mod.moduleNumber].resetToAbsolute();
+        // }
     }
 
     public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {

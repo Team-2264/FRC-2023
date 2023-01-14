@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
@@ -33,21 +34,21 @@ public class RobotContainer {
   // private final int strafeAxis = PS4Controller.Axis.kLeftX.value;
   // private final int rotationAxis = PS4Controller.Axis.kRightX.value;
 
-  private final int translationAxis = Joystick.AxisType.kY.value;
-  private final int strafeAxis = Joystick.AxisType.kX.value;
-  private final int rotationAxis = Joystick.AxisType.kZ.value;
+  private final int translationAxis = (int)(Joystick.AxisType.kY.value );
+  private final int strafeAxis = (int)(Joystick.AxisType.kX.value );
+  private final int rotationAxis = (int)(Joystick.AxisType.kZ.value );
 
   /* Driver Buttons */
   private final JoystickButton zeroGyro = new JoystickButton(driver, 11);
-  private final JoystickButton resetEncoder = new JoystickButton(driver, 12);
+  private final JoystickButton resetEncoder = new JoystickButton(driver, 8);
   // private final JoystickButton openClawButton = new JoystickButton(driver, 10);
   // private final JoystickButton closeClawButton = new JoystickButton(driver, 9);
 
   /* Subsystems */
   private final Swerve s_Swerve = new Swerve();
-  private final AprilTags s_AprilTags = new AprilTags();
+  // private final AprilTags s_AprilTags = new AprilTags();
 
-  /**
+  /**`
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {

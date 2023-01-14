@@ -65,10 +65,10 @@ public class SwerveModule {
         /*
          * This puts the current position that the module thinks it's facing
          */
-        SmartDashboard.putNumber(("Module #" + moduleNumber),
-                angleEncoder.getAbsolutePosition());
+        SmartDashboard.putNumber(("Module # " + moduleNumber + " offset diffrence"),
+                (angleEncoder.getAbsolutePosition()-Constants.returnEncoderAngle(moduleNumber)));
         SmartDashboard.putStringArray(("Module #" + moduleNumber), new String[] {
-                angleEncoder.getAbsolutePosition() + " encoder units", Conversions
+                (angleEncoder.getAbsolutePosition()) + " encoder units", Conversions
                         .falconToDegrees(mAngleMotor.getSelectedSensorPosition(), Constants.Swerve.angleGearRatio)
                         + " Degrees" });
     }
@@ -108,7 +108,6 @@ public class SwerveModule {
         double absolutePosition = Conversions.degreesToFalcon(getCanCoder().getDegrees() -
                 angleOffset.getDegrees(),
                 Constants.Swerve.angleGearRatio);
-
         mAngleMotor.setSelectedSensorPosition(absolutePosition);
     }
 
@@ -118,8 +117,8 @@ public class SwerveModule {
      * other time can disrupt the alignment and cause problems.
      */
     public void resetEncoder() {
-        double absolutePosition = this.angleOffsetDouble;
-        mAngleMotor.setSelectedSensorPosition(absolutePosition);
+        // double absolutePosition = this.angleOffsetDouble;
+        // mAngleMotor.setSelectedSensorPosition(absolutePosition);
     }
 
     private void configAngleEncoder() {
