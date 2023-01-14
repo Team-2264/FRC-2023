@@ -47,7 +47,7 @@ public class Swerve extends SubsystemBase {
      */
     public void resetEncoders() {
         for (SwerveModule mod : mSwerveMods) {
-            mSwerveMods[mod.moduleNumber].resetEncoder();
+            mSwerveMods[mod.moduleNumber].resetToAbsolute();
         }
     }
 

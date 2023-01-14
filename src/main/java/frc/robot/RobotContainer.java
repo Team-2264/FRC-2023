@@ -71,8 +71,8 @@ public class RobotContainer {
     /* Driver Buttons */
     zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
     resetEncoder.onTrue(new InstantCommand(() -> s_Swerve.resetEncoders()));
-    openClawButton.whenPressed(new InstantCommand(() -> s_Arm.openClaw()));
-    closeClawButton.whenPressed(new InstantCommand(() -> s_Arm.closeClaw()));
+    // openClawButton.onTrue(new InstantCommand(() -> s_Arm.openClaw()));
+    // closeClawButton.whenPressed(new InstantCommand(() -> s_Arm.closeClaw()));
   }
 
   /**

@@ -20,6 +20,7 @@ public class SwerveModule {
     public int moduleNumber;
     private Rotation2d angleOffset;
     private Rotation2d lastAngle;
+    private double angleOffsetDouble;
 
     private TalonFX mAngleMotor;
     private TalonFX mDriveMotor;
@@ -35,6 +36,7 @@ public class SwerveModule {
     public SwerveModule(int moduleNumber, SwerveModuleConstants moduleConstants) {
         this.moduleNumber = moduleNumber;
         this.angleOffset = Rotation2d.fromDegrees(moduleConstants.angleOffset);
+        this.angleOffsetDouble = moduleConstants.angleOffset;
 
         /* Angle Encoder Config */
         angleEncoder = new CANCoder(moduleConstants.cancoderID);
@@ -102,7 +104,7 @@ public class SwerveModule {
         return Rotation2d.fromDegrees(angleEncoder.getAbsolutePosition());
     }
 
-    private void resetToAbsolute() {
+    public void resetToAbsolute() {
         double absolutePosition = Conversions.degreesToFalcon(getCanCoder().getDegrees() -
                 angleOffset.getDegrees(),
                 Constants.Swerve.angleGearRatio);
@@ -116,7 +118,7 @@ public class SwerveModule {
      * other time can disrupt the alignment and cause problems.
      */
     public void resetEncoder() {
-        double absolutePosition = 0;
+        double absolutePosition = this.angleOffsetDouble;
         mAngleMotor.setSelectedSensorPosition(absolutePosition);
     }
 
@@ -142,10 +144,13 @@ public class SwerveModule {
     }
 
     public SwerveModuleState getState() {
-        return new SwerveModuleState(
-                Conversions.falconToMPS(mDriveMotor.getSelectedSensorVelocity(), Constants.Swerve.wheelCircumference,
-                        Constants.Swerve.driveGearRatio),
-                getAngle());
+        double velocity = Conversions.falconToMPS(mDriveMotor.getSelectedSensorVelocity(),
+                Constants.Swerve.wheelCircumference, Constants.Swerve.driveGearRatio);
+        Rotation2d angle = Rotation2d.fromDegrees(
+                Conversions.falconToDegrees(
+                        // mAngleMotor.getSelectedSensorPosition()
+                        angleEncoder.getAbsolutePosition(), Constants.Swerve.angleGearRatio));
+        return new SwerveModuleState(velocity, angle);
     }
 
     public SwerveModulePosition getPosition() {
