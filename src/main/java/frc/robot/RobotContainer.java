@@ -34,9 +34,9 @@ public class RobotContainer {
   // private final int strafeAxis = PS4Controller.Axis.kLeftX.value;
   // private final int rotationAxis = PS4Controller.Axis.kRightX.value;
 
-  private final int translationAxis = (int)(Joystick.AxisType.kY.value );
-  private final int strafeAxis = (int)(Joystick.AxisType.kX.value );
-  private final int rotationAxis = (int)(Joystick.AxisType.kZ.value );
+  private final int translationAxis = (int) (Joystick.AxisType.kY.value);
+  private final int strafeAxis = (int) (Joystick.AxisType.kX.value);
+  private final int rotationAxis = (int) (Joystick.AxisType.kZ.value);
 
   /* Driver Buttons */
   private final JoystickButton zeroGyro = new JoystickButton(driver, 11);
@@ -48,7 +48,8 @@ public class RobotContainer {
   private final Swerve s_Swerve = new Swerve();
   // private final AprilTags s_AprilTags = new AprilTags();
 
-  /**`
+  /**
+   * `
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
@@ -59,6 +60,11 @@ public class RobotContainer {
 
     // Configure the button bindings
     configureButtonBindings();
+  }
+
+  public void resetEncoders() {
+    s_Swerve.resetEncoders();
+
   }
 
   /**
@@ -72,7 +78,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     /* Driver Buttons */
     zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
-    resetEncoder.onTrue(new InstantCommand(() -> s_Swerve.resetEncoders()));
+    // resetEncoder.onTrue(new InstantCommand(() -> s_Swerve.resetEncoders()));
     // openClawButton.onTrue(new InstantCommand(() -> s_Arm.openClaw()));
     // closeClawButton.whenPressed(new InstantCommand(() -> s_Arm.closeClaw()));
   }

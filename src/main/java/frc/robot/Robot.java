@@ -25,8 +25,6 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
-  private Swerve s_Swerve;
-
   /**
    * This function is run when the robot is first started up and should be used
    * for any
@@ -82,7 +80,7 @@ public class Robot extends TimedRobot {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // reset encoders
-    s_Swerve.resetEncoders();
+    // m_robotContainer.resetEncoders();
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
@@ -104,7 +102,8 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    s_Swerve.resetEncoders();
+
+    // m_robotContainer.resetEncoders();
   }
 
   /** This function is called periodically during operator control. */
