@@ -7,10 +7,6 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import frc.lib.util.SwerveModuleConstants;
-import frc.robot.Constants.Swerve.Mod0;
-import frc.robot.Constants.Swerve.Mod1;
-import frc.robot.Constants.Swerve.Mod2;
-import frc.robot.Constants.Swerve.Mod3;
 
 public final class Constants {
     public static final double stickDeadband = 0.25;
@@ -122,7 +118,7 @@ public final class Constants {
             public static final int angleMotorID = 7;
             public static final int canCoderID = 11;
             // public static final double angleOffset = 302.34375;
-            public static final double angleOffset = 340;
+            public static final double angleOffset = 264;
             public static final boolean inverted = true;
             public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID,
                     canCoderID, angleOffset);
@@ -158,28 +154,5 @@ public final class Constants {
         // Constraint for the motion profilied robot angle controller
         public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
                 kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
-    }
-
-    public static double returnEncoderAngle(int Mod) {
-        double temp = 90;
-        switch (Mod) {
-            case 0:
-                temp = Mod0.angleOffset;
-                break;
-            case 1:
-                temp = Mod1.angleOffset;
-                break;
-            case 2:
-                temp = Mod2.angleOffset;
-                break;
-            case 3:
-                temp = Mod3.angleOffset;
-                break;
-
-            default:
-                break;
-        }
-        return temp;
-
     }
 }

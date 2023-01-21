@@ -70,18 +70,6 @@ public class SwerveModule {
         setAngle(desiredState);
         setSpeed(desiredState, isOpenLoop);
 
-        // /*
-        // * This puts the current position that the module thinks it's facing
-        // */
-        // SmartDashboard.putNumber(("Module # " + moduleNumber + " offset diffrence"),
-        // (angleEncoder.getAbsolutePosition() -
-        // Constants.returnEncoderAngle(moduleNumber)));
-        // SmartDashboard.putStringArray(("Module #" + moduleNumber), new String[] {
-        // (angleEncoder.getAbsolutePosition()) + " encoder units", Conversions
-        // .falconToDegrees(mAngleMotor.getSelectedSensorPosition(),
-        // Constants.Swerve.angleGearRatio)
-        // + " Degrees" });
-
         SmartDashboard.putNumber("module " + moduleNumber + " Desired Angle", desiredState.angle.getDegrees());
         SmartDashboard.putNumber("module " + moduleNumber + " Current Angle", getState().angle.getDegrees());
     }

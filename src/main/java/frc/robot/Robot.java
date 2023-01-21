@@ -37,6 +37,9 @@ public class Robot extends TimedRobot {
     // and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+
+    m_robotContainer.resetEncoders();
+
   }
 
   /**
@@ -103,7 +106,6 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
 
-    // m_robotContainer.resetEncoders();
   }
 
   /** This function is called periodically during operator control. */

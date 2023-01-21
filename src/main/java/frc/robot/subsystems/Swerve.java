@@ -36,7 +36,7 @@ public class Swerve extends SubsystemBase {
                         true),
                 new SwerveModule(2, Constants.Swerve.Mod2.constants,
                         Constants.Swerve.Mod0.inverted,
-                        true),
+                        false),
                 new SwerveModule(3, Constants.Swerve.Mod3.constants,
                         Constants.Swerve.Mod0.inverted,
                         false)
@@ -60,28 +60,23 @@ public class Swerve extends SubsystemBase {
     }
 
     public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
-        SwerveModuleState[] swerveModuleStates =
-        Constants.Swerve.swerveKinematics.toSwerveModuleStates(
-        fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(
-        translation.getX(),
-        translation.getY(),
-        rotation,
-        getYaw())
-        : new ChassisSpeeds(
-        translation.getX(),
-        translation.getY(),
-        rotation));
+        SwerveModuleState[] swerveModuleStates = Constants.Swerve.swerveKinematics.toSwerveModuleStates(
+                fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(
+                        translation.getX(),
+                        translation.getY(),
+                        rotation,
+                        getYaw())
+                        : new ChassisSpeeds(
+                                translation.getX(),
+                                translation.getY(),
+                                rotation));
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates,
-        Constants.Swerve.maxSpeed);
+                Constants.Swerve.maxSpeed);
 
         for (SwerveModule mod : mSwerveMods) {
-        mod.setDesiredState(swerveModuleStates[mod.moduleNumber], isOpenLoop);
+            mod.setDesiredState(swerveModuleStates[mod.moduleNumber], isOpenLoop);
         }
 
-        // mSwerveMods[0].setDesiredState(new SwerveModuleState(1.5, Rotation2d.fromDegrees(90)), isOpenLoop);
-        // mSwerveMods[1].setDesiredState(new SwerveModuleState(1.5, Rotation2d.fromDegrees(90)), isOpenLoop);
-        // mSwerveMods[2].setDesiredState(new SwerveModuleState(1.5, Rotation2d.fromDegrees(90)), isOpenLoop);
-        // mSwerveMods[3].setDesiredState(new SwerveModuleState(1.5, Rotation2d.fromDegrees(90)), isOpenLoop);
     }
 
     /* Used by SwerveControllerCommand in Auto */
