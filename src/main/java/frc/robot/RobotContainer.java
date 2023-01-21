@@ -44,7 +44,7 @@ public class RobotContainer {
 
   /* Subsystems */
   private final Swerve s_Swerve = new Swerve();
-  // private final AprilTags s_AprilTags = new AprilTags();
+  private final AprilTags s_AprilTags = new AprilTags();
 
   /**
    * `
