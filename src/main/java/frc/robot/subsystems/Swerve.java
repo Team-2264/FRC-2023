@@ -30,15 +30,15 @@ public class Swerve extends SubsystemBase {
         mSwerveMods = new SwerveModule[] {
                 new SwerveModule(0, Constants.Swerve.Mod0.constants,
                         Constants.Swerve.Mod0.inverted,
-                        true),
+                        false),
                 new SwerveModule(1, Constants.Swerve.Mod1.constants,
-                        Constants.Swerve.Mod0.inverted,
-                        true),
+                        Constants.Swerve.Mod1.inverted,
+                        false),
                 new SwerveModule(2, Constants.Swerve.Mod2.constants,
-                        Constants.Swerve.Mod0.inverted,
+                        Constants.Swerve.Mod2.inverted,
                         false),
                 new SwerveModule(3, Constants.Swerve.Mod3.constants,
-                        Constants.Swerve.Mod0.inverted,
+                        Constants.Swerve.Mod3.inverted,
                         false)
 
         };
