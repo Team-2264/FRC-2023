@@ -37,8 +37,9 @@ public class ATVision {
     Transform3d cameraToTarget;
     AprilTagFieldLayout aprilTagFieldLayout;
     Transform3d cameraToRobot = new Transform3d(new Translation3d(Units.feetToMeters(1), 0.0, Units.feetToMeters(1)),
-            new Rotation3d(0, 0, 0)); // Cam mounted facing forward, half a meter forward of center, half a meter up from center.
-    ArrayList<Pair<PhotonCamera,Transform3d>>camList=new ArrayList<Pair<PhotonCamera,Transform3d>>();
+            new Rotation3d(0, 0, 0)); // Cam mounted facing forward, half a meter forward of center, half a meter up
+                                      // from center.
+    ArrayList<Pair<PhotonCamera, Transform3d>> camList = new ArrayList<Pair<PhotonCamera, Transform3d>>();
     Optional<Pose3d> optionalFieldRelativeTagPose;
     Pose3d fieldRelativeTagPose;
 

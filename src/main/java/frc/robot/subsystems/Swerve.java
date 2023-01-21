@@ -32,14 +32,14 @@ public class Swerve extends SubsystemBase {
                         Constants.Swerve.Mod0.angleInverted,
                         Constants.Swerve.Mod0.driveInverted),
                 new SwerveModule(1, Constants.Swerve.Mod1.constants,
-                    Constants.Swerve.Mod1.angleInverted,
-                    Constants.Swerve.Mod1.driveInverted),
+                        Constants.Swerve.Mod1.angleInverted,
+                        Constants.Swerve.Mod1.driveInverted),
                 new SwerveModule(2, Constants.Swerve.Mod2.constants,
-                    Constants.Swerve.Mod2.angleInverted,
-                    Constants.Swerve.Mod2.driveInverted),
+                        Constants.Swerve.Mod2.angleInverted,
+                        Constants.Swerve.Mod2.driveInverted),
                 new SwerveModule(3, Constants.Swerve.Mod3.constants,
-                    Constants.Swerve.Mod3.angleInverted,
-                    Constants.Swerve.Mod3.driveInverted),
+                        Constants.Swerve.Mod3.angleInverted,
+                        Constants.Swerve.Mod3.driveInverted),
 
         };
 
@@ -77,6 +77,17 @@ public class Swerve extends SubsystemBase {
             mod.setDesiredState(swerveModuleStates[mod.moduleNumber], isOpenLoop);
         }
 
+    }
+
+    public void driveStraight() {
+        SwerveModuleState[] swerveModuleStates = Constants.Swerve.swerveKinematics
+                .toSwerveModuleStates(new ChassisSpeeds(0.2, 0, 0));
+
+        SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.Swerve.maxSpeed);
+
+        for (SwerveModule mod : mSwerveMods) {
+            mod.setDesiredState(swerveModuleStates[mod.moduleNumber], false);
+        }
     }
 
     /* Used by SwerveControllerCommand in Auto */
