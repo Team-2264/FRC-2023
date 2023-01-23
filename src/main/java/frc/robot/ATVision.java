@@ -4,9 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.ejml.equation.Variable;
 import org.photonvision.*;
-import org.photonvision.RobotPoseEstimator.PoseStrategy;
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 import org.photonvision.targeting.TargetCorner;
@@ -43,8 +42,8 @@ public class ATVision {
     Optional<Pose3d> optionalFieldRelativeTagPose;
     Pose3d fieldRelativeTagPose;
 
-    RobotPoseEstimator robotPoseEstimator = new RobotPoseEstimator(aprilTagFieldLayout, PoseStrategy.LOWEST_AMBIGUITY,
-            camList);
+    PhotonPoseEstimator robotPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.LOWEST_AMBIGUITY,
+            atcamera, cameraToRobot);
 
     public void init() {
         if (!camAdded) {
