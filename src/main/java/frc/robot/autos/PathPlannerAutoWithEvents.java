@@ -1,7 +1,6 @@
 package frc.robot.autos;
 
 import frc.robot.Constants;
-import frc.robot.commands.Print;
 import frc.robot.subsystems.Swerve;
 
 import java.util.HashMap;
@@ -26,26 +25,31 @@ public class PathPlannerAutoWithEvents extends SequentialCommandGroup {
         this.s_Swerve = swerve;
         addRequirements(s_Swerve);
 
-        // This will load the file "Example Path.path" and generate it with a max
-        // velocity of 4 m/s and a max acceleration of 3 m/s^2
-        PathPlannerTrajectory trajectory = PathPlanner.loadPath("New New Path",
+        // loads the path with the constaints that we have set in the constants file
+        PathPlannerTrajectory trajectory = PathPlanner.loadPath(pathName,
                 new PathConstraints(Constants.AutoConstants.kMaxSpeedMetersPerSecond,
                         Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared));
 
+        // sets up the rotation controller with given constants
         thetaController = new PIDController(
                 Constants.AutoConstants.kPThetaController, 0, 0);
 
         // Constants.AutoConstants.kThetaControllerConstraints);
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
+        // creates a new PathPlanner FollowPathWithEvents command so we can actually use
+        // the events. Pass in the eventMap so we can use the events as Commands
         FollowPathWithEvents command = getCommand(trajectory, eventMap);
 
+        // add those commands to the sequential command group
         addCommands(
                 new InstantCommand(() -> s_Swerve
                         .resetOdometry(trajectory.getInitialHolonomicPose())),
                 command);
     }
 
+    // returns the FollowPathWithEvents command so we can use the events, really
+    // just a nice abstraction
     public FollowPathWithEvents getCommand(PathPlannerTrajectory trajectory, HashMap<String, Command> eventMap) {
         return new FollowPathWithEvents(baseSwerveCommand(trajectory),
                 trajectory.getMarkers(),
@@ -67,6 +71,6 @@ public class PathPlannerAutoWithEvents extends SequentialCommandGroup {
                 s_Swerve // this uses the swerve subsystem
         );
 
-        return command; // returns the command to be consumed by a follower
+        return command; // returns the basiccommand to be consumed by a follower
     }
 }

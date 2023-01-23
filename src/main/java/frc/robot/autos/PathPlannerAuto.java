@@ -16,6 +16,35 @@ public class PathPlannerAuto extends SequentialCommandGroup {
 
         Swerve s_Swerve;
         PIDController thetaController;
+        PathPlannerTrajectory trajectory;
+        private PPSwerveControllerCommand command;
+
+        public PathPlannerAuto(Swerve swerve, String pathName) {
+                this.s_Swerve = swerve;
+                addRequirements(s_Swerve);
+
+                // loads the path with the constaints that we have set in the constants file
+                this.trajectory = PathPlanner.loadPath(pathName,
+                                new PathConstraints(Constants.AutoConstants.kMaxSpeedMetersPerSecond,
+                                                Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared));
+
+                thetaController = new PIDController(
+                                Constants.AutoConstants.kPThetaController, 0, 0);
+
+                // Constants.AutoConstants.kThetaControllerConstraints);
+                thetaController.enableContinuousInput(-Math.PI, Math.PI);
+                this.command = baseSwerveCommand(trajectory);
+
+                this.setCommands();
+        }
+
+        public void setCommands() {
+                addCommands(
+                                new InstantCommand(() -> s_Swerve
+                                                .resetOdometry(trajectory.getInitialHolonomicPose())),
+                                command,
+                                new InstantCommand(() -> System.out.println(s_Swerve.swerveOdometry.getPoseMeters())));
+        }
 
         // returns a Path Planer Swerve Controller Command so we can use holonomic
         // driving
@@ -33,30 +62,5 @@ public class PathPlannerAuto extends SequentialCommandGroup {
                 );
 
                 return command; // returns the command to be consumed by a follower
-        }
-
-        public PathPlannerAuto(Swerve swerve, String pathName) {
-                this.s_Swerve = swerve;
-
-                // This will load the file "Example Path.path" and generate it with a max
-                // velocity of 4 m/s and a max acceleration of 3 m/s^2
-                PathPlannerTrajectory exampleTrajectory = PathPlanner.loadPath(pathName,
-                                new PathConstraints(Constants.AutoConstants.kMaxSpeedMetersPerSecond,
-                                                Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared));
-
-                addRequirements(s_Swerve);
-
-                thetaController = new PIDController(
-                                Constants.AutoConstants.kPThetaController, 0, 0);
-
-                // Constants.AutoConstants.kThetaControllerConstraints);
-                thetaController.enableContinuousInput(-Math.PI, Math.PI);
-                PPSwerveControllerCommand swerveControllerCommand2 = baseSwerveCommand(exampleTrajectory);
-
-                addCommands(
-                                new InstantCommand(() -> s_Swerve
-                                                .resetOdometry(exampleTrajectory.getInitialHolonomicPose())),
-                                swerveControllerCommand2,
-                                new InstantCommand(() -> System.out.println(s_Swerve.swerveOdometry.getPoseMeters())));
         }
 }

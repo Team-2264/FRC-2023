@@ -18,7 +18,7 @@
     # Encoder edges-per-revolution (*NOT* cycles per revolution!)
     # This value should be the edges per revolution *of the wheels*, and so
     # should take into account gearing between the encoder and the wheels
-    "encoderEPR": 13824, # 7:1 gearing so 7*2048
+    "encoderEPR": 13824, # 6.75:1 gearing so 6.75*2048
 
     # Whether the left encoder is inverted
     "leftEncoderInverted": False,
