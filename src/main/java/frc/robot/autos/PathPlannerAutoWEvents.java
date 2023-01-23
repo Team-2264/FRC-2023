@@ -10,11 +10,11 @@ import frc.robot.subsystems.Swerve;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 
-public class PatuhPlanner extends PathPlannerAuto {
+public class PathPlannerAutoWEvents extends PathPlannerAuto {
 
     private FollowPathWithEvents command;
 
-    public PatuhPlanner(Swerve swerve, String pathName, HashMap<String, Command> eventMap) {
+    public PathPlannerAutoWEvents(Swerve swerve, String pathName, HashMap<String, Command> eventMap) {
         super(swerve, pathName);
 
         // creates a new PathPlanner FollowPathWithEvents command so we can actually use
