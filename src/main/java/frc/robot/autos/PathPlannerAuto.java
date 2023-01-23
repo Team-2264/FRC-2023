@@ -3,15 +3,21 @@ package frc.robot.autos;
 import frc.robot.Constants;
 import frc.robot.subsystems.Swerve;
 
+import java.util.HashMap;
+
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
+/**
+ * Custom base class for all of our PathPlanner autonomous commands.
+ */
 public class PathPlannerAuto extends SequentialCommandGroup {
 
         Swerve s_Swerve;
@@ -19,6 +25,13 @@ public class PathPlannerAuto extends SequentialCommandGroup {
         PathPlannerTrajectory trajectory;
         private PPSwerveControllerCommand command;
 
+        /**
+         * Creates a new PathPlannerAuto object that will return a command to follow a
+         * PathPlanner path
+         * 
+         * @param swerve   the swerve subsystem
+         * @param pathName the name of the path to be loaded by PathPlannerLib
+         */
         public PathPlannerAuto(Swerve swerve, String pathName) {
                 this.s_Swerve = swerve;
                 addRequirements(s_Swerve);
@@ -38,16 +51,29 @@ public class PathPlannerAuto extends SequentialCommandGroup {
                 this.setCommands();
         }
 
-        public void setCommands() {
-                addCommands(
-                                new InstantCommand(() -> s_Swerve
-                                                .resetOdometry(trajectory.getInitialHolonomicPose())),
-                                command,
-                                new InstantCommand(() -> System.out.println(s_Swerve.swerveOdometry.getPoseMeters())));
+        public PathPlannerAuto() {
+        };
+
+        public PathPlannerAuto(Swerve swerve, String pathName, HashMap<String, Command> eventMap) {
+
         }
 
-        // returns a Path Planer Swerve Controller Command so we can use holonomic
-        // driving
+        /**
+         * sets the commands for the sequential command group (abstracted for overriding
+         * in child classes)
+         */
+        public void setCommands() {
+                addCommands(new InstantCommand(() -> s_Swerve.resetOdometry(trajectory.getInitialHolonomicPose())),
+                                command);
+        }
+
+        /**
+         * returns a PathPlannerSwerveController Command so we can use holonomic
+         * driving
+         * 
+         * @param trajectory
+         * @return {@link PPSwerveControllerCommand}
+         */
         public PPSwerveControllerCommand baseSwerveCommand(PathPlannerTrajectory trajectory) {
                 PPSwerveControllerCommand command = new PPSwerveControllerCommand(trajectory, s_Swerve::getPose,
                                 Constants.Swerve.swerveKinematics, // kinematics constants
