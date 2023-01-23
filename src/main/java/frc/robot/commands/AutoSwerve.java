@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import frc.robot.autos.PathPlannerAuto;
 import frc.robot.autos.PathPlannerAutoWithEvents;
 import frc.robot.subsystems.Swerve;
 
