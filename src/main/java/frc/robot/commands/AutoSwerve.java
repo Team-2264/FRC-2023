@@ -20,9 +20,9 @@ public class AutoSwerve {
 
         HashMap<String, Command> eventMap = new HashMap<>();
         eventMap.put("marker1", new Print("Passed Marker 1"));
-        return new PathPlannerAutoWEvents(s_Swerve, "Holonomic Forward", eventMap);
+        // return new PathPlannerAutoWEvents(s_Swerve, "Holonomic Forward", eventMap);
 
-        // return new PathPlannerAuto(s_Swerve, "Holonomic Forward");
+        return new PathPlannerAuto(s_Swerve, "Circle");
 
     }
 }

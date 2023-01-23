@@ -17,7 +17,7 @@ import edu.wpi.first.apriltag.*;
 
 public class ATVision {
 
-    public PhotonCamera atcamera = new PhotonCamera("AprilTag Camera"); // Update UI with this info
+    public PhotonCamera atcamera = new PhotonCamera("ApriTag Camera"); // Update UI with this info
 
     PhotonPipelineResult result;
     List<PhotonTrackedTarget> targets;
