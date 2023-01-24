@@ -18,11 +18,12 @@ public class AutoSwerve {
 
     public Command getCommand() {
 
-        HashMap<String, Command> eventMap = new HashMap<>();
-        eventMap.put("marker1", new Print("Passed Marker 1"));
-        // return new PathPlannerAutoWEvents(s_Swerve, "Holonomic Forward", eventMap);
+        HashMap<String, Command> eventMap = new HashMap<String, Command>();
 
-        return new PathPlannerAuto(s_Swerve, "Circle");
+        eventMap.put("marker1", new Print("Passed Marker 1"));
+        return new PathPlannerAutoWEvents(s_Swerve, "Live", eventMap);
+
+        // return new PathPlannerAuto(s_Swerve, "Live");
 
     }
 }
