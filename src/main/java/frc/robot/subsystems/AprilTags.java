@@ -13,7 +13,7 @@ public class AprilTags extends SubsystemBase {
 
     public AprilTags() {
         tagVision = new ATVision();
-        tagVision.init();
+
     }
 
     /**
@@ -46,15 +46,14 @@ public class AprilTags extends SubsystemBase {
     public void periodic() {
         // This method will be called once per scheduler run
         if(tagVision.atcamera.getLatestResult().hasTargets()){
-        currentATPose = tagVision.getRobotPose();
-        SmartDashboard.putNumber("AprilTag Pose X", currentATPose.getX());
-        SmartDashboard.putNumber("AprilTag Pose Y", currentATPose.getY());
-        SmartDashboard.putNumber("AprilTag Pose Z", currentATPose.getZ());
-        SmartDashboard.putNumber("AprilTag Pose Angle", currentATPose.getRotation().getAngle());
-
-        // testsefsdfs
+            currentATPose = tagVision.getRobotPose();
+            SmartDashboard.putNumber("AprilTag Pose X", currentATPose.getX());
+            SmartDashboard.putNumber("AprilTag Pose Y", currentATPose.getY());
+            SmartDashboard.putNumber("AprilTag Pose Z", currentATPose.getZ());
+            SmartDashboard.putNumber("AprilTag Pose Angle", currentATPose.getRotation().getAngle());
 
         }
+
     }
 
     @Override

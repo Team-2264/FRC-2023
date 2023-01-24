@@ -14,7 +14,11 @@ import org.photonvision.targeting.TargetCorner;
 import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.apriltag.*;
+
+import java.nio.file.*;
 
 public class ATVision {
 
@@ -35,23 +39,35 @@ public class ATVision {
     Transform3d bestCameraToTarget;
     Transform3d alternateCameraToTarget;
     Transform3d cameraToTarget;
+    Path ATPath = Paths.get("/home/lvuser/deploy/ATFieldLayout.json");
     AprilTagFieldLayout aprilTagFieldLayout;
-    Transform3d cameraToRobot = new Transform3d(new Translation3d(Units.feetToMeters(1), 0.0, Units.feetToMeters(1)),
-            new Rotation3d(0, 0, 0)); // Cam mounted facing forward, half a meter forward of center, half a meter up
+    RobotPoseEstimator robotPoseEstimator;
+
+    Transform3d cameraToRobot = new Transform3d(new Translation3d(Units.feetToMeters(1), 0.0, Units.feetToMeters(1)), new Rotation3d(0, 0, 0)); // Cam mounted facing forward, half a meter forward of center, half a meter up
                                       // from center.
-    ArrayList<Pair<PhotonCamera, Transform3d>> camList = new ArrayList<Pair<PhotonCamera, Transform3d>>();
-    Optional<Pose3d> optionalFieldRelativeTagPose;
     Pose3d fieldRelativeTagPose;
+    Optional<Pose3d> optionalFieldRelativeTagPose;
 
-    RobotPoseEstimator robotPoseEstimator = new RobotPoseEstimator(aprilTagFieldLayout, PoseStrategy.LOWEST_AMBIGUITY,
-            camList);
 
-    public void init() {
+    ArrayList<Pair<PhotonCamera, Transform3d>> camList = new ArrayList<Pair<PhotonCamera, Transform3d>>();
+
+
+    public ATVision() {
         if (!camAdded) {
             camList.add(new Pair<PhotonCamera, Transform3d>(atcamera, cameraToRobot));
             camAdded = true;
 
-        }
+        };
+
+        SmartDashboard.putString("BOOP", "START");
+
+        try {
+            aprilTagFieldLayout = new AprilTagFieldLayout(ATPath);
+            robotPoseEstimator = new RobotPoseEstimator(aprilTagFieldLayout, PoseStrategy.LOWEST_AMBIGUITY, camList);
+            SmartDashboard.putString("BOOP", "WORKING");
+        } catch (Exception e) {
+            SmartDashboard.putString("BOOP", e.toString());
+        };
 
     }
 
