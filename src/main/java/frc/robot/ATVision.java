@@ -24,6 +24,7 @@ public class ATVision {
     public PhotonCamera atcamera = new PhotonCamera("AprilTag Camera"); // Update UI with this info
 
     PhotonPipelineResult result;
+    Pose2d test2d = new Pose2d();
     List<PhotonTrackedTarget> targets;
     PhotonTrackedTarget bestTarget;
     boolean hasTargets;
@@ -96,7 +97,19 @@ public class ATVision {
         }
         return -1;
     }
-
+    double d;
+    public Translation2d getDistanceAndTranslation() {
+        result = atcamera.getLatestResult();
+        if (result.hasTargets()) {
+            d = PhotonUtils.calculateDistanceToTargetMeters(
+                    Constants.AprilTag.CAMERA_HEIGHT_METERS,
+                    Constants.AprilTag.TARGET_HEIGHT_METERS,
+                    Constants.AprilTag.CAMERA_PITCH_RADIANS,
+                    Units.degreesToRadians(result.getBestTarget().getPitch()));
+                    return PhotonUtils.estimateCameraToTargetTranslation(d, Rotation2d.fromDegrees(-(result.getBestTarget().getYaw())));
+        }
+        return null;
+    }
     // returns your robot’s Pose3d on the field using the pose of the AprilTag
     // relative to the camera, pose of the AprilTag relative to the field, and the
     // transform from the camera to the origin of the robot.
@@ -114,9 +127,12 @@ public class ATVision {
             }
 
         }
-
         return null;
 
     }
 
+    Transform2d currentTransform;
+    public final Pose2d testPoseTransform(Pose2d currentPose) {
+            return currentPose.plus(new Transform2d(getDistanceAndTranslation(), new Rotation2d()));
+     }
 }

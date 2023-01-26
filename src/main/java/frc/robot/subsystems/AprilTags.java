@@ -52,7 +52,7 @@ public class AprilTags extends SubsystemBase {
             SmartDashboard.putNumber("AprilTag Pose Z", currentATPose.getZ());
             SmartDashboard.putNumber("AprilTag Pose Angle", currentATPose.getRotation().getAngle());
             SmartDashboard.putNumber("Distance to Tag", tagVision.getDistance());
-            SmartDashboard.putNumber("Distance to Tag", tagVision.getDistance());
+            SmartDashboard.putString("Translation to Tag", tagVision.getDistanceAndTranslation().toString());
         }
 
     }
