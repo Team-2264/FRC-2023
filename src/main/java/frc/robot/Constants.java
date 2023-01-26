@@ -13,8 +13,8 @@ public final class Constants {
     public static final double stickDeadband = 0.25;
 
     public static final class AprilTag {
-        public static final double CAMERA_HEIGHT_METERS = 0;
-        public static final double TARGET_HEIGHT_METERS = 0;
+        public static final double CAMERA_HEIGHT_METERS = .130175;
+        public static final double TARGET_HEIGHT_METERS = .180975;
         public static final double CAMERA_PITCH_RADIANS = 0;
         public static final double GOAL_RANGE_METERS = 0;
 
