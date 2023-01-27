@@ -19,6 +19,16 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.apriltag.*;
 
+import frc.robot.Constants;
+import frc.robot.autos.teleopAuto;
+import frc.robot.subsystems.Swerve;
+
+import java.util.List;
+
+import java.math.*;
+
+
+
 public class ATVision {
 
     public PhotonCamera atcamera = new PhotonCamera("AprilTag Camera"); // Update UI with this info
@@ -86,6 +96,17 @@ public class ATVision {
     // poseAmbiguity = bestTarget.getPoseAmbiguity();
     // }
 
+    // public double getAngle() {
+    //     result = atcamera.getLatestResult();
+    //     return result;
+    // }
+
+    public boolean hasTarget() {
+        result = atcamera.getLatestResult();
+        return result.hasTargets();
+
+    }
+
     public double getDistance() {
         result = atcamera.getLatestResult();
         if (result.hasTargets()) {
@@ -108,7 +129,7 @@ public class ATVision {
                     Units.degreesToRadians(result.getBestTarget().getPitch()));
                     return PhotonUtils.estimateCameraToTargetTranslation(d, Rotation2d.fromDegrees(-(result.getBestTarget().getYaw())));
         }
-        return null;
+        return new Translation2d(0,0);
     }
     // returns your robot’s Pose3d on the field using the pose of the AprilTag
     // relative to the camera, pose of the AprilTag relative to the field, and the
@@ -132,7 +153,14 @@ public class ATVision {
     }
 
     Transform2d currentTransform;
-    public final Pose2d testPoseTransform(Pose2d currentPose) {
-            return currentPose.plus(new Transform2d(getDistanceAndTranslation(), new Rotation2d()));
+    double turnAngle;
+    Translation2d distanceAndTranslation;
+    public Pose2d testPoseTransform(Pose2d currentPose) {
+        distanceAndTranslation = getDistanceAndTranslation();
+
+        turnAngle = Math.atan(distanceAndTranslation.getX() / distanceAndTranslation.getY());
+            
+        return currentPose.plus(new Transform2d(getDistanceAndTranslation(), new Rotation2d(180 - turnAngle))); // NOT WORKING PLS DONT USE
+
      }
 }

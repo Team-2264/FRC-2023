@@ -43,6 +43,8 @@ public class RobotContainer {
 
   /* Driver Buttons */
   private final JoystickButton zeroGyro = new JoystickButton(driver, PS4Controller.Button.kL3.value); // val = 11
+  private final JoystickButton followTargetButton = new JoystickButton(driver, PS4Controller.Button.kCircle.value);
+
   private final JoystickButton resetEncoder = new JoystickButton(driver, 8);
   private final JoystickButton robotCentric = new JoystickButton(driver, PS4Controller.Button.kL1.value);
 
@@ -55,6 +57,8 @@ public class RobotContainer {
   private final Swerve s_Swerve = new Swerve();
 
   private final AprilTags s_AprilTags = new AprilTags();
+
+  private final ATVision at_Vision = new ATVision();
 
   // private final AprilTags s_AprilTags = new AprilTags();
 
@@ -95,7 +99,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     /* Driver Buttons */
     zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
-    // resetEncoder.onTrue(new InstantCommand(() -> s_Swerve.resetEncoders()));
+    followTargetButton.onTrue(new InstantCommand(() -> new teleopAuto(s_Swerve,  s_AprilTags.getTargetPose(s_Swerve)).schedule()));
     // openClawButton.onTrue(new InstantCommand(() -> s_Arm.openClaw()));
     // closeClawButton.whenPressed(new InstantCommand(() -> s_Arm.closeClaw()));
   }
@@ -109,4 +113,5 @@ public class RobotContainer {
     // An ExampleCommand will run in autonomous
     return new exampleAuto(s_Swerve);
   }
+
 }

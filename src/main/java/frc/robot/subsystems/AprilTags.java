@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -44,17 +45,12 @@ public class AprilTags extends SubsystemBase {
 
     @Override
     public void periodic() {
-        // This method will be called once per scheduler run
-        if(tagVision.atcamera.getLatestResult().hasTargets()){
-            currentATPose = tagVision.getRobotPose();
-            SmartDashboard.putNumber("AprilTag Pose X", currentATPose.getX());
-            SmartDashboard.putNumber("AprilTag Pose Y", currentATPose.getY());
-            SmartDashboard.putNumber("AprilTag Pose Z", currentATPose.getZ());
-            SmartDashboard.putNumber("AprilTag Pose Angle", currentATPose.getRotation().getAngle());
-            SmartDashboard.putNumber("Distance to Tag", tagVision.getDistance());
-            SmartDashboard.putString("Translation to Tag", tagVision.getDistanceAndTranslation().toString());
-        }
+        
 
+    }
+
+    public Pose2d getTargetPose(Swerve s_Swerve) {
+        return tagVision.testPoseTransform(s_Swerve.getPose());
     }
 
     @Override
