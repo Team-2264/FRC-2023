@@ -69,9 +69,6 @@ public class ATVision {
             camAdded = true;
 
         }
-        RobotPoseEstimator robotPoseEstimator = new RobotPoseEstimator(aprilTagFieldLayout,
-                PoseStrategy.LOWEST_AMBIGUITY,
-                camList);
     }
 
     // public void updateCamera(){
