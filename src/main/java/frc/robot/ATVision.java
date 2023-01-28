@@ -27,8 +27,6 @@ import java.util.List;
 
 import java.math.*;
 
-
-
 public class ATVision {
 
     public PhotonCamera atcamera = new PhotonCamera("AprilTag Camera"); // Update UI with this info
@@ -58,15 +56,12 @@ public class ATVision {
     Optional<Pose3d> optionalFieldRelativeTagPose;
     Pose3d fieldRelativeTagPose;
 
+    public ATVision() {
 
-
-
-    public ATVision(){
-        
-        try{
+        try {
             aprilTagFieldLayout = AprilTagFieldLayout.loadFromResource("/edu/wpi/first/apriltag/2022-rapidreact.json");
             SmartDashboard.putString("DO ATFL BE MADE?", "YES");
-        } catch(Exception e) {
+        } catch (Exception e) {
             SmartDashboard.putString("DO ATFL BE MADE?", "NO LMAO");
         }
 
@@ -75,8 +70,9 @@ public class ATVision {
             camAdded = true;
 
         }
-        RobotPoseEstimator robotPoseEstimator = new RobotPoseEstimator(aprilTagFieldLayout, PoseStrategy.LOWEST_AMBIGUITY,
-        camList);
+        RobotPoseEstimator robotPoseEstimator = new RobotPoseEstimator(aprilTagFieldLayout,
+                PoseStrategy.LOWEST_AMBIGUITY,
+                camList);
     }
 
     // public void updateCamera(){
@@ -97,8 +93,8 @@ public class ATVision {
     // }
 
     // public double getAngle() {
-    //     result = atcamera.getLatestResult();
-    //     return result;
+    // result = atcamera.getLatestResult();
+    // return result;
     // }
 
     public boolean hasTarget() {
@@ -118,19 +114,19 @@ public class ATVision {
         }
         return -1;
     }
+
     double d;
+
     public Translation2d getDistanceAndTranslation() {
         result = atcamera.getLatestResult();
-        if (result.hasTargets()) {
-            d = PhotonUtils.calculateDistanceToTargetMeters(
-                    Constants.AprilTag.CAMERA_HEIGHT_METERS,
-                    Constants.AprilTag.TARGET_HEIGHT_METERS,
-                    Constants.AprilTag.CAMERA_PITCH_RADIANS,
-                    Units.degreesToRadians(result.getBestTarget().getPitch()));
-                    return PhotonUtils.estimateCameraToTargetTranslation(d, Rotation2d.fromDegrees(-(result.getBestTarget().getYaw())));
-        }
-        return new Translation2d(0,0);
+
+        d = getDistance();
+
+        return PhotonUtils.estimateCameraToTargetTranslation(d,
+                Rotation2d.fromDegrees(-(result.getBestTarget().getYaw())));
+
     }
+
     // returns your robot’s Pose3d on the field using the pose of the AprilTag
     // relative to the camera, pose of the AprilTag relative to the field, and the
     // transform from the camera to the origin of the robot.
@@ -155,12 +151,16 @@ public class ATVision {
     Transform2d currentTransform;
     double turnAngle;
     Translation2d distanceAndTranslation;
+
     public Pose2d testPoseTransform(Pose2d currentPose) {
         distanceAndTranslation = getDistanceAndTranslation();
 
-        turnAngle = Math.atan(distanceAndTranslation.getX() / distanceAndTranslation.getY());
-            
-        return currentPose.plus(new Transform2d(getDistanceAndTranslation(), new Rotation2d(180 - turnAngle))); // NOT WORKING PLS DONT USE
+        turnAngle = Math.atan(distanceAndTranslation.getY() / distanceAndTranslation.getX());
 
-     }
+        SmartDashboard.putString("hi", distanceAndTranslation.toString());
+
+        return currentPose.plus(new Transform2d(getDistanceAndTranslation(), new Rotation2d())); // NOT WORKING PLS DONT
+                                                                                                 // USE
+       
+    }
 }

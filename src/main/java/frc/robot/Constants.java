@@ -10,7 +10,7 @@ import edu.wpi.first.math.util.Units;
 import frc.lib.util.SwerveModuleConstants;
 
 public final class Constants {
-    public static final double stickDeadband = 0.25;
+    public static final double stickDeadband = 0.1;
 
     public static final class AprilTag {
         public static final double CAMERA_HEIGHT_METERS = .130175;
@@ -94,9 +94,9 @@ public final class Constants {
             public static final int angleMotorID = 51;
             public static final int canCoderID = 58;
             // public static final double angleOffset = 101.68;
-            public static final double angleOffset = 73.4765625; //BLAME THIS FOR ALL FUTURE ISSUES
+            public static final double angleOffset = 246.8;
             public static final boolean angleInverted = false;
-            public static final boolean driveInverted = false;
+            public static final boolean driveInverted = true;
 
             public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID,
                     angleMotorID,
@@ -109,9 +109,9 @@ public final class Constants {
             public static final int angleMotorID = 53;
             public static final int canCoderID = 59;
             // public static final double angleOffset = 350.45;
-            public static final double angleOffset = 94.833984375;
+            public static final double angleOffset = 269.5;
             public static final boolean angleInverted = false;
-            public static final boolean driveInverted = false;
+            public static final boolean driveInverted = true;
 
             public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID,
                     angleMotorID,
@@ -124,7 +124,7 @@ public final class Constants {
             public static final int angleMotorID = 55;
             public static final int canCoderID = 60;
             // public static final double angleOffset = 302.34375;
-            public static final double angleOffset = 58.095;
+            public static final double angleOffset = 60.5;
             public static final boolean angleInverted = false;
             public static final boolean driveInverted = false;
 
@@ -139,7 +139,7 @@ public final class Constants {
             public static final int angleMotorID = 57;
             public static final int canCoderID = 61;
             // public static final double angleOffset = 241.70;
-            public static final double angleOffset = 306.2988281;
+            public static final double angleOffset = 142.7;
             public static final boolean angleInverted = false;
             public static final boolean driveInverted = false;
 
@@ -151,7 +151,7 @@ public final class Constants {
     }
 
     public static final class AutoConstants {
-        public static final double kMaxSpeedMetersPerSecond = 0.5;
+        public static final double kMaxSpeedMetersPerSecond = 2;
         // public static final double kMaxSpeedMetersPerSecond = 3;
         public static final double kMaxAccelerationMetersPerSecondSquared = 1;
         // public static final double kMaxAccelerationMetersPerSecondSquared = 3;
