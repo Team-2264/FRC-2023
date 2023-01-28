@@ -6,9 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.ejml.equation.Variable;
 import org.photonvision.*;
-import org.photonvision.RobotPoseEstimator.PoseStrategy;
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 import org.photonvision.targeting.TargetCorner;
@@ -29,7 +28,7 @@ import java.math.*;
 
 public class ATVision {
 
-    public PhotonCamera atcamera = new PhotonCamera("AprilTag Camera"); // Update UI with this info
+    public PhotonCamera atcamera = new PhotonCamera("ApriTag Camera"); // Update UI with this info
 
     PhotonPipelineResult result;
     Pose2d test2d = new Pose2d();
@@ -161,6 +160,6 @@ public class ATVision {
 
         return currentPose.plus(new Transform2d(getDistanceAndTranslation(), new Rotation2d())); // NOT WORKING PLS DONT
                                                                                                  // USE
-       
+
     }
 }
