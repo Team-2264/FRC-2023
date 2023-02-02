@@ -46,6 +46,9 @@ public class RobotContainer {
   /* Driver Buttons */
   private final JoystickButton zeroGyro = new JoystickButton(driver, PS4Controller.Button.kL3.value); // val = 11
   private final JoystickButton followTargetButton = new JoystickButton(driver, PS4Controller.Button.kCircle.value);
+  private final JoystickButton solenoidTrigger = new JoystickButton(driver, PS4Controller.Button.kTriangle.value);
+  private final JoystickButton compressorTrigger = new JoystickButton(driver, PS4Controller.Button.kSquare.value);
+
 
   private final JoystickButton resetEncoder = new JoystickButton(driver, 8);
   private final JoystickButton robotCentric = new JoystickButton(driver, PS4Controller.Button.kL1.value);
@@ -59,6 +62,8 @@ public class RobotContainer {
   private final Swerve s_Swerve = new Swerve();
 
   private final AprilTags s_AprilTags = new AprilTags();
+
+  private final Arm s_Arm = new Arm();
 
   private final ATVision at_Vision = new ATVision();
 
@@ -108,6 +113,9 @@ public class RobotContainer {
       autoCommand.schedule();
     }));
      
+    solenoidTrigger.onTrue(new InstantCommand(() -> s_Arm.toggle()));
+    //compressorTrigger.onTrue(new InstantCommand(() -> s_Arm.toggleCompressor()));
+    
     followTargetButton.onFalse(new InstantCommand(() -> {
       if (autoCommand != null) {
         autoCommand.stop();
