@@ -6,6 +6,8 @@ package frc.robot;
 
 import java.util.function.BooleanSupplier;
 
+import com.ctre.phoenix.platform.can.AutocacheState;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -61,6 +63,7 @@ public class RobotContainer {
   private final ATVision at_Vision = new ATVision();
 
   // private final AprilTags s_AprilTags = new AprilTags();
+ private teleopAuto autoCommand;
 
   /**
    * `
@@ -98,8 +101,18 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     /* Driver Buttons */
+
     zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
-    followTargetButton.onTrue(new InstantCommand(() -> new teleopAuto(s_Swerve,  s_AprilTags.getTargetPose(s_Swerve)).schedule()));
+    followTargetButton.onTrue(new InstantCommand(() -> {
+      autoCommand = new teleopAuto(s_Swerve,  s_AprilTags.getTargetPose(s_Swerve));
+      autoCommand.schedule();
+    }));
+     
+    followTargetButton.onFalse(new InstantCommand(() -> {
+      if (autoCommand != null) {
+        autoCommand.stop();
+      }
+    }));
     // openClawButton.onTrue(new InstantCommand(() -> s_Arm.openClaw()));
     // closeClawButton.whenPressed(new InstantCommand(() -> s_Arm.closeClaw()));
   }

@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 
 public class teleopAuto extends SequentialCommandGroup {
 
+    private SwerveControllerCommand swerveControllerCommand;
 
     public teleopAuto(Swerve s_Swerve, Pose2d targetPose) {
 
@@ -40,7 +41,7 @@ public class teleopAuto extends SequentialCommandGroup {
                         Constants.AutoConstants.kThetaControllerConstraints);
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
-        SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
+        swerveControllerCommand = new SwerveControllerCommand(
                         exampleTrajectory,
                         s_Swerve::getPose,
                         Constants.Swerve.swerveKinematics,
@@ -52,5 +53,10 @@ public class teleopAuto extends SequentialCommandGroup {
 
         addCommands(swerveControllerCommand);
         
+    }
+
+    
+    public void stop() {
+        swerveControllerCommand.end(true);
     }
 }
