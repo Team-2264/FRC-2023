@@ -45,7 +45,14 @@ public class AprilTags extends SubsystemBase {
 
     @Override
     public void periodic() {
-        
+        if (tagVision.hasTarget()) {
+            
+            SmartDashboard.putNumber("D", tagVision.getDistance());
+            SmartDashboard.putString("D&T", tagVision.getDistanceAndTranslation().toString());
+            
+            tagVision.test_z_angle();
+
+        }
 
     }
 

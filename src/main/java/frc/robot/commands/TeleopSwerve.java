@@ -36,6 +36,7 @@ public class TeleopSwerve extends CommandBase {
         this.rotationAxis = rotationAxis;
         this.fieldRelative = fieldRelative;
         this.openLoop = openLoop;
+
     }
 
     @Override
@@ -52,5 +53,6 @@ public class TeleopSwerve extends CommandBase {
         translation = new Translation2d(yAxis, xAxis).times(Constants.Swerve.maxSpeed);
         rotation = rAxis * Constants.Swerve.maxAngularVelocity;
         s_Swerve.drive(translation, rotation, !fieldRelative.getAsBoolean(), openLoop);
+        
     }
 }
