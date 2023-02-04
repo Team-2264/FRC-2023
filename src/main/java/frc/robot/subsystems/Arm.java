@@ -72,8 +72,8 @@ public class Arm extends SubsystemBase {
 
 
   public void moveToPos(double angle) {
-    double leftDesiredEncoderPos = angle/Constants.Arm.LEFT_ENCODER_UNIS_PER_ANGLE;
-    double rightDesiredEncoderPos = angle/Constants.Arm.RIGHT_ENCODER_UNIS_PER_ANGLE;
+    double leftDesiredEncoderPos = angle/Constants.Arm.LEFT_ENCODER_UNITS_PER_ANGLE;
+    double rightDesiredEncoderPos = angle/Constants.Arm.RIGHT_ENCODER_UNITS_PER_ANGLE;
     
     leftArmBelt.set(ControlMode.Position, leftDesiredEncoderPos);
     rightArmBelt.set(ControlMode.Position, rightDesiredEncoderPos);
