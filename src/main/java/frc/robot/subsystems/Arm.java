@@ -1,4 +1,5 @@
 package frc.robot.subsystems;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 // NO
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
@@ -63,21 +64,20 @@ public class Arm extends SubsystemBase {
     rightArm.solenoidToggle();
   }
 
-  public void moveUp(){
-    if(!(leftArmBelt.getSelectedSensorPosition() * Constants.Arm.circumferenceOfGear == 3.0 )) {
+  public void moveUp() {
+    if (!(leftArmBelt.getSelectedSensorPosition() * Constants.Arm.circumferenceOfGear == 3.0)) {
       leftArmBelt.set(ControlMode.PercentOutput, 1);
       rightArmBelt.set(ControlMode.PercentOutput, 1);
     }
   }
 
-
   public void moveToPos(double angle) {
-    double leftDesiredEncoderPos = angle/Constants.Arm.LEFT_ENCODER_UNITS_PER_ANGLE;
-    double rightDesiredEncoderPos = angle/Constants.Arm.RIGHT_ENCODER_UNITS_PER_ANGLE;
-    
+    double leftDesiredEncoderPos = angle / Constants.Arm.ENCODER_UNITS_PER_ANGLE;
+    double rightDesiredEncoderPos = angle / Constants.Arm.ENCODER_UNITS_PER_ANGLE;
+
     leftArmBelt.set(ControlMode.Position, leftDesiredEncoderPos);
     rightArmBelt.set(ControlMode.Position, rightDesiredEncoderPos);
-  } 
+  }
 
   public void reset() {
     boolean leftStatus, rightStatus;

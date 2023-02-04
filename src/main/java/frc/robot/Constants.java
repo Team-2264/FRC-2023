@@ -19,22 +19,27 @@ public final class Constants {
     }
 
     public static final class Arm {
+
+        public static final double GEAR_RATIO = 12.0;
+
         public static final int LEFT_ARM_REVERSE_CHANNEL = 0;
         public static final int LEFT_ARM_FORWARD_CHANNEL = 1;
-        
+
         public static final int RIGHT_ARM_REVERSE_CHANNEL = 2;
         public static final int RIGHT_ARM_FORWARD_CHANNEL = 3;
 
         public static final int LEFT_ARM_MOTOR_ID = 1;
         public static final int RIGHT_ARM_MOTOR_ID = 2;
 
-        public static final int LEFT_LIMIT_SWITCH_ID = 0; 
-        public static final int RIGHT_LIMIT_SWITCH_ID = 1; 
+        public static final int LEFT_LIMIT_SWITCH_ID = 0;
+        public static final int RIGHT_LIMIT_SWITCH_ID = 1;
 
-        public static final double LEFT_ENCODER_UNITS_PER_ANGLE = 2048;
-        public static final double RIGHT_ENCODER_UNITS_PER_ANGLE = 2048;
+        public static final int ENCODER_UNITS_PER_ROTATION = 2048;
+
+        public static final double ENCODER_UNITS_PER_ANGLE = ENCODER_UNITS_PER_ROTATION / (360 / GEAR_RATIO);
 
         public static final double circumferenceOfGear = 3.0;
+
     }
 
     public static final class Swerve {
