@@ -113,9 +113,9 @@ public class RobotContainer {
       autoCommand.schedule();
     }));
      
-    solenoidTrigger.onTrue(new InstantCommand(() -> s_Arm.toggle()));
+    solenoidTrigger.onTrue(new InstantCommand(() -> s_Arm.toggleLowerArm()));
     //compressorTrigger.onTrue(new InstantCommand(() -> s_Arm.toggleCompressor()));
-    
+
     followTargetButton.onFalse(new InstantCommand(() -> {
       if (autoCommand != null) {
         autoCommand.stop();

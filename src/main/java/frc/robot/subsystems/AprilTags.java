@@ -51,7 +51,6 @@ public class AprilTags extends SubsystemBase {
             SmartDashboard.putString("D&T", tagVision.getDistanceAndTranslation().toString());
             
             tagVision.test_z_angle();
-
         }
 
     }

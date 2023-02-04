@@ -10,7 +10,7 @@ public class Pneumatics {
   boolean isExtended = false;
 
   public Pneumatics(int forwardChannel, int reverseChannel) {
-      doubleSolenoid = new DoubleSolenoid(42, PneumaticsModuleType.CTREPCM, forwardChannel, reverseChannel);
+      doubleSolenoid = new DoubleSolenoid(42, PneumaticsModuleType.REVPH, forwardChannel, reverseChannel);
       doubleSolenoid.set(Value.kOff);
   }
 
