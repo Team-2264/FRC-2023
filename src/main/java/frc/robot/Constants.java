@@ -31,6 +31,9 @@ public final class Constants {
         public static final int LEFT_ARM_MOTOR_ID = 1;
         public static final int RIGHT_ARM_MOTOR_ID = 2;
 
+        public static final boolean LEFT_ARM_MOTOR_INVERTED = false;
+        public static final boolean RIGHT_ARM_MOTOR_INVERTED = false;
+
         public static final int LEFT_LIMIT_SWITCH_ID = 0;
         public static final int RIGHT_LIMIT_SWITCH_ID = 1;
 
@@ -38,7 +41,9 @@ public final class Constants {
 
         public static final double ENCODER_UNITS_PER_ANGLE = ENCODER_UNITS_PER_ROTATION / (360 / GEAR_RATIO);
 
-        public static final double circumferenceOfGear = 3.0;
+        public static final double circumferenceOfGear = 12.0;
+
+
 
     }
 
