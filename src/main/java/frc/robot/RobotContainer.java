@@ -4,15 +4,21 @@
 
 package frc.robot;
 
+import java.util.Optional;
 import java.util.function.BooleanSupplier;
+
+import org.photonvision.targeting.PhotonTrackedTarget;
 
 import com.ctre.phoenix.platform.can.AutocacheState;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -96,6 +102,14 @@ public class RobotContainer {
     }
   }
 
+  public void testAprilTag() {
+    Transform2d transform = at_Vision.getTargetToCameraTransform();
+  
+    Pose2d tPose = new Pose2d(1, 0, Rotation2d.fromDegrees(180)).transformBy(transform);
+
+    SmartDashboard.putString("tPose", tPose.toString());
+  }
+
   /**
    * Use this method to define your button->command mappings. Buttons can be
    * created by
@@ -109,18 +123,39 @@ public class RobotContainer {
 
     zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
     followTargetButton.onTrue(new InstantCommand(() -> {
-      autoCommand = new teleopAuto(s_Swerve,  s_AprilTags.getTargetPose(s_Swerve));
+      Transform2d transform = at_Vision.getTargetToCameraTransform();
+  
+      Pose2d tPose = new Pose2d(1, 0, Rotation2d.fromDegrees(180)).transformBy(transform);
+
+      SmartDashboard.putString("swerve pose", s_Swerve.getPose().toString());
+
+      SmartDashboard.putString("translation", at_Vision.getTargetToRobot().getTranslation().toString());
+
+      SmartDashboard.putString("target pose", new Pose2d(s_Swerve.getPose().getX() + at_Vision.getTargetToRobot().getX(), 
+      s_Swerve.getPose().getY() + at_Vision.getTargetToRobot().getY(),
+      new Rotation2d()).toString());
+
+      autoCommand = new teleopAuto(s_Swerve, new Pose2d(s_Swerve.getPose().getX() + at_Vision.getTargetToRobot().getX() - 0.75, 
+      s_Swerve.getPose().getY() + at_Vision.getTargetToRobot().getY(),
+      new Rotation2d()));
+      
+      // autoCommand = new teleopAuto(s_Swerve,  new Pose2d(0, 0, new Rotation2d()).transformBy(transform).relativeTo(s_Swerve.getPose()));
       autoCommand.schedule();
+
+      //autoCommand = new teleopAuto(s_Swerve,  s_AprilTags.getTargetPose(s_Swerve));
+      //autoCommand.schedule();
+      
     }));
      
     solenoidTrigger.onTrue(new InstantCommand(() -> s_Arm.toggleLowerArm()));
     //compressorTrigger.onTrue(new InstantCommand(() -> s_Arm.toggleCompressor()));
-
+    
+    /*
     followTargetButton.onFalse(new InstantCommand(() -> {
       if (autoCommand != null) {
         autoCommand.stop();
       }
-    }));
+    }));*/
     // openClawButton.onTrue(new InstantCommand(() -> s_Arm.openClaw()));
     // closeClawButton.whenPressed(new InstantCommand(() -> s_Arm.closeClaw()));
   }
