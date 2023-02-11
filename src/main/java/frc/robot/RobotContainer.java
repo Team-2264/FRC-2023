@@ -18,6 +18,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -39,6 +40,8 @@ import frc.robot.subsystems.*;
 public class RobotContainer {
   /* Controllers */
   private final Joystick driver = new Joystick(0);
+
+  private final Field2d m_field = new Field2d();
 
   /* Drive Controls */
   // private final int translationAxis = PS4Controller.Axis.kLeftY.value;
@@ -69,12 +72,17 @@ public class RobotContainer {
 
   private final AprilTags s_AprilTags = new AprilTags();
 
-  private final Arm s_Arm = new Arm();
+  // private final Arm s_Arm = new Arm();
 
   private final ATVision at_Vision = new ATVision();
 
   // private final AprilTags s_AprilTags = new AprilTags();
  private teleopAuto autoCommand;
+
+ private Pose2d[] last_april_poses = new Pose2d[30];
+ private int next_april_pose_index = 0;
+
+ 
 
   /**
    * `
@@ -87,6 +95,8 @@ public class RobotContainer {
     s_Swerve.setDefaultCommand(
         new TeleopSwerve(s_Swerve, driver, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
 
+
+        SmartDashboard.putData("Field", m_field);
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -123,31 +133,29 @@ public class RobotContainer {
 
     zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
     followTargetButton.onTrue(new InstantCommand(() -> {
-      Transform2d transform = at_Vision.getTargetToCameraTransform();
-  
-      Pose2d tPose = new Pose2d(1, 0, Rotation2d.fromDegrees(180)).transformBy(transform);
 
-      SmartDashboard.putString("swerve pose", s_Swerve.getPose().toString());
+      // SmartDashboard.putString("bPose", at_Vision.getBotPose().toString());
 
-      SmartDashboard.putString("translation", at_Vision.getTargetToRobot().getTranslation().toString());
+      // SmartDashboard.putString("swerve pose", s_Swerve.getPose().toString());
 
-      SmartDashboard.putString("target pose", new Pose2d(s_Swerve.getPose().getX() + at_Vision.getTargetToRobot().getX(), 
-      s_Swerve.getPose().getY() + at_Vision.getTargetToRobot().getY(),
-      new Rotation2d()).toString());
+      // SmartDashboard.putString("translation", at_Vision.getTargetToRobot().getTranslation().toString());
+
+      // SmartDashboard.putString("target pose", new Pose2d(s_Swerve.getPose().getX() + at_Vision.getTargetToRobot().getX(), 
+      // s_Swerve.getPose().getY() + at_Vision.getTargetToRobot().getY(),
+      // new Rotation2d()).toString());
+
+
+      s_Swerve.setPose(at_Vision.getBotPose().toPose2d());
 
       autoCommand = new teleopAuto(s_Swerve, new Pose2d(s_Swerve.getPose().getX() + at_Vision.getTargetToRobot().getX() - 0.75, 
       s_Swerve.getPose().getY() + at_Vision.getTargetToRobot().getY(),
-      new Rotation2d()));
+      new Rotation2d(at_Vision.getBotAngle())), m_field);
       
-      // autoCommand = new teleopAuto(s_Swerve,  new Pose2d(0, 0, new Rotation2d()).transformBy(transform).relativeTo(s_Swerve.getPose()));
       autoCommand.schedule();
-
-      //autoCommand = new teleopAuto(s_Swerve,  s_AprilTags.getTargetPose(s_Swerve));
-      //autoCommand.schedule();
       
     }));
      
-    solenoidTrigger.onTrue(new InstantCommand(() -> s_Arm.toggleLowerArm()));
+    // solenoidTrigger.onTrue(new InstantCommand(() -> s_Arm.toggleLowerArm()));
     //compressorTrigger.onTrue(new InstantCommand(() -> s_Arm.toggleCompressor()));
     
     /*
@@ -169,5 +177,26 @@ public class RobotContainer {
     // Command will run in autonomous
     return new AutoSwerve(s_Swerve).getCommand();
   }
+public void updateRobotPose() {
+  // // s_Swerve.setPose(at_Vision.getBotPose().toPose2d());
+  // // last_april_poses[next_april_pose_index] = at_Vision.getBotPose().toPose2d();
+  // // next_april_pose_index += 1;
+  // // if(next_april_pose_index == 30) {
+  // //   next_april_pose_index = 0;
+  // // }
+
+
+  // Translation2d translation = new Translation2d();
+  // Rotation2d rotation = new Rotation2d();
+
+  // for (Pose2d pose : last_april_poses) {
+  //   var x = translation.getX() + pose.getX();
+  //   var y = translation.getY() + pose.getY();
+  // }
+
+  
+  m_field.setRobotPose(s_Swerve.getPose());
+}
+
 
 }

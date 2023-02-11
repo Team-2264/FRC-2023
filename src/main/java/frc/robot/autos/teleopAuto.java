@@ -16,6 +16,8 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
@@ -24,7 +26,7 @@ public class teleopAuto extends SequentialCommandGroup {
 
     private SwerveControllerCommand swerveControllerCommand;
 
-    public teleopAuto(Swerve s_Swerve, Pose2d targetPose) {
+    public teleopAuto(Swerve s_Swerve, Pose2d targetPose, Field2d field) {
 
         System.out.println("this is the target pose x" + targetPose.getX());
 
@@ -35,6 +37,9 @@ public class teleopAuto extends SequentialCommandGroup {
 
         // An example trajectory to follow. All units in meters.
         Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(List.of(s_Swerve.getPose(), targetPose), config);
+
+        field.getObject("traj").setTrajectory(exampleTrajectory);
+
 
         var thetaController = new ProfiledPIDController(
                         Constants.AutoConstants.kPThetaController, 0, 0,
