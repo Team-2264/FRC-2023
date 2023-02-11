@@ -45,19 +45,9 @@ public class AprilTags extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if (tagVision.hasTarget()) {
-            
-            SmartDashboard.putNumber("D", tagVision.getDistance());
-            SmartDashboard.putString("D&T", tagVision.getDistanceAndTranslation().toString());
-            
-            tagVision.test_z_angle();
-        }
 
     }
 
-    public Pose2d getTargetPose(Swerve s_Swerve) {
-        return tagVision.testPoseTransform(s_Swerve.getPose());
-    }
 
     @Override
     public void simulationPeriodic() {
