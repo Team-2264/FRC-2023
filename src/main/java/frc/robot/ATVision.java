@@ -37,11 +37,6 @@ public class ATVision {
     public Pose3d getBotPose() {
 
         double[] arr = NetworkTableInstance.getDefault().getTable("limelight").getEntry("botpose_wpired").getDoubleArray(new double[6]);
-
-        SmartDashboard.putNumberArray("DBotPose", arr);
-
-        // //return new Pose3d(arr[2], -arr[0], arr[1], new Rotation3d());
-        // return new Pose3d(arr[0], -arr[1], arr[2], new Rotation3d(arr[3], arr[4], arr[5]));
         
         return new Pose3d (arr[0], arr[1], arr[2], new Rotation3d(arr[4]*Math.PI/180, arr[3]*Math.PI/180, arr[5]*Math.PI/180));
     }

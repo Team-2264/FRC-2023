@@ -147,9 +147,14 @@ public class RobotContainer {
 
       s_Swerve.setPose(at_Vision.getBotPose().toPose2d());
 
-      autoCommand = new teleopAuto(s_Swerve, new Pose2d(s_Swerve.getPose().getX() + at_Vision.getTargetToRobot().getX() - 0.75, 
-      s_Swerve.getPose().getY() + at_Vision.getTargetToRobot().getY(),
-      new Rotation2d(at_Vision.getBotAngle())), m_field);
+      autoCommand = new teleopAuto(
+        s_Swerve, 
+        new Pose2d(
+          s_Swerve.getPose().getX() + at_Vision.getTargetToRobot().getX() - 0.75, 
+          s_Swerve.getPose().getY() + at_Vision.getTargetToRobot().getY(),
+          new Rotation2d(at_Vision.getBotAngle())
+        ), m_field
+      );
       
       autoCommand.schedule();
       
