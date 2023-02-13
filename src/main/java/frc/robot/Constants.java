@@ -20,31 +20,33 @@ public final class Constants {
 
     public static final class Arm {
 
-        public static final double GEAR_RATIO = 12.0;
+        public static final int COMPRESSOR_ID = 33;
 
-        public static final int LEFT_ARM_REVERSE_CHANNEL = 0;
-        public static final int LEFT_ARM_FORWARD_CHANNEL = 1;
+        public static final double GEAR_RATIO_ELBOW = 12.0;
+        public static final double GEAR_RATIO_WRIST = 71.0;
 
-        public static final int RIGHT_ARM_REVERSE_CHANNEL = 2;
-        public static final int RIGHT_ARM_FORWARD_CHANNEL = 3;
+        public static final int ARM_REVERSE_CHANNEL = 2;
+        public static final int ARM_FORWARD_CHANNEL = 3;
 
-        public static final int LEFT_ARM_MOTOR_ID = 1;
-        public static final int RIGHT_ARM_MOTOR_ID = 2;
+        public static final int CLAW_REVERSE_CHANNEL = 1;
+        public static final int CLAW_FORWARD_CHANNEL = 0;
+
+        public static final int LEFT_ARM_MOTOR_ID = 30;
+        public static final int RIGHT_ARM_MOTOR_ID = 31;
+
+        public static final int WRIST_MOTOR_ID = 32;
 
         public static final boolean LEFT_ARM_MOTOR_INVERTED = false;
         public static final boolean RIGHT_ARM_MOTOR_INVERTED = false;
 
-        public static final int LEFT_LIMIT_SWITCH_ID = 0;
-        public static final int RIGHT_LIMIT_SWITCH_ID = 1;
+        public static final int SHOULDER_LIMIT_SWITCH_ID = 9;
 
-        public static final int ENCODER_UNITS_PER_ROTATION = 2048;
+        public static final int ENCODER_UNITS_PER_ROTATION_ELBOW = 2048;
+        public static final int ENCODER_UNITS_PER_ROTATION_WRIST = 7;
 
-        public static final double ENCODER_UNITS_PER_ANGLE = ENCODER_UNITS_PER_ROTATION / (360 / GEAR_RATIO);
+        public static final double ENCODER_UNITS_PER_DEGREE_ELBOW = (ENCODER_UNITS_PER_ROTATION_ELBOW / 360) * GEAR_RATIO_ELBOW;
 
-        public static final double circumferenceOfGear = 12.0;
-
-
-
+        public static final double ENCODER_UNITS_PER_DEGREE_WRIST = (ENCODER_UNITS_PER_ROTATION_WRIST / 360) * GEAR_RATIO_WRIST;
     }
 
     public static final class Swerve {

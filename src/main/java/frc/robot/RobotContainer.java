@@ -43,11 +43,6 @@ public class RobotContainer {
 
   private final Field2d m_field = new Field2d();
 
-  /* Drive Controls */
-  // private final int translationAxis = PS4Controller.Axis.kLeftY.value;
-  // private final int strafeAxis = PS4Controller.Axis.kLeftX.value;
-  // private final int rotationAxis = PS4Controller.Axis.kRightX.value;
-
   private final int translationAxis = (int) (Joystick.AxisType.kY.value);
   private final int strafeAxis = (int) (Joystick.AxisType.kX.value);
   private final int rotationAxis = (int) (Joystick.AxisType.kZ.value);
@@ -55,34 +50,22 @@ public class RobotContainer {
   /* Driver Buttons */
   private final JoystickButton zeroGyro = new JoystickButton(driver, PS4Controller.Button.kL3.value); // val = 11
   private final JoystickButton followTargetButton = new JoystickButton(driver, PS4Controller.Button.kCircle.value);
-  private final JoystickButton solenoidTrigger = new JoystickButton(driver, PS4Controller.Button.kTriangle.value);
-  private final JoystickButton compressorTrigger = new JoystickButton(driver, PS4Controller.Button.kSquare.value);
+  private final JoystickButton wristButton = new JoystickButton(driver, PS4Controller.Button.kTriangle.value);
 
-
-  private final JoystickButton resetEncoder = new JoystickButton(driver, 8);
   private final JoystickButton robotCentric = new JoystickButton(driver, PS4Controller.Button.kL1.value);
 
   private POVButton straightForward = new POVButton(driver, 0);
 
-  // private final JoystickButton openClawButton = new JoystickButton(driver, 10);
-  // private final JoystickButton closeClawButton = new JoystickButton(driver, 9);
 
   /* Subsystems */
   private final Swerve s_Swerve = new Swerve();
 
-  private final AprilTags s_AprilTags = new AprilTags();
-
-  // private final Arm s_Arm = new Arm();
+  private final Arm s_Arm = new Arm();
 
   private final ATVision at_Vision = new ATVision();
 
   // private final AprilTags s_AprilTags = new AprilTags();
  private teleopAuto autoCommand;
-
- private Pose2d[] last_april_poses = new Pose2d[30];
- private int next_april_pose_index = 0;
-
- 
 
   /**
    * `
@@ -92,34 +75,19 @@ public class RobotContainer {
     BooleanSupplier fieldRelative = () -> robotCentric.getAsBoolean();
     boolean openLoop = true;
 
-    s_Swerve.setDefaultCommand(
-        new TeleopSwerve(s_Swerve, driver, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
+    s_Swerve.setDefaultCommand(new TeleopSwerve(s_Swerve, driver, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
 
 
-        SmartDashboard.putData("Field", m_field);
+    SmartDashboard.putData("Field", m_field);
     // Configure the button bindings
     configureButtonBindings();
   }
 
   public void resetEncoders() {
     s_Swerve.resetEncoders();
-
   }
 
-  public void runForward() {
-    if (driver.getPOV() == 0) {
-      s_Swerve.driveStraight();
-    }
-  }
-
-  public void testAprilTag() {
-    Transform2d transform = at_Vision.getTargetToCameraTransform();
   
-    Pose2d tPose = new Pose2d(1, 0, Rotation2d.fromDegrees(180)).transformBy(transform);
-
-    SmartDashboard.putString("tPose", tPose.toString());
-  }
-
   /**
    * Use this method to define your button->command mappings. Buttons can be
    * created by
@@ -133,18 +101,6 @@ public class RobotContainer {
 
     zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
     followTargetButton.onTrue(new InstantCommand(() -> {
-
-      // SmartDashboard.putString("bPose", at_Vision.getBotPose().toString());
-
-      // SmartDashboard.putString("swerve pose", s_Swerve.getPose().toString());
-
-      // SmartDashboard.putString("translation", at_Vision.getTargetToRobot().getTranslation().toString());
-
-      // SmartDashboard.putString("target pose", new Pose2d(s_Swerve.getPose().getX() + at_Vision.getTargetToRobot().getX(), 
-      // s_Swerve.getPose().getY() + at_Vision.getTargetToRobot().getY(),
-      // new Rotation2d()).toString());
-
-
       s_Swerve.setPose(at_Vision.getBotPose().toPose2d());
 
       autoCommand = new teleopAuto(
@@ -157,20 +113,9 @@ public class RobotContainer {
       );
       
       autoCommand.schedule();
-      
     }));
-     
-    // solenoidTrigger.onTrue(new InstantCommand(() -> s_Arm.toggleLowerArm()));
-    //compressorTrigger.onTrue(new InstantCommand(() -> s_Arm.toggleCompressor()));
-    
-    /*
-    followTargetButton.onFalse(new InstantCommand(() -> {
-      if (autoCommand != null) {
-        autoCommand.stop();
-      }
-    }));*/
-    // openClawButton.onTrue(new InstantCommand(() -> s_Arm.openClaw()));
-    // closeClawButton.whenPressed(new InstantCommand(() -> s_Arm.closeClaw()));
+
+    wristButton.onTrue(new InstantCommand(() -> s_Arm.toggleShoulder()));
   }
 
   /**
@@ -182,26 +127,8 @@ public class RobotContainer {
     // Command will run in autonomous
     return new AutoSwerve(s_Swerve).getCommand();
   }
-public void updateRobotPose() {
-  // // s_Swerve.setPose(at_Vision.getBotPose().toPose2d());
-  // // last_april_poses[next_april_pose_index] = at_Vision.getBotPose().toPose2d();
-  // // next_april_pose_index += 1;
-  // // if(next_april_pose_index == 30) {
-  // //   next_april_pose_index = 0;
-  // // }
 
-
-  // Translation2d translation = new Translation2d();
-  // Rotation2d rotation = new Rotation2d();
-
-  // for (Pose2d pose : last_april_poses) {
-  //   var x = translation.getX() + pose.getX();
-  //   var y = translation.getY() + pose.getY();
-  // }
-
-  
-  m_field.setRobotPose(s_Swerve.getPose());
-}
-
-
+  public void updateRobotPose() {
+    m_field.setRobotPose(s_Swerve.getPose());
+  }
 }

@@ -1,141 +1,128 @@
-// package frc.robot.subsystems;
+package frc.robot.subsystems;
 
-// import com.ctre.phoenix.motorcontrol.ControlMode;
-// // NO
-// import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+// NO
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
-// import edu.wpi.first.wpilibj.Compressor;
-// import edu.wpi.first.wpilibj.DigitalInput;
-// import edu.wpi.first.wpilibj.PneumaticsModuleType;
-// import edu.wpi.first.wpilibj2.command.SubsystemBase;
-// import frc.robot.Constants;
-// import frc.robot.Pneumatics;
-// import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+import frc.robot.Pneumatics;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
-// public class Arm extends SubsystemBase {
+public class Arm extends SubsystemBase {
 
-//   TalonFX leftArmBelt, rightArmBelt;
-//   Pneumatics leftArm, rightArm;
-//   Compressor compressor;
-//   boolean compressorOn = false;
-//   DigitalInput leftLimitSwitch, rightLimitSwitch;
+  TalonFX leftBelt, rightBelt;
+  TalonSRX wristMotor;
+  Pneumatics arms, claw;
+  Compressor compressor;
+  boolean compressorOn = false;
+  DigitalInput shoulderLimitSwitch;
 
-//   double leftOffset, rightOffset;
+  double leftBeltOffset, rightBeltOffset, wristOffset;
 
-//   public Arm() {
+  public Arm() {
 
-//     leftArm = new Pneumatics(Constants.Arm.LEFT_ARM_FORWARD_CHANNEL, Constants.Arm.LEFT_ARM_REVERSE_CHANNEL);
-//     rightArm = new Pneumatics(Constants.Arm.RIGHT_ARM_FORWARD_CHANNEL, Constants.Arm.RIGHT_ARM_REVERSE_CHANNEL);
-    
-//     compressor = new Compressor(42, PneumaticsModuleType.REVPH);
-//     leftArmBelt = new TalonFX(Constants.Arm.LEFT_ARM_MOTOR_ID);
-//     rightArmBelt = new TalonFX(Constants.Arm.RIGHT_ARM_MOTOR_ID);
-//     leftLimitSwitch = new DigitalInput(Constants.Arm.LEFT_LIMIT_SWITCH_ID);
-//     rightLimitSwitch = new DigitalInput(Constants.Arm.RIGHT_LIMIT_SWITCH_ID);
+    arms = new Pneumatics(Constants.Arm.ARM_FORWARD_CHANNEL, Constants.Arm.ARM_REVERSE_CHANNEL);
+    claw = new Pneumatics(Constants.Arm.CLAW_FORWARD_CHANNEL, Constants.Arm.CLAW_REVERSE_CHANNEL);
 
-//     leftArmBelt.setInverted(Constants.Arm.LEFT_ARM_MOTOR_INVERTED);
-//     rightArmBelt.setInverted(Constants.Arm.RIGHT_ARM_MOTOR_INVERTED);
+    compressor = new Compressor(Constants.Arm.COMPRESSOR_ID, PneumaticsModuleType.REVPH);
+    leftBelt = new TalonFX(Constants.Arm.LEFT_ARM_MOTOR_ID);
+    rightBelt = new TalonFX(Constants.Arm.RIGHT_ARM_MOTOR_ID);
 
-//     leftOffset = leftArmBelt.getSelectedSensorPosition();
-//     rightOffset = rightArmBelt.getSelectedSensorPosition();
+    wristMotor = new TalonSRX(Constants.Arm.WRIST_MOTOR_ID);
 
-//     // compressor.enableAnalog(2, 120);
-//   }
 
-//   /**
-//    * Example command factory method.
-//    *
-//    * @return a command
-//    */
-//   // public CommandBase exampleMethodCommand() {
-//   // // Inline construction of command goes here.
-//   // // Subsystem::RunOnce implicitly requires `this` subsystem.
-//   // return runOnce(
-//   // () -> {
-//   // /* one-time action goes here */
-//   // });
-//   // }
+    leftBelt.setInverted(Constants.Arm.LEFT_ARM_MOTOR_INVERTED);
+    rightBelt.setInverted(Constants.Arm.RIGHT_ARM_MOTOR_INVERTED);
 
-//   // public void closeClaw() {
-//   // leftArmServo.set(0.5);
-//   // rightArmServo.set(0.5);
-//   // System.out.println("Neev and his stupid ass claw");
-//   // }
+    compressor.enableDigital();
+  }
 
-//   // public void openClaw() {
-//   // leftArmServo.set(0);
-//   // rightArmServo.set(0);
-//   // System.out.println("Neev and his stupid ass claw but open");
-//   // }
+  /**
+   * Example command factory method.
+   *
+   * @return a command
+   */
+  // public CommandBase exampleMethodCommand() {
+  // // Inline construction of command goes here.
+  // // Subsystem::RunOnce implicitly requires `this` subsystem.
+  // return runOnce(
+  // () -> {
+  // /* one-time action goes here */
+  // });
+  // }
 
-//   // chandan complete the heart <3
-//   public void toggleLowerArm() {
-//     leftArm.solenoidToggle();
-//     rightArm.solenoidToggle();
-//   }
+  public void toggleClaw() {
+    claw.solenoidToggle();
+  }
 
-//   public void moveUp() {
-//     if (!(leftArmBelt.getSelectedSensorPosition() * Constants.Arm.circumferenceOfGear == 12.0)) {
-//       leftArmBelt.set(ControlMode.PercentOutput, 1);
-//       rightArmBelt.set(ControlMode.PercentOutput, 1);
-//     }
-//   }
+  public void resetElbow() {
+    while(leftBelt.getSensorCollection().isRevLimitSwitchClosed() == 0) moveElbowIn();
+    leftBeltOffset = leftBelt.getSelectedSensorPosition();
+    rightBeltOffset = rightBelt.getSelectedSensorPosition();
+  }
 
-//   public void moveToPos(double angle) {
-//     double leftDesiredEncoderPos = angle / Constants.Arm.ENCODER_UNITS_PER_ANGLE - leftOffset;
-//     double rightDesiredEncoderPos = angle / Constants.Arm.ENCODER_UNITS_PER_ANGLE - rightOffset;
+  public void resetWrist() {
+    while(wristMotor.getSensorCollection().isRevLimitSwitchClosed()) moveWristUp();
+    wristOffset = wristMotor.getSelectedSensorPosition();
+  }
 
-//     leftArmBelt.set(ControlMode.Position, leftDesiredEncoderPos);
-//     rightArmBelt.set(ControlMode.Position, rightDesiredEncoderPos);
-//   }
+  public void moveElbowOut() {
+    leftBelt.set(ControlMode.PercentOutput, .01);
+    rightBelt.set(ControlMode.PercentOutput, .01);
+  }
 
-//   public void reset() {
-//     if (!leftLimitSwitch.get()) {
-//       leftArmBelt.set(ControlMode.PercentOutput, -.2);
-//     }
+  public void moveElbowIn() {
+    leftBelt.set(ControlMode.PercentOutput, -.01);
+    rightBelt.set(ControlMode.PercentOutput, -.01);
+  }
 
-//     if(!rightLimitSwitch.get()) {
-//       rightArmBelt.set(ControlMode.PercentOutput, -.2);
-//     }
+  public void setArm(double deg) {
+    leftBelt.set(ControlMode.Position, (deg * Constants.Arm.ENCODER_UNITS_PER_ROTATION_ELBOW) - leftBeltOffset);
+    rightBelt.set(ControlMode.Position, (deg * Constants.Arm.ENCODER_UNITS_PER_ROTATION_ELBOW) - rightBeltOffset);
+  }
 
-//     moveDown();
-    
-//   }
+  public void toggleShoulder() {
+    arms.solenoidToggle();
+  }
 
-//   public void moveDown() {
-//     if (leftLimitSwitch.get()) leftArmBelt.set(ControlMode.PercentOutput, 0);
-//     if (rightLimitSwitch.get()) rightArmBelt.set(ControlMode.PercentOutput, 0);
-//     if(!rightLimitSwitch.get() || !leftLimitSwitch.get()) {
-//       moveDown();
-//     } else {
-//       leftOffset = leftArmBelt.getSelectedSensorPosition();
-//       rightOffset = rightArmBelt.getSelectedSensorPosition();
-//     }
-//   }
+  public void moveWristUp() {
+    wristMotor.set(ControlMode.Velocity, .01);
+  }
 
-//   /**
-//    * An example method querying a boolean state of the subsystem (for example, a
-//    * digital sensor).
-//    *
-//    * @return value of some boolean subsystem state, such as a digital sensor.
-//    */
-//   public boolean exampleCondition() {
-//     // Query some boolean state, such as a digital sensor.
-//     return false;
-//   }
-//   // public boolean exampleCondition() {
-//   // // Query some boolean state, such as a digital sensor.
-//   // return false;
-//   // }
+  public void moveWristDown() {
+    wristMotor.set(ControlMode.Velocity, -.01);
+  }
 
-//   @Override
-//   public void periodic() {
-//     // This method will be called once per scheduler run
-//     SmartDashboard.putBoolean("IS EXTENDED?", leftArm.extendTest() && rightArm.extendTest());
-//   }
+  public void setWrist(double deg) {
+    wristMotor.set(ControlMode.Position, deg * Constants.Arm.ENCODER_UNITS_PER_DEGREE_WRIST - leftBeltOffset);
+  }
 
-//   @Override
-//   public void simulationPeriodic() {
-//     // This method will be called once per scheduler run during simulation
-//   }
-// }
+  /**
+   * An example method querying a boolean state of the subsystem (for example, a
+   * digital sensor).
+   *
+   * @return value of some boolean subsystem state, such as a digital sensor.
+   */
+  public boolean exampleCondition() {
+    // Query some boolean state, such as a digital sensor.
+    return false;
+  }
+
+
+  @Override
+  public void periodic() {
+    SmartDashboard.putNumber("LEFT BELT", leftBelt.getSelectedSensorPosition());
+    SmartDashboard.putNumber("RIGHT BELT", leftBelt.getSelectedSensorPosition());
+    SmartDashboard.putNumber("WRIST", wristMotor.getSelectedSensorPosition());
+  }
+
+  @Override
+  public void simulationPeriodic() {
+    // This method will be called once per scheduler run during simulation
+  }
+}

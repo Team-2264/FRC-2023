@@ -10,7 +10,7 @@ public class Pneumatics {
   boolean isExtended = false;
 
   public Pneumatics(int forwardChannel, int reverseChannel) {
-      doubleSolenoid = new DoubleSolenoid(42, PneumaticsModuleType.REVPH, forwardChannel, reverseChannel);
+      doubleSolenoid = new DoubleSolenoid(Constants.Arm.COMPRESSOR_ID, PneumaticsModuleType.REVPH, forwardChannel, reverseChannel);
       doubleSolenoid.set(Value.kOff);
   }
 
@@ -30,10 +30,10 @@ public class Pneumatics {
     if(isExtended){
       retractSolenoid();
       isExtended = false;
-      return;
+    } else {
+      extendSolenoid();
+      isExtended = true;
     }
-    extendSolenoid();
-    isExtended = true;
   }
 
   public boolean extendTest(){
