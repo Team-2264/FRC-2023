@@ -53,6 +53,8 @@ public class Arm extends SubsystemBase {
     leftBelt.setInverted(Constants.Arm.LEFT_ARM_MOTOR_INVERTED);
     rightBelt.setInverted(InvertType.OpposeMaster);
 
+    leftBelt.configClearPositionOnLimitR(true, 0);
+
     // rightBelt.configReverseLimitSwitchSource(RemoteLimitSwitchSource.RemoteTalon, LimitSwitchNormal.NormallyOpen, 30, 0);
 
     compressor.enableDigital(); 
@@ -70,6 +72,30 @@ public class Arm extends SubsystemBase {
 
     leftBelt.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10);
 		leftBelt.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10);
+
+    /* Set the peak and nominal outputs */
+		leftBelt.configNominalOutputForward(0, 0);
+		leftBelt.configNominalOutputReverse(0, 0);
+		leftBelt.configPeakOutputForward(1, 0);
+		leftBelt.configPeakOutputReverse(-1, 0);
+
+    // leftBelt.supplycu(30); //Peak Current 25% motor Max
+    // leftBelt.configPeakCurrentDuration(150);
+    // leftBelt.configContinuousCurrentLimit(20); //Stall current 15% motor Max
+
+		/* Set Motion Magic gains in slot0 - see documentation */
+		leftBelt.selectProfileSlot(0, 0);
+		leftBelt.config_kF(0, .1, 0);
+		leftBelt.config_kP(0, , 0);
+		leftBelt.config_kI(0, , 0);
+		leftBelt.config_kD(0, , 0);
+
+		/* Set acceleration and vcruise velocity - see documentation */
+		leftBelt.configMotionCruiseVelocity(15000, 0);
+		leftBelt.configMotionAcceleration(6000, 0);
+
+    leftBelt.config_IntegralZone(0, 30);
+    
   }
 
   public void init() {
@@ -176,7 +202,7 @@ public class Arm extends SubsystemBase {
   }
 
   private void setElbow(double deg) {
-    leftBelt.set(ControlMode.Position, deg * Constants.Arm.ENCODER_UNITS_PER_DEGREE_ELBOW);
+    leftBelt.set(ControlMode.MotionMagic, deg * Constants.Arm.ENCODER_UNITS_PER_DEGREE_ELBOW);
   }
 
   private void moveWristDown() {
@@ -225,7 +251,6 @@ public class Arm extends SubsystemBase {
     }
 
     if(leftBelt.getSensorCollection().isRevLimitSwitchClosed() == 1) {
-      leftBelt.setSelectedSensorPosition(0);
       leftBelt.configForwardSoftLimitThreshold(180 * Constants.Arm.ENCODER_UNITS_PER_DEGREE_ELBOW);
     }
 
