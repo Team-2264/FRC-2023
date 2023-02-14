@@ -4,25 +4,22 @@
 
 package frc.robot;
 
-import java.util.Optional;
 import java.util.function.BooleanSupplier;
-
-import org.photonvision.targeting.PhotonTrackedTarget;
-
-import com.ctre.phoenix.platform.can.AutocacheState;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform2d;
-import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.autos.*;
 import frc.robot.commands.*;
@@ -60,8 +57,9 @@ public class RobotContainer {
 
   private final JoystickButton robotCentric = new JoystickButton(driver, PS4Controller.Button.kL1.value);
 
-  private POVButton straightForward = new POVButton(driver, 0);
+  private static final NetworkTableInstance TABLE = NetworkTableInstance.getDefault();
 
+  // private POVButton straightForward = new POVButton(driver, 0);
 
   /* Subsystems */
   private final Swerve s_Swerve = new Swerve();
@@ -71,7 +69,7 @@ public class RobotContainer {
   private final ATVision at_Vision = new ATVision();
 
   // private final AprilTags s_AprilTags = new AprilTags();
- private teleopAuto autoCommand;
+  private teleopAuto autoCommand;
 
   /**
    * `
@@ -81,19 +79,25 @@ public class RobotContainer {
     BooleanSupplier fieldRelative = () -> robotCentric.getAsBoolean();
     boolean openLoop = true;
 
-    s_Swerve.setDefaultCommand(new TeleopSwerve(s_Swerve, driver, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
-
+    s_Swerve.setDefaultCommand(
+        new TeleopSwerve(s_Swerve, driver, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
 
     SmartDashboard.putData("Field", m_field);
     // Configure the button bindings
     configureButtonBindings();
+
+    // make sure we're not accidentally ready across reboots
+    TABLE.getTable(Constants.ObjectVision.NETWORK_TABLE_ADDRESS).getEntry("ready").clearPersistent();
+
+    // lets the listener on the raspberry pi know it's ready to process and send
+    // vision data
+    TABLE.getTable(Constants.ObjectVision.NETWORK_TABLE_ADDRESS).getEntry("ready").setBoolean(true);
   }
 
   public void resetEncoders() {
     s_Swerve.resetEncoders();
   }
 
-  
   /**
    * Use this method to define your button->command mappings. Buttons can be
    * created by
@@ -110,14 +114,13 @@ public class RobotContainer {
       s_Swerve.setPose(at_Vision.getBotPose().toPose2d());
 
       autoCommand = new teleopAuto(
-        s_Swerve, 
-        new Pose2d(
-          s_Swerve.getPose().getX() + at_Vision.getTargetToRobot().getX() - 0.75, 
-          s_Swerve.getPose().getY() + at_Vision.getTargetToRobot().getY(),
-          new Rotation2d(at_Vision.getBotAngle())
-        ), m_field
-      );
-      
+          s_Swerve,
+          new Pose2d(
+              s_Swerve.getPose().getX() + at_Vision.getTargetToRobot().getX() - 0.75,
+              s_Swerve.getPose().getY() + at_Vision.getTargetToRobot().getY(),
+              new Rotation2d(at_Vision.getBotAngle())),
+          m_field);
+
       autoCommand.schedule();
     }));
 

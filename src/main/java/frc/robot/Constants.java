@@ -11,6 +11,10 @@ import frc.lib.util.SwerveModuleConstants;
 public final class Constants {
     public static final double stickDeadband = 0.1;
 
+    public static final class ObjectVision {
+        public static final String NETWORK_TABLE_ADDRESS = "ObjectVision";
+    }
+
     public static final class AprilTag {
         public static final double CAMERA_HEIGHT_METERS = .130175;
         public static final double TARGET_HEIGHT_METERS = .180975;
@@ -44,9 +48,8 @@ public final class Constants {
         public static final int ENCODER_UNITS_PER_ROTATION_ELBOW = 2048;
         public static final int ENCODER_UNITS_PER_ROTATION_WRIST = 7;
 
-        public static final double ENCODER_UNITS_PER_DEGREE_ELBOW = (ENCODER_UNITS_PER_ROTATION_ELBOW / 360) * GEAR_RATIO_ELBOW;
-
-        public static final double ENCODER_UNITS_PER_DEGREE_WRIST = 1.62;
+        public static final double ENCODER_UNITS_PER_DEGREE_ELBOW = 68.267;
+        public static final double ENCODER_UNITS_PER_DEGREE_WRIST = 1.38;
     }
 
     public static final class Swerve {

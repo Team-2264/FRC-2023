@@ -79,6 +79,42 @@ public class Swerve extends SubsystemBase {
 
     }
 
+    /**
+     * Drives around a specified center of rotation. Use this for tracking around a
+     * cone or cube
+     * 
+     * @param translation
+     * @param rotation
+     * @param fieldRelative
+     * @param isOpenLoop
+     * @param translationFromCenter A {@link Translation2d} of the distance from the
+     *                              center of the robot you want to rotate from
+     */
+    public void driveAroundPoint(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop,
+            Translation2d translationFromCenter) {
+        SwerveModuleState[] swerveModuleStates = Constants.Swerve.swerveKinematics.toSwerveModuleStates(
+                fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(
+                        translation.getX(),
+                        translation.getY(),
+                        rotation,
+                        getYaw())
+                        : new ChassisSpeeds(
+                                translation.getX(),
+                                translation.getY(),
+                                rotation),
+                translationFromCenter);
+        SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates,
+                Constants.Swerve.maxSpeed);
+
+        for (SwerveModule mod : mSwerveMods) {
+            mod.setDesiredState(swerveModuleStates[mod.moduleNumber], isOpenLoop);
+        }
+    }
+
+    public void rotateAroundPoint(Translation2d distanceFromCenter) {
+        driveAroundPoint(distanceFromCenter, 0.75, false, false, distanceFromCenter);
+    }
+
     public void driveStraight() {
         SwerveModuleState[] swerveModuleStates = Constants.Swerve.swerveKinematics
                 .toSwerveModuleStates(new ChassisSpeeds(0.2, 0, 0));
@@ -103,9 +139,9 @@ public class Swerve extends SubsystemBase {
         return swerveOdometry.getPoseMeters();
     }
 
-public void setPose(Pose2d pose) {
-    swerveOdometry.resetPosition(getYaw(), getModulePositions(), pose);
-}
+    public void setPose(Pose2d pose) {
+        swerveOdometry.resetPosition(getYaw(), getModulePositions(), pose);
+    }
 
     public void resetOdometry(Pose2d pose) {
         swerveOdometry.resetPosition(getYaw(), getModulePositions(), pose);
