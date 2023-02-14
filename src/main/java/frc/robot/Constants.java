@@ -41,7 +41,6 @@ public final class Constants {
         public static final int WRIST_MOTOR_ID = 32;
 
         public static final boolean LEFT_ARM_MOTOR_INVERTED = false;
-        public static final boolean RIGHT_ARM_MOTOR_INVERTED = true;
 
         public static final int SHOULDER_LIMIT_SWITCH_ID = 9;
 

@@ -45,17 +45,12 @@ public class RobotContainer {
   private final int rotationAxis = (int) (Joystick.AxisType.kZ.value);
 
   /* Driver Buttons */
-  private final JoystickButton zeroGyro = new JoystickButton(driver, PS4Controller.Button.kL3.value); // val = 11
+  private final JoystickButton zeroGyro = new JoystickButton(driver, PS4Controller.Button.kL3.value); 
   private final JoystickButton followTargetButton = new JoystickButton(driver, PS4Controller.Button.kCircle.value);
 
-  private final JoystickButton wristFwdButton = new JoystickButton(driver, PS4Controller.Button.kL1.value);
-  private final JoystickButton wristRevButton = new JoystickButton(driver, PS4Controller.Button.kR1.value);
+  private final JoystickButton robotCentric = new JoystickButton(driver, PS4Controller.Button.kSquare.value);
 
-  public final JoystickButton elbowFwdButton = new JoystickButton(driver, PS4Controller.Button.kL2.value);
-  public final JoystickButton elbowRevButton = new JoystickButton(driver, PS4Controller.Button.kR2.value);
-
-
-  private final JoystickButton robotCentric = new JoystickButton(driver, PS4Controller.Button.kL1.value);
+  private final JoystickButton armHome = new JoystickButton(driver, PS4Controller.Button.kL2.value);
 
   private static final NetworkTableInstance TABLE = NetworkTableInstance.getDefault();
 
@@ -124,12 +119,7 @@ public class RobotContainer {
       autoCommand.schedule();
     }));
 
-    wristFwdButton.onTrue(new InstantCommand(() -> s_Arm.moveWristDown()));
-    wristRevButton.onTrue(new InstantCommand(() -> s_Arm.setWrist(90)));
-
-    elbowFwdButton.onTrue(new InstantCommand(() -> s_Arm.toggleClaw()));
-
-    // wristButton.onFalse(new InstantCommand(() -> s_Arm.stopElbow()));
+    armHome.onTrue(new InstantCommand(() -> s_Arm.bringArmHome()));
   }
 
   /**
@@ -144,5 +134,9 @@ public class RobotContainer {
 
   public void updateRobotPose() {
     m_field.setRobotPose(s_Swerve.getPose());
+  }
+
+  public void armsInit() {
+    s_Arm.init();
   }
 }

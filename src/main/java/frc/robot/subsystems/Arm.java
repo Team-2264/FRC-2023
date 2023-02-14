@@ -1,7 +1,10 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.RemoteLimitSwitchSource;
 // NO
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
@@ -13,6 +16,9 @@ import frc.robot.Constants;
 import frc.robot.Pneumatics;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
+import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 
 public class Arm extends SubsystemBase {
 
@@ -23,7 +29,7 @@ public class Arm extends SubsystemBase {
   boolean compressorOn = false;
   DigitalInput shoulderLimitSwitch;
 
-  double leftBeltOffset, rightBeltOffset, wristOffset;
+  String wristStatus;
 
   public Arm() {
 
@@ -35,93 +41,158 @@ public class Arm extends SubsystemBase {
     rightBelt = new TalonFX(Constants.Arm.RIGHT_ARM_MOTOR_ID);
 
     wristMotor = new TalonSRX(Constants.Arm.WRIST_MOTOR_ID);
-
     wristMotor.setInverted(true);
 
     shoulderLimitSwitch = new DigitalInput(Constants.Arm.SHOULDER_LIMIT_SWITCH_ID);
 
-
-    leftBelt.setInverted(Constants.Arm.LEFT_ARM_MOTOR_INVERTED);
-    rightBelt.setInverted(Constants.Arm.RIGHT_ARM_MOTOR_INVERTED);
-
-
     leftBelt.setNeutralMode(NeutralMode.Brake);
     rightBelt.setNeutralMode(NeutralMode.Brake);
 
-    compressor.enableDigital();
+    rightBelt.follow(leftBelt);
+
+    leftBelt.setInverted(Constants.Arm.LEFT_ARM_MOTOR_INVERTED);
+    rightBelt.setInverted(InvertType.OpposeMaster);
+
+    // rightBelt.configReverseLimitSwitchSource(RemoteLimitSwitchSource.RemoteTalon, LimitSwitchNormal.NormallyOpen, 30, 0);
+
+    compressor.enableDigital(); 
+    
+    // PID
+
+    leftBelt.configFactoryDefault();
+
+    leftBelt.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
+
+		/* set deadband to super small 0.001 (0.1 %).
+			The default deadband is 0.04 (4 %) */
+		leftBelt.configNeutralDeadband(0.001);
+    leftBelt.setSensorPhase(false);
+
+    leftBelt.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10);
+		leftBelt.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10);
   }
 
-  /**
-   * Example command factory method.
-   *
-   * @return a command
-   */
-  // public CommandBase exampleMethodCommand() {
-  // // Inline construction of command goes here.
-  // // Subsystem::RunOnce implicitly requires `this` subsystem.
-  // return runOnce(
-  // () -> {
-  // /* one-time action goes here */
-  // });
-  // }
+  public void init() {
+    moveElbowIn();
+    moveWristUp();
+    bringShoulderIn(); 
+  }
 
-  public void toggleClaw() {
+
+  // COMBINED MOVEMENTS (THESE SHOULD BE THE ONLY ONES CALLED)
+
+  public void bringArmHome() {
+    closeElbow();
+    closeWrist();
+    bringShoulderIn();
+  }
+
+  public void setArmIntake() {
+    setElbow(90);
+    openWrist();
+    takeShoulderOut();
+    openClaw();
+  }
+
+  public void setArmLow() {
+    setElbow(90);
+    openWrist();
+    takeShoulderOut();
+  }
+
+  public void setArmHigh() {
+    setElbow(120);
+    openWrist();
+    takeShoulderOut();
+  }
+  
+  // SOLENOID
+
+  private void toggleClaw() {
     claw.solenoidToggle();
   }
 
-  public void resetElbow() {
-    while(leftBelt.getSensorCollection().isRevLimitSwitchClosed() == 0) moveElbowIn();
-    stopElbow();
-    leftBeltOffset = leftBelt.getSelectedSensorPosition();
-    rightBeltOffset = rightBelt.getSelectedSensorPosition();
+  private void openClaw() {
+    if(!claw.extendTest()) claw.solenoidToggle();
   }
 
-  public void resetWrist() {
-    while (wristMotor.getSensorCollection().isRevLimitSwitchClosed()) moveWristUp();
-    stopWrist();
-    wristOffset = wristMotor.getSelectedSensorPosition();
+  private void closeClaw() {
+    if(claw.extendTest()) claw.solenoidToggle();
   }
 
-  public void moveElbowOut() {
-    leftBelt.set(ControlMode.PercentOutput, .1);
-    rightBelt.set(ControlMode.PercentOutput, .1);
-    SmartDashboard.putBoolean("BP", true);
-  }
-
-  public void moveElbowIn() {
-    leftBelt.set(ControlMode.PercentOutput, -.1);
-    rightBelt.set(ControlMode.PercentOutput, -.1);
-    SmartDashboard.putBoolean("BP", true);
-  }
-
-  public void stopElbow() {
-    leftBelt.set(ControlMode.PercentOutput, 0);
-    rightBelt.set(ControlMode.PercentOutput, 0);
-  }
-
-  public void setArm(double deg) {
-    leftBelt.set(ControlMode.Position, (deg * Constants.Arm.ENCODER_UNITS_PER_ROTATION_ELBOW) - leftBeltOffset);
-    rightBelt.set(ControlMode.Position, (deg * Constants.Arm.ENCODER_UNITS_PER_ROTATION_ELBOW) - rightBeltOffset);
-  }
-
-  public void toggleShoulder() {
+  private void toggleShoulder() {
     arms.solenoidToggle();
   }
 
-  public void moveWristUp() {
+  private void bringShoulderIn() {
+    if(!shoulderLimitSwitch.get()) arms.solenoidToggle();
+  }
+
+  private void takeShoulderOut() {
+    if(shoulderLimitSwitch.get()) arms.solenoidToggle();
+  }
+
+  // 
+
+  private void toggleWrist() {
+    if(wristStatus == "CLOSED") {
+      setWrist(90);
+      wristStatus = "OPEN";
+    } else {
+      setWrist(0);
+      wristStatus = "CLOSED";
+    }
+  }
+
+  private void closeWrist() {
+    setWrist(0);
+    wristStatus = "CLOSED";
+  }
+
+  private void openWrist() {
+    setWrist(90);
+    wristStatus = "OPEN";
+  }
+
+  private void closeElbow() {
+    setElbow(0);
+  }
+
+  // INDIVIDUAL MOVEMENTS 
+  // SHOULD ALWAYS BE USING SETPOS
+
+  private void moveElbowOut() {
+    leftBelt.set(ControlMode.PercentOutput, .1);
+    SmartDashboard.putBoolean("BP", true);
+  }
+
+  private void moveElbowIn() {
+    leftBelt.set(ControlMode.PercentOutput, -.1);
+    SmartDashboard.putBoolean("BP", true);
+  }
+
+  private void stopElbow() {
+    leftBelt.set(ControlMode.PercentOutput, 0);
+  }
+
+  private void setElbow(double deg) {
+    leftBelt.set(ControlMode.Position, deg * Constants.Arm.ENCODER_UNITS_PER_DEGREE_ELBOW);
+  }
+
+  private void moveWristDown() {
     wristMotor.set(ControlMode.PercentOutput, .4);
   }
 
-  public void moveWristDown() {
+  private void moveWristUp() {
     wristMotor.set(ControlMode.PercentOutput, -.4);
   }
 
-  public void setWrist(double deg) {
-    wristMotor.set(ControlMode.Position, wristOffset + (deg * Constants.Arm.ENCODER_UNITS_PER_DEGREE_WRIST));
-    SmartDashboard.putNumber("wrist target", wristOffset + (deg * Constants.Arm.ENCODER_UNITS_PER_DEGREE_WRIST));
+  private void setWrist(double deg) {
+    wristMotor.set(ControlMode.Position, deg * Constants.Arm.ENCODER_UNITS_PER_DEGREE_WRIST);
+    SmartDashboard.putNumber("wrist target", deg * Constants.Arm.ENCODER_UNITS_PER_DEGREE_WRIST);
   }
 
-  public void stopWrist() {
+  private void stopWrist() {
     wristMotor.set(ControlMode.PercentOutput, 0);
   }
 
@@ -140,22 +211,22 @@ public class Arm extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putNumber("LEFT BELT", leftBelt.getSelectedSensorPosition());
-    SmartDashboard.putNumber("RIGHT BELT", leftBelt.getSelectedSensorPosition());
+    SmartDashboard.putNumber("RIGHT BELT", rightBelt.getSelectedSensorPosition());
     SmartDashboard.putNumber("WRIST", wristMotor.getSelectedSensorPosition());
 
     SmartDashboard.putBoolean("BELT LIMIT", leftBelt.getSensorCollection().isRevLimitSwitchClosed() == 1);
     SmartDashboard.putBoolean("WRIST LIMIT", wristMotor.getSensorCollection().isRevLimitSwitchClosed());
-    SmartDashboard.putBoolean("SHOULDER WRIST", !shoulderLimitSwitch.get());
+    SmartDashboard.putBoolean("SHOULDER LIMIT", !shoulderLimitSwitch.get());
 
     if(wristMotor.getSensorCollection().isRevLimitSwitchClosed()) {
-      wristOffset = wristMotor.getSelectedSensorPosition();
-      SmartDashboard.putNumber("wrist offset", wristOffset);
+      wristMotor.setSelectedSensorPosition(0);
+      wristMotor.configForwardSoftLimitThreshold(120 * Constants.Arm.ENCODER_UNITS_PER_DEGREE_WRIST);
+      wristStatus = "CLOSED";
     }
 
     if(leftBelt.getSensorCollection().isRevLimitSwitchClosed() == 1) {
-      stopElbow();
-      leftBeltOffset = leftBelt.getSelectedSensorPosition();
-      rightBeltOffset = rightBelt.getSelectedSensorPosition();
+      leftBelt.setSelectedSensorPosition(0);
+      leftBelt.configForwardSoftLimitThreshold(180 * Constants.Arm.ENCODER_UNITS_PER_DEGREE_ELBOW);
     }
 
   }
