@@ -37,7 +37,7 @@ public final class Constants {
         public static final int WRIST_MOTOR_ID = 32;
 
         public static final boolean LEFT_ARM_MOTOR_INVERTED = false;
-        public static final boolean RIGHT_ARM_MOTOR_INVERTED = false;
+        public static final boolean RIGHT_ARM_MOTOR_INVERTED = true;
 
         public static final int SHOULDER_LIMIT_SWITCH_ID = 9;
 
@@ -46,7 +46,7 @@ public final class Constants {
 
         public static final double ENCODER_UNITS_PER_DEGREE_ELBOW = (ENCODER_UNITS_PER_ROTATION_ELBOW / 360) * GEAR_RATIO_ELBOW;
 
-        public static final double ENCODER_UNITS_PER_DEGREE_WRIST = (ENCODER_UNITS_PER_ROTATION_WRIST / 360) * GEAR_RATIO_WRIST;
+        public static final double ENCODER_UNITS_PER_DEGREE_WRIST = 1.62;
     }
 
     public static final class Swerve {
