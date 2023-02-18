@@ -23,7 +23,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
-
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.autos.*;
@@ -51,9 +50,9 @@ public class RobotContainer {
   private final int rotationAxis = (int) (Joystick.AxisType.kZ.value);
 
   /* Driver Buttons */
-  private final JoystickButton zeroGyro = new JoystickButton(driver, PS4Controller.Button.kL3.value); 
+  private final JoystickButton zeroGyro = new JoystickButton(driver, PS4Controller.Button.kL3.value);
   private final JoystickButton robotCentric = new JoystickButton(driver, PS4Controller.Button.kR3.value);
-  
+
   private final JoystickButton followTargetButton = new JoystickButton(driver, PS4Controller.Button.kCircle.value);
   private final JoystickButton followIntakeButton = new JoystickButton(driver, PS4Controller.Button.kSquare.value);
 
@@ -131,10 +130,14 @@ public class RobotContainer {
               new Rotation2d(at_Vision.getBotAngle())),
           m_field);
 
-          SmartDashboard.putNumber("Bot Angle", at_Vision.getBotAngle());
+      SmartDashboard.putNumber("Bot Angle", at_Vision.getBotAngle());
 
       autoCommand.schedule();
+
     }));
+
+    // disableCommandButton.onTrue(new InstantCommand(() -> { autoCommand.end(true);
+    // }));
 
     followIntakeButton.onTrue(new InstantCommand(() -> {
       s_Swerve.setPose(at_Vision.getBotPose().toPose2d());
@@ -147,7 +150,7 @@ public class RobotContainer {
               new Rotation2d(at_Vision.getBotAngle())),
           m_field);
 
-          SmartDashboard.putNumber("Bot Angle", at_Vision.getBotAngle());
+      SmartDashboard.putNumber("Bot Angle", at_Vision.getBotAngle());
 
       autoCommandTwo.schedule();
     }));
