@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import edu.wpi.first.wpilibj2.command.button.POVButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.autos.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
@@ -37,6 +38,7 @@ import frc.robot.subsystems.*;
 public class RobotContainer {
   /* Controllers */
   private final Joystick driver = new Joystick(0);
+  private final Joystick arm = new Joystick(1);
 
   private final Field2d m_field = new Field2d();
 
@@ -46,15 +48,24 @@ public class RobotContainer {
 
   /* Driver Buttons */
   private final JoystickButton zeroGyro = new JoystickButton(driver, PS4Controller.Button.kL3.value); 
+  private final JoystickButton robotCentric = new JoystickButton(driver, PS4Controller.Button.kR3.value);
+  
   private final JoystickButton followTargetButton = new JoystickButton(driver, PS4Controller.Button.kCircle.value);
-
-  private final JoystickButton robotCentric = new JoystickButton(driver, PS4Controller.Button.kSquare.value);
+  private final JoystickButton followIntakeButton = new JoystickButton(driver, PS4Controller.Button.kSquare.value);
 
   private final JoystickButton armHome = new JoystickButton(driver, PS4Controller.Button.kL2.value);
+  private final JoystickButton armOut = new JoystickButton(driver, PS4Controller.Button.kR2.value);
+
+  private final JoystickButton armUp = new JoystickButton(driver, PS4Controller.Button.kR1.value);
+  private final JoystickButton clawOpen = new JoystickButton(driver, PS4Controller.Button.kL1.value);
+
+  private final JoystickButton manualDown = new JoystickButton(driver, 9);
+  private final JoystickButton manualUp = new JoystickButton(driver, 10);
+
+  private final Trigger turnForward = new Trigger(() -> driver.getPOV() == 0);
+  private final Trigger turnBackward = new Trigger(() -> driver.getPOV() == 180);
 
   private static final NetworkTableInstance TABLE = NetworkTableInstance.getDefault();
-
-  // private POVButton straightForward = new POVButton(driver, 0);
 
   /* Subsystems */
   private final Swerve s_Swerve = new Swerve();
@@ -63,8 +74,10 @@ public class RobotContainer {
 
   private final ATVision at_Vision = new ATVision();
 
-  // private final AprilTags s_AprilTags = new AprilTags();
+  StringBuilder _sb = new StringBuilder();
+
   private teleopAuto autoCommand;
+  private teleopAutoTwo autoCommandTwo;
 
   /**
    * `
@@ -111,15 +124,42 @@ public class RobotContainer {
       autoCommand = new teleopAuto(
           s_Swerve,
           new Pose2d(
-              s_Swerve.getPose().getX() + at_Vision.getTargetToRobot().getX() - 0.75,
-              s_Swerve.getPose().getY() + at_Vision.getTargetToRobot().getY(),
+              s_Swerve.getPose().getX() - at_Vision.getTargetToRobot().getX() + 1.25,
+              s_Swerve.getPose().getY() - at_Vision.getTargetToRobot().getY(),
               new Rotation2d(at_Vision.getBotAngle())),
           m_field);
+
+          SmartDashboard.putNumber("Bot Angle", at_Vision.getBotAngle());
 
       autoCommand.schedule();
     }));
 
+    followIntakeButton.onTrue(new InstantCommand(() -> {
+      s_Swerve.setPose(at_Vision.getBotPose().toPose2d());
+      s_Arm.intake();
+      autoCommandTwo = new teleopAutoTwo(
+          s_Swerve,
+          new Pose2d(
+              s_Swerve.getPose().getX() - at_Vision.getTargetToRobot().getX() + 2,
+              s_Swerve.getPose().getY() - at_Vision.getTargetToRobot().getY(),
+              new Rotation2d(at_Vision.getBotAngle())),
+          m_field);
+
+          SmartDashboard.putNumber("Bot Angle", at_Vision.getBotAngle());
+
+      autoCommandTwo.schedule();
+    }));
+
+    armOut.onTrue(new InstantCommand(() -> s_Arm.intake()));
     armHome.onTrue(new InstantCommand(() -> s_Arm.bringArmHome()));
+    armUp.onTrue(new InstantCommand(() -> s_Arm.simba()));
+
+    clawOpen.onTrue(new InstantCommand(() -> s_Arm.toggleClaw()));
+
+    manualDown.onTrue(new InstantCommand(() -> s_Arm.wristPosition += 40));
+    manualUp.onTrue(new InstantCommand(() -> s_Arm.wristPosition -= 40));
+
+
   }
 
   /**

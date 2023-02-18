@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -8,6 +9,7 @@ import com.ctre.phoenix.motorcontrol.RemoteLimitSwitchSource;
 // NO
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
+import edu.wpi.first.hal.can.CANStatus;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -22,16 +24,27 @@ import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 
 public class Arm extends SubsystemBase {
 
-  TalonFX leftBelt, rightBelt;
+  public TalonFX leftBelt, rightBelt;
   TalonSRX wristMotor;
   Pneumatics arms, claw;
   Compressor compressor;
   boolean compressorOn = false;
   DigitalInput shoulderLimitSwitch;
 
-  String wristStatus;
+  public double armPosition, wristPosition;
+  boolean canUseArm, canUseWrist;
+  int i;
+
+  StringBuilder _sb = new StringBuilder();
 
   public Arm() {
+
+    armPosition = 0;
+    wristPosition = 0;
+    i = 0;
+
+    canUseArm = false;
+    canUseWrist = false;
 
     arms = new Pneumatics(Constants.Arm.ARM_FORWARD_CHANNEL, Constants.Arm.ARM_REVERSE_CHANNEL);
     claw = new Pneumatics(Constants.Arm.CLAW_FORWARD_CHANNEL, Constants.Arm.CLAW_REVERSE_CHANNEL);
@@ -40,109 +53,159 @@ public class Arm extends SubsystemBase {
     leftBelt = new TalonFX(Constants.Arm.LEFT_ARM_MOTOR_ID);
     rightBelt = new TalonFX(Constants.Arm.RIGHT_ARM_MOTOR_ID);
 
+    leftBelt.configFactoryDefault();
+    rightBelt.configFactoryDefault();
+
     wristMotor = new TalonSRX(Constants.Arm.WRIST_MOTOR_ID);
     wristMotor.setInverted(true);
+
+    wristMotor.configClearPositionOnLimitR(true, 0);
+
+    wristMotor.configFactoryDefault();
 
     shoulderLimitSwitch = new DigitalInput(Constants.Arm.SHOULDER_LIMIT_SWITCH_ID);
 
     leftBelt.setNeutralMode(NeutralMode.Brake);
     rightBelt.setNeutralMode(NeutralMode.Brake);
 
+    leftBelt.setInverted(false);
+
     rightBelt.follow(leftBelt);
 
-    leftBelt.setInverted(Constants.Arm.LEFT_ARM_MOTOR_INVERTED);
-    rightBelt.setInverted(InvertType.OpposeMaster);
+    rightBelt.setInverted(true);
 
-    leftBelt.configClearPositionOnLimitR(true, 0);
-
-    // rightBelt.configReverseLimitSwitchSource(RemoteLimitSwitchSource.RemoteTalon, LimitSwitchNormal.NormallyOpen, 30, 0);
+    leftBelt.configClearPositionOnLimitR(false, 0);
 
     compressor.enableDigital(); 
-    
-    // PID
 
-    leftBelt.configFactoryDefault();
+		/* Configure Sensor Source for Pirmary PID */
+		leftBelt.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 10);
 
-    leftBelt.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
+    // // PID
 
-		/* set deadband to super small 0.001 (0.1 %).
-			The default deadband is 0.04 (4 %) */
-		leftBelt.configNeutralDeadband(0.001);
-    leftBelt.setSensorPhase(false);
+    leftBelt.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, 10);
+		leftBelt.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, 10);
 
-    leftBelt.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10);
-		leftBelt.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10);
-
-    /* Set the peak and nominal outputs */
-		leftBelt.configNominalOutputForward(0, 0);
-		leftBelt.configNominalOutputReverse(0, 0);
-		leftBelt.configPeakOutputForward(1, 0);
-		leftBelt.configPeakOutputReverse(-1, 0);
-
-    // leftBelt.supplycu(30); //Peak Current 25% motor Max
-    // leftBelt.configPeakCurrentDuration(150);
-    // leftBelt.configContinuousCurrentLimit(20); //Stall current 15% motor Max
+		/* Set the peak and nominal outputs */
+		leftBelt.configNominalOutputForward(0, 10);
+		leftBelt.configNominalOutputReverse(0, 10);
+		leftBelt.configPeakOutputForward(1, 10);
+		leftBelt.configPeakOutputReverse(-1, 10);
 
 		/* Set Motion Magic gains in slot0 - see documentation */
 		leftBelt.selectProfileSlot(0, 0);
-		leftBelt.config_kF(0, .1, 0);
-		leftBelt.config_kP(0, , 0);
-		leftBelt.config_kI(0, , 0);
-		leftBelt.config_kD(0, , 0);
+		leftBelt.config_kF(0, .047, 10);
+		leftBelt.config_kP(0, 0.35, 10);
+		leftBelt.config_kI(0, 0, 10);
+		leftBelt.config_kD(0, 8.1, 10);
 
 		/* Set acceleration and vcruise velocity - see documentation */
-		leftBelt.configMotionCruiseVelocity(15000, 0);
-		leftBelt.configMotionAcceleration(6000, 0);
+		leftBelt.configMotionCruiseVelocity(375, 10);
+		leftBelt.configMotionAcceleration(750, 10);
 
-    leftBelt.config_IntegralZone(0, 30);
+    leftBelt.configNeutralDeadband(0.05, 10);
+
+    // // PID
+
+		wristMotor.config_kP(0, 1.2, 10);
+		wristMotor.config_kI(0, 0, 10);
+		wristMotor.config_kD(0, 11, 10);
+
+    wristMotor.configNeutralDeadband(0.001, 10);
+
+    leftBelt.configNeutralDeadband(0.01, 10);
     
   }
 
   public void init() {
     moveElbowIn();
     moveWristUp();
-    bringShoulderIn(); 
+    bringShoulderIn();
   }
-
 
   // COMBINED MOVEMENTS (THESE SHOULD BE THE ONLY ONES CALLED)
 
   public void bringArmHome() {
-    closeElbow();
-    closeWrist();
     bringShoulderIn();
+    setArmHome();
+    setWristHome();
+    closeClaw();
+    
+    // bringShoulderIn();
   }
 
-  public void setArmIntake() {
-    setElbow(90);
-    openWrist();
-    takeShoulderOut();
-    openClaw();
+  public void intake() {
+    bringShoulderIn();
+    setArmHigh();
+    setWristFlat();
+    
+    // openClaw();
   }
 
-  public void setArmLow() {
-    setElbow(90);
-    openWrist();
+  public void simba() {
+    setWristHigh();
+    setArmHighest();
     takeShoulderOut();
   }
 
-  public void setArmHigh() {
-    setElbow(120);
-    openWrist();
-    takeShoulderOut();
+  // SETPOINTS
+
+  private void setArmHome() {
+    armPosition = 0;
+  }
+
+  private void setArmHigh() {
+    armPosition = 67.5;
+  }
+
+  private void setArmHighest() {
+    armPosition = 145;
+  }
+
+  private void setWristHome() {
+    wristPosition = 0;
+  }
+
+  private void setWristFlat() {
+    wristPosition = 77;
+  }
+
+  private void setWristHigh() {
+    wristPosition = 5;
+  }
+
+  // SETFUNCTIONS
+
+  private void setElbow(double deg) {
+    leftBelt.set(ControlMode.MotionMagic, deg * Constants.Arm.ENCODER_UNITS_PER_DEGREE_ELBOW, DemandType.ArbitraryFeedForward, .065 * Math.cos(deg * (Math.PI/180)));
+  }
+
+  private void setWrist(double deg) {
+    wristMotor.set(ControlMode.Position, deg * Constants.Arm.ENCODER_UNITS_PER_DEGREE_WRIST);
+  }
+
+  // RAW MOVEMENTS
+
+  private void moveElbowIn() {
+    leftBelt.set(ControlMode.PercentOutput, -.3);
   }
   
+
+  public void moveWristUp() {
+    wristMotor.set(ControlMode.PercentOutput, -.2);
+  }
+
   // SOLENOID
 
-  private void toggleClaw() {
+  public void toggleClaw() {
     claw.solenoidToggle();
   }
 
-  private void openClaw() {
+  public void openClaw() {
     if(!claw.extendTest()) claw.solenoidToggle();
   }
 
-  private void closeClaw() {
+  public void closeClaw() {
     if(claw.extendTest()) claw.solenoidToggle();
   }
 
@@ -150,76 +213,12 @@ public class Arm extends SubsystemBase {
     arms.solenoidToggle();
   }
 
-  private void bringShoulderIn() {
-    if(!shoulderLimitSwitch.get()) arms.solenoidToggle();
-  }
-
   private void takeShoulderOut() {
-    if(shoulderLimitSwitch.get()) arms.solenoidToggle();
+    if(!arms.extendTest()) arms.solenoidToggle();
   }
 
-  // 
-
-  private void toggleWrist() {
-    if(wristStatus == "CLOSED") {
-      setWrist(90);
-      wristStatus = "OPEN";
-    } else {
-      setWrist(0);
-      wristStatus = "CLOSED";
-    }
-  }
-
-  private void closeWrist() {
-    setWrist(0);
-    wristStatus = "CLOSED";
-  }
-
-  private void openWrist() {
-    setWrist(90);
-    wristStatus = "OPEN";
-  }
-
-  private void closeElbow() {
-    setElbow(0);
-  }
-
-  // INDIVIDUAL MOVEMENTS 
-  // SHOULD ALWAYS BE USING SETPOS
-
-  private void moveElbowOut() {
-    leftBelt.set(ControlMode.PercentOutput, .1);
-    SmartDashboard.putBoolean("BP", true);
-  }
-
-  private void moveElbowIn() {
-    leftBelt.set(ControlMode.PercentOutput, -.1);
-    SmartDashboard.putBoolean("BP", true);
-  }
-
-  private void stopElbow() {
-    leftBelt.set(ControlMode.PercentOutput, 0);
-  }
-
-  private void setElbow(double deg) {
-    leftBelt.set(ControlMode.MotionMagic, deg * Constants.Arm.ENCODER_UNITS_PER_DEGREE_ELBOW);
-  }
-
-  private void moveWristDown() {
-    wristMotor.set(ControlMode.PercentOutput, .4);
-  }
-
-  private void moveWristUp() {
-    wristMotor.set(ControlMode.PercentOutput, -.4);
-  }
-
-  private void setWrist(double deg) {
-    wristMotor.set(ControlMode.Position, deg * Constants.Arm.ENCODER_UNITS_PER_DEGREE_WRIST);
-    SmartDashboard.putNumber("wrist target", deg * Constants.Arm.ENCODER_UNITS_PER_DEGREE_WRIST);
-  }
-
-  private void stopWrist() {
-    wristMotor.set(ControlMode.PercentOutput, 0);
+  private void bringShoulderIn() {
+    if(arms.extendTest()) arms.solenoidToggle();
   }
 
   /**
@@ -244,14 +243,63 @@ public class Arm extends SubsystemBase {
     SmartDashboard.putBoolean("WRIST LIMIT", wristMotor.getSensorCollection().isRevLimitSwitchClosed());
     SmartDashboard.putBoolean("SHOULDER LIMIT", !shoulderLimitSwitch.get());
 
-    if(wristMotor.getSensorCollection().isRevLimitSwitchClosed()) {
+    if(wristMotor.getSensorCollection().isRevLimitSwitchClosed() && !canUseWrist) {
       wristMotor.setSelectedSensorPosition(0);
-      wristMotor.configForwardSoftLimitThreshold(120 * Constants.Arm.ENCODER_UNITS_PER_DEGREE_WRIST);
-      wristStatus = "CLOSED";
+      setWristHome();
+      // wristMotor.configForwardSoftLimitThreshold(650);
+
+      canUseWrist = true;
     }
 
-    if(leftBelt.getSensorCollection().isRevLimitSwitchClosed() == 1) {
-      leftBelt.configForwardSoftLimitThreshold(180 * Constants.Arm.ENCODER_UNITS_PER_DEGREE_ELBOW);
+    if(leftBelt.getSensorCollection().isRevLimitSwitchClosed() == 1 && !canUseArm) {
+      leftBelt.setSelectedSensorPosition(0);
+      setArmHome();
+      // leftBelt.configForwardSoftLimitThreshold(8500);
+      canUseArm = true;
+    }
+
+    if(canUseArm) {
+      setElbow(armPosition);
+    }
+    
+    if(canUseWrist) {
+      setWrist(wristPosition);
+    }
+
+    i++;
+    
+    if(i % 20 == 0) {
+      _sb.append("\tBELT Out%:");
+      _sb.append(leftBelt.getMotorOutputPercent());
+      _sb.append("\tVel:");
+      _sb.append(leftBelt.getSelectedSensorVelocity());
+
+        /* Append more signals to print when in speed mode */
+      _sb.append("\tposition:");
+      _sb.append(wristMotor.getSelectedSensorPosition() / Constants.Arm.ENCODER_UNITS_PER_DEGREE_ELBOW);
+      _sb.append("\terr:");
+      _sb.append(leftBelt.getClosedLoopError());
+      _sb.append("\ttrg:");
+      _sb.append(armPosition);
+
+      System.out.println(_sb);
+      _sb.setLength(0);
+
+      _sb.append("\tWRIST Out%:");
+      _sb.append(wristMotor.getMotorOutputPercent());
+      _sb.append("\tVel:");
+      _sb.append(wristMotor.getSelectedSensorVelocity());
+
+        /* Append more signals to print when in speed mode */
+      _sb.append("\tposition:");
+      _sb.append(wristMotor.getSelectedSensorPosition() / Constants.Arm.ENCODER_UNITS_PER_DEGREE_WRIST);
+      _sb.append("\terr:");
+      _sb.append(wristMotor.getClosedLoopError());
+      _sb.append("\ttrg:");
+      _sb.append(wristPosition);
+
+      System.out.println(_sb);
+      _sb.setLength(0);
     }
 
   }

@@ -36,7 +36,7 @@ public class ATVision {
 
     public Pose3d getBotPose() {
 
-        double[] arr = TABLE.getEntry("botpose_wpired").getDoubleArray(new double[6]);
+        double[] arr = TABLE.getEntry("botpose_wpiblue").getDoubleArray(new double[6]);
 
         return new Pose3d(arr[0], arr[1], arr[2],
                 new Rotation3d(arr[4] * Math.PI / 180, arr[3] * Math.PI / 180, arr[5] * Math.PI / 180));
@@ -54,7 +54,9 @@ public class ATVision {
     public double getBotAngle() {
         double[] arr = TABLE.getEntry("botpose_wpiblue").getDoubleArray(new double[6]);
 
-        return (arr[4] * Math.PI) / 180;
+        SmartDashboard.putNumberArray("ANGLE", arr);
+
+        return (arr[5] * Math.PI) / 180;
     }
 
     /*

@@ -7,19 +7,22 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
 public class Pneumatics {
   DoubleSolenoid doubleSolenoid;
-  boolean isExtended = false;
+  boolean isExtended;
 
   public Pneumatics(int forwardChannel, int reverseChannel) {
       doubleSolenoid = new DoubleSolenoid(Constants.Arm.COMPRESSOR_ID, PneumaticsModuleType.REVPH, forwardChannel, reverseChannel);
-      doubleSolenoid.set(Value.kOff);
+      doubleSolenoid.set(Value.kForward);
+      isExtended = false;
   }
 
   public void extendSolenoid() {
       doubleSolenoid.set(Value.kReverse);
+      isExtended = true;
   }
 
   public void retractSolenoid() {
       doubleSolenoid.set(Value.kForward);
+      isExtended = false;
   }
 
   public void disableSolenoid() {

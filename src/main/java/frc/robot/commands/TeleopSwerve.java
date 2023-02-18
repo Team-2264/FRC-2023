@@ -50,9 +50,14 @@ public class TeleopSwerve extends CommandBase {
         xAxis = (Math.abs(xAxis) < Constants.stickDeadband) ? 0 : xAxis;
         rAxis = (Math.abs(rAxis) < Constants.stickDeadband) ? 0 : rAxis;
 
-        translation = new Translation2d(yAxis, xAxis).times(Constants.Swerve.maxSpeed);
-        rotation = rAxis * Constants.Swerve.maxAngularVelocity;
+        
+        translation = new Translation2d(curve(yAxis), curve(xAxis)).times(Constants.Swerve.maxSpeed);
+        rotation = curve(rAxis) * Constants.Swerve.maxAngularVelocity;
         s_Swerve.drive(translation, rotation, !fieldRelative.getAsBoolean(), openLoop);
         
+    }
+
+    public double curve(double input) {
+        return (0.5 * input) + (0.2 * Math.pow(input,3)) + (0.25*(Math.pow(input,5)));
     }
 }
