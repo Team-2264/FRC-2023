@@ -36,7 +36,7 @@ import frc.robot.subsystems.*;
 public class RobotContainer {
   /* Controllers */
   private final Joystick driver = new Joystick(0);
-  // private final Joystick arm = new Joystick(1);
+  private final Joystick arm = new Joystick(1);
 
   private final Field2d m_field = new Field2d();
 
@@ -51,14 +51,22 @@ public class RobotContainer {
   private final JoystickButton followTargetButton = new JoystickButton(driver, PS4Controller.Button.kCircle.value);
   private final JoystickButton followIntakeButton = new JoystickButton(driver, PS4Controller.Button.kSquare.value);
 
-  private final JoystickButton armHome = new JoystickButton(driver, PS4Controller.Button.kL2.value);
-  private final JoystickButton armOut = new JoystickButton(driver, PS4Controller.Button.kR2.value);
+  // private final JoystickButton armHome = new JoystickButton(driver,
+  // PS4Controller.Button.kL2.value);
+  private final JoystickButton armHome = new JoystickButton(arm, 1);
+  // private final JoystickButton armOut = new JoystickButton(driver,
+  // PS4Controller.Button.kR2.value);
+  private final JoystickButton armOut = new JoystickButton(arm, 7);
 
-  private final JoystickButton armUp = new JoystickButton(driver, PS4Controller.Button.kR1.value);
-  private final JoystickButton clawOpen = new JoystickButton(driver, PS4Controller.Button.kL1.value);
+  // private final JoystickButton armUp = new JoystickButton(driver,
+  // PS4Controller.Button.kR1.value);
+  private final JoystickButton armUp = new JoystickButton(arm, 8);
+  // private final JoystickButton clawOpen = new JoystickButton(driver,
+  // PS4Controller.Button.kL1.value);
+  private final JoystickButton clawOpen = new JoystickButton(arm, 2);
 
-  private final JoystickButton manualDown = new JoystickButton(driver, 9);
-  private final JoystickButton manualUp = new JoystickButton(driver, 10);
+  private final JoystickButton manualDown = new JoystickButton(arm, 9);
+  private final JoystickButton manualUp = new JoystickButton(arm, 10);
 
   // Emergency Buttons
   private final JoystickButton disableCommandButton = new JoystickButton(driver, PS4Controller.Button.kTriangle.value);
@@ -140,8 +148,8 @@ public class RobotContainer {
       autoCommandTwo = new teleopAutoTwo(
           s_Swerve,
           new Pose2d(
-              s_Swerve.getPose().getX() - at_Vision.getTargetToRobot().getX() + 1.5,
-              s_Swerve.getPose().getY() - at_Vision.getTargetToRobot().getY() + .69,
+              s_Swerve.getPose().getX() - at_Vision.getTargetToRobot().getX() + .7,
+              s_Swerve.getPose().getY() - at_Vision.getTargetToRobot().getY() - .7,
               new Rotation2d(at_Vision.getBotAngle())),
           m_field);
 

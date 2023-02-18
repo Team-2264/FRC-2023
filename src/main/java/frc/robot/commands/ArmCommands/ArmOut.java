@@ -16,7 +16,7 @@ public class ArmOut extends CommandBase {
 
     @Override
     public void execute() {
-        s_Arm.intake();
+        s_Arm.simba();
         System.out.println("COMMAND WAS CALLED");
     }
 

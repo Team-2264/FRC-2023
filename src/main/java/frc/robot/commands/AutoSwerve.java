@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import frc.robot.autos.PathGroupAuto;
 import frc.robot.autos.PathPlannerAuto;
 import frc.robot.autos.PathPlannerAutoWEvents;
 import frc.robot.commands.ArmCommands.ArmOut;
@@ -30,30 +31,18 @@ public class AutoSwerve {
 
         HashMap<String, Command> eventMap = new HashMap<String, Command>();
 
-        eventMap.put("print", armOutCmd);
-        // eventMap.put("print", new Print(
-        // "PASSED MARK 1 THIS IS LITERALLY HHYPE I KNOW U CAN SEE THIS NEVE IF YOU CANT
-        // ITS ACTUALLY OVER BRO"));
+        eventMap.put("raise_arm", armOutCmd);
 
-        // eventMap.put("drop_cargo",
-        // new FunctionalCommand(this::doNothing, s_Arm::toggleClaw, this::doNothing, ()
-        // -> true, s_Arm));
+        eventMap.put("drop_cargo",
+                new InstantCommand(() -> s_Arm.toggleClaw()));
 
-        // eventMap.put("retract_arm",
-        // new FunctionalCommand(this::doNothing, s_Arm::bringArmHome, this::doNothing,
-        // () -> true, s_Arm));
+        eventMap.put("retract_arm",
+                new InstantCommand(() -> s_Arm.bringArmHome()));
 
-        return new PathPlannerAutoWEvents(s_Swerve, "f", eventMap);
+        // return new PathPlannerAutoWEvents(s_Swerve, "f", eventMap);
+        return new PathGroupAuto(s_Swerve, "Random", eventMap);
 
         // return new PathPlannerAuto(s_Swerve, "Cargo Autonomous");
-
-    }
-
-    public void doNothing(boolean ok) {
-
-    }
-
-    public void doNothing() {
 
     }
 
