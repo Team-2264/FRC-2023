@@ -70,7 +70,8 @@ public class SwerveModule {
         setAngle(desiredState);
         setSpeed(desiredState, isOpenLoop);
 
-        SmartDashboard.putNumber("module " + moduleNumber + " Desired Angle", desiredState.angle.getDegrees());
+        // SmartDashboard.putNumber("module " + moduleNumber + " Desired Angle",
+        // desiredState.angle.getDegrees());
         SmartDashboard.putNumber("module " + moduleNumber + " Current Angle", getState().angle.getDegrees());
     }
 

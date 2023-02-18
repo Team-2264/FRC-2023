@@ -7,9 +7,6 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.apriltag.*;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import java.sql.Driver;
 import java.util.ArrayList;
 
 public class ATVision {
@@ -33,7 +30,7 @@ public class ATVision {
     public Pose3d getTargetToRobot() {
         double[] arr = TABLE.getEntry("targetpose_robotspace").getDoubleArray(new double[6]);
 
-        SmartDashboard.putNumberArray("DTargetToCamera", arr);
+        // SmartDashboard.putNumberArray("DTargetToCamera", arr);
         return new Pose3d(arr[2], -arr[0], arr[1], new Rotation3d());
     }
 
@@ -41,8 +38,10 @@ public class ATVision {
 
     public Pose3d getBotPose() {
 
-        if(DriverStation.getAlliance() == Alliance.Blue) arr = TABLE.getEntry("botpose_wpiblue").getDoubleArray(new double[6]);
-        if(DriverStation.getAlliance() == Alliance.Red) arr = TABLE.getEntry("botpose_wpired").getDoubleArray(new double[6]);
+        if (DriverStation.getAlliance() == Alliance.Blue)
+            arr = TABLE.getEntry("botpose_wpiblue").getDoubleArray(new double[6]);
+        if (DriverStation.getAlliance() == Alliance.Red)
+            arr = TABLE.getEntry("botpose_wpired").getDoubleArray(new double[6]);
 
         return new Pose3d(arr[0], arr[1], arr[2],
                 new Rotation3d(arr[4] * Math.PI / 180, arr[3] * Math.PI / 180, arr[5] * Math.PI / 180));
@@ -52,10 +51,12 @@ public class ATVision {
 
     public Translation3d getBotTranslation() {
 
-        if(DriverStation.getAlliance() == Alliance.Blue) arrTwo = TABLE.getEntry("botpose_wpiblue").getDoubleArray(new double[6]);
-        if(DriverStation.getAlliance() == Alliance.Red) arrTwo = TABLE.getEntry("botpose_wpired").getDoubleArray(new double[6]);
+        if (DriverStation.getAlliance() == Alliance.Blue)
+            arrTwo = TABLE.getEntry("botpose_wpiblue").getDoubleArray(new double[6]);
+        if (DriverStation.getAlliance() == Alliance.Red)
+            arrTwo = TABLE.getEntry("botpose_wpired").getDoubleArray(new double[6]);
 
-        SmartDashboard.putNumberArray("DBotPose", arrTwo);
+        // SmartDashboard.putNumberArray("DBotPose", arrTwo);
 
         return new Translation3d(arrTwo[0], arrTwo[1], arrTwo[2]);
     }
@@ -63,10 +64,12 @@ public class ATVision {
     double[] arrThree;
 
     public double getBotAngle() {
-        if(DriverStation.getAlliance() == Alliance.Blue) arrThree = TABLE.getEntry("botpose_wpiblue").getDoubleArray(new double[6]);
-        if(DriverStation.getAlliance() == Alliance.Red) arrThree = TABLE.getEntry("botpose_wpired").getDoubleArray(new double[6]);
+        if (DriverStation.getAlliance() == Alliance.Blue)
+            arrThree = TABLE.getEntry("botpose_wpiblue").getDoubleArray(new double[6]);
+        if (DriverStation.getAlliance() == Alliance.Red)
+            arrThree = TABLE.getEntry("botpose_wpired").getDoubleArray(new double[6]);
 
-        SmartDashboard.putNumberArray("ANGLE", arrThree);
+        // SmartDashboard.putNumberArray("ANGLE", arrThree);
 
         return (arr[5] * Math.PI) / 180;
     }
@@ -90,7 +93,7 @@ public class ATVision {
 
     public Transform2d getTargetToCameraTransform() {
         Pose3d targetToCameraPose = getTargetToRobot();
-        SmartDashboard.putString("TargetToCamera", targetToCameraPose.toString());
+        // SmartDashboard.putString("TargetToCamera", targetToCameraPose.toString());
         return new Transform2d(new Pose2d(), targetToCameraPose.toPose2d());
     }
 }

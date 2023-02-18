@@ -5,14 +5,11 @@
 package frc.robot;
 
 import java.util.function.BooleanSupplier;
-import java.util.function.DoubleSupplier;
+// import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.util.function.FloatSupplier;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
@@ -23,8 +20,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
-import edu.wpi.first.wpilibj2.command.button.POVButton;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.autos.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
@@ -41,7 +36,7 @@ import frc.robot.subsystems.*;
 public class RobotContainer {
   /* Controllers */
   private final Joystick driver = new Joystick(0);
-  private final Joystick arm = new Joystick(1);
+  // private final Joystick arm = new Joystick(1);
 
   private final Field2d m_field = new Field2d();
 
@@ -65,9 +60,12 @@ public class RobotContainer {
   private final JoystickButton manualDown = new JoystickButton(driver, 9);
   private final JoystickButton manualUp = new JoystickButton(driver, 10);
 
+  // Emergency Buttons
+  private final JoystickButton disableCommandButton = new JoystickButton(driver, PS4Controller.Button.kTriangle.value);
+
   private static final NetworkTableInstance TABLE = NetworkTableInstance.getDefault();
 
-  private DoubleSupplier rotationAxisSupplier = () -> driver.getRawAxis(2);
+  // private DoubleSupplier rotationAxisSupplier = () -> driver.getRawAxis(2);
   /* Subsystems */
   private final Swerve s_Swerve = new Swerve();
 
@@ -136,9 +134,6 @@ public class RobotContainer {
 
     }));
 
-    // disableCommandButton.onTrue(new InstantCommand(() -> { autoCommand.end(true);
-    // }));
-
     followIntakeButton.onTrue(new InstantCommand(() -> {
       s_Swerve.setPose(at_Vision.getBotPose().toPose2d());
       s_Arm.intake();
@@ -153,6 +148,11 @@ public class RobotContainer {
       SmartDashboard.putNumber("Bot Angle", at_Vision.getBotAngle());
 
       autoCommandTwo.schedule();
+    }));
+
+    disableCommandButton.onTrue(new InstantCommand(() -> {
+      autoCommand.end(true);
+      autoCommandTwo.end(true);
     }));
 
     armOut.onTrue(new InstantCommand(() -> s_Arm.intake()));

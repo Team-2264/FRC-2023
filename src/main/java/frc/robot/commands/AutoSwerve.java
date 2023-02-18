@@ -1,13 +1,11 @@
 package frc.robot.commands;
 
-import frc.robot.autos.PathPlannerAuto;
 import frc.robot.autos.PathPlannerAutoWEvents;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.Arm;
 
 import java.util.HashMap;
 
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 

@@ -2,14 +2,10 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
-import com.ctre.phoenix.motorcontrol.InvertType;
-import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.RemoteLimitSwitchSource;
 // NO
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
-import edu.wpi.first.hal.can.CANStatus;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -18,7 +14,6 @@ import frc.robot.Constants;
 import frc.robot.Pneumatics;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 
@@ -76,45 +71,45 @@ public class Arm extends SubsystemBase {
 
     leftBelt.configClearPositionOnLimitR(false, 0);
 
-    compressor.enableDigital(); 
+    compressor.enableDigital();
 
-		/* Configure Sensor Source for Pirmary PID */
-		leftBelt.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 10);
+    /* Configure Sensor Source for Pirmary PID */
+    leftBelt.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 10);
 
     // // PID
 
     leftBelt.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, 10);
-		leftBelt.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, 10);
+    leftBelt.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, 10);
 
-		/* Set the peak and nominal outputs */
-		leftBelt.configNominalOutputForward(0, 10);
-		leftBelt.configNominalOutputReverse(0, 10);
-		leftBelt.configPeakOutputForward(1, 10);
-		leftBelt.configPeakOutputReverse(-1, 10);
+    /* Set the peak and nominal outputs */
+    leftBelt.configNominalOutputForward(0, 10);
+    leftBelt.configNominalOutputReverse(0, 10);
+    leftBelt.configPeakOutputForward(1, 10);
+    leftBelt.configPeakOutputReverse(-1, 10);
 
-		/* Set Motion Magic gains in slot0 - see documentation */
-		leftBelt.selectProfileSlot(0, 0);
-		leftBelt.config_kF(0, .047, 10);
-		leftBelt.config_kP(0, 0.35, 10);
-		leftBelt.config_kI(0, 0, 10);
-		leftBelt.config_kD(0, 8.1, 10);
+    /* Set Motion Magic gains in slot0 - see documentation */
+    leftBelt.selectProfileSlot(0, 0);
+    leftBelt.config_kF(0, .047, 10);
+    leftBelt.config_kP(0, 0.35, 10);
+    leftBelt.config_kI(0, 0, 10);
+    leftBelt.config_kD(0, 8.1, 10);
 
-		/* Set acceleration and vcruise velocity - see documentation */
-		leftBelt.configMotionCruiseVelocity(375, 10);
-		leftBelt.configMotionAcceleration(750, 10);
+    /* Set acceleration and vcruise velocity - see documentation */
+    leftBelt.configMotionCruiseVelocity(375, 10);
+    leftBelt.configMotionAcceleration(750, 10);
 
     leftBelt.configNeutralDeadband(0.05, 10);
 
     // // PID
 
-		wristMotor.config_kP(0, 1.2, 10);
-		wristMotor.config_kI(0, 0, 10);
-		wristMotor.config_kD(0, 11, 10);
+    wristMotor.config_kP(0, 1.2, 10);
+    wristMotor.config_kI(0, 0, 10);
+    wristMotor.config_kD(0, 11, 10);
 
     wristMotor.configNeutralDeadband(0.001, 10);
 
     leftBelt.configNeutralDeadband(0.01, 10);
-    
+
   }
 
   public void init() {
@@ -130,7 +125,7 @@ public class Arm extends SubsystemBase {
     setArmHome();
     setWristHome();
     closeClaw();
-    
+
     // bringShoulderIn();
   }
 
@@ -138,7 +133,7 @@ public class Arm extends SubsystemBase {
     bringShoulderIn();
     setArmHigh();
     setWristFlat();
-    
+
     // openClaw();
   }
 
@@ -177,7 +172,8 @@ public class Arm extends SubsystemBase {
   // SETFUNCTIONS
 
   private void setElbow(double deg) {
-    leftBelt.set(ControlMode.MotionMagic, deg * Constants.Arm.ENCODER_UNITS_PER_DEGREE_ELBOW, DemandType.ArbitraryFeedForward, .065 * Math.cos(deg * (Math.PI/180)));
+    leftBelt.set(ControlMode.MotionMagic, deg * Constants.Arm.ENCODER_UNITS_PER_DEGREE_ELBOW,
+        DemandType.ArbitraryFeedForward, .065 * Math.cos(deg * (Math.PI / 180)));
   }
 
   private void setWrist(double deg) {
@@ -189,7 +185,6 @@ public class Arm extends SubsystemBase {
   private void moveElbowIn() {
     leftBelt.set(ControlMode.PercentOutput, -.3);
   }
-  
 
   public void moveWristUp() {
     wristMotor.set(ControlMode.PercentOutput, -.2);
@@ -202,11 +197,13 @@ public class Arm extends SubsystemBase {
   }
 
   public void openClaw() {
-    if(!claw.extendTest()) claw.solenoidToggle();
+    if (!claw.extendTest())
+      claw.solenoidToggle();
   }
 
   public void closeClaw() {
-    if(claw.extendTest()) claw.solenoidToggle();
+    if (claw.extendTest())
+      claw.solenoidToggle();
   }
 
   private void toggleShoulder() {
@@ -214,11 +211,13 @@ public class Arm extends SubsystemBase {
   }
 
   private void takeShoulderOut() {
-    if(!arms.extendTest()) arms.solenoidToggle();
+    if (!arms.extendTest())
+      arms.solenoidToggle();
   }
 
   private void bringShoulderIn() {
-    if(arms.extendTest()) arms.solenoidToggle();
+    if (arms.extendTest())
+      arms.solenoidToggle();
   }
 
   /**
@@ -232,7 +231,6 @@ public class Arm extends SubsystemBase {
     return false;
   }
 
-
   @Override
   public void periodic() {
     SmartDashboard.putNumber("LEFT BELT", leftBelt.getSelectedSensorPosition());
@@ -243,7 +241,7 @@ public class Arm extends SubsystemBase {
     SmartDashboard.putBoolean("WRIST LIMIT", wristMotor.getSensorCollection().isRevLimitSwitchClosed());
     SmartDashboard.putBoolean("SHOULDER LIMIT", !shoulderLimitSwitch.get());
 
-    if(wristMotor.getSensorCollection().isRevLimitSwitchClosed() && !canUseWrist) {
+    if (wristMotor.getSensorCollection().isRevLimitSwitchClosed() && !canUseWrist) {
       wristMotor.setSelectedSensorPosition(0);
       setWristHome();
       // wristMotor.configForwardSoftLimitThreshold(650);
@@ -251,30 +249,30 @@ public class Arm extends SubsystemBase {
       canUseWrist = true;
     }
 
-    if(leftBelt.getSensorCollection().isRevLimitSwitchClosed() == 1 && !canUseArm) {
+    if (leftBelt.getSensorCollection().isRevLimitSwitchClosed() == 1 && !canUseArm) {
       leftBelt.setSelectedSensorPosition(0);
       setArmHome();
       // leftBelt.configForwardSoftLimitThreshold(8500);
       canUseArm = true;
     }
 
-    if(canUseArm) {
+    if (canUseArm) {
       setElbow(armPosition);
     }
-    
-    if(canUseWrist) {
+
+    if (canUseWrist) {
       setWrist(wristPosition);
     }
 
     i++;
-    
-    if(i % 20 == 0) {
+
+    if (i % 20 == 0) {
       _sb.append("\tBELT Out%:");
       _sb.append(leftBelt.getMotorOutputPercent());
       _sb.append("\tVel:");
       _sb.append(leftBelt.getSelectedSensorVelocity());
 
-        /* Append more signals to print when in speed mode */
+      /* Append more signals to print when in speed mode */
       _sb.append("\tposition:");
       _sb.append(wristMotor.getSelectedSensorPosition() / Constants.Arm.ENCODER_UNITS_PER_DEGREE_ELBOW);
       _sb.append("\terr:");
@@ -290,7 +288,7 @@ public class Arm extends SubsystemBase {
       _sb.append("\tVel:");
       _sb.append(wristMotor.getSelectedSensorVelocity());
 
-        /* Append more signals to print when in speed mode */
+      /* Append more signals to print when in speed mode */
       _sb.append("\tposition:");
       _sb.append(wristMotor.getSelectedSensorPosition() / Constants.Arm.ENCODER_UNITS_PER_DEGREE_WRIST);
       _sb.append("\terr:");

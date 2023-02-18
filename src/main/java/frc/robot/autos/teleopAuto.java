@@ -12,7 +12,6 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -122,8 +121,9 @@ public class teleopAuto extends SequentialCommandGroup {
     }
 
     private void setDashboard(String input) {
-        SmartDashboard.putString("CURRENT TELEAUTO", input);
-        SmartDashboard.putString("CURRENTPOSE RAW", currentpose.getX() + " " + currentpose.getY());
+        // SmartDashboard.putString("CURRENT TELEAUTO", input);
+        // SmartDashboard.putString("CURRENTPOSE RAW", currentpose.getX() + " " +
+        // currentpose.getY());
     }
 
     public void stop() {
