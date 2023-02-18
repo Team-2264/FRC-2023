@@ -73,7 +73,7 @@
         ],
         "executionBehavior": "sequential",
         "waitBehavior": "minimum",
-        "waitTime": 1.0
+        "waitTime": 2.0
       }
     },
     {
@@ -86,7 +86,7 @@
         "y": 5.194543622051654
       },
       "nextControl": null,
-      "holonomicAngle": 0,
+      "holonomicAngle": -180.0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,

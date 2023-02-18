@@ -61,7 +61,7 @@ public class PathPlannerAutoWEvents extends PathPlannerAuto {
          */
         @Override
         public void setCommands() {
-                s_Swerve.gyro.setYaw(trajectory.getInitialPose().getRotation().getDegrees());
+                // s_Swerve.gyro.setYaw(trajectory.getInitialPose().getRotation().getDegrees());
                 // add those commands to the sequential command group
                 addCommands(
                                 new InstantCommand(() -> s_Swerve

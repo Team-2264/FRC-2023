@@ -133,6 +133,7 @@ public class Arm extends SubsystemBase {
     bringShoulderIn();
     setArmHigh();
     setWristFlat();
+    SmartDashboard.putString("penis", "penis");
 
     // openClaw();
   }

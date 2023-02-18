@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import frc.robot.autos.PathPlannerAuto;
 import frc.robot.autos.PathPlannerAutoWEvents;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.Arm;
@@ -8,6 +9,7 @@ import java.util.HashMap;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 
 public class AutoSwerve {
 
@@ -19,25 +21,36 @@ public class AutoSwerve {
         this.s_Arm = s_Arm;
     }
 
+    double currentTime;
+
     public Command getCommand() {
 
         HashMap<String, Command> eventMap = new HashMap<String, Command>();
 
-        eventMap.put("raise_arm", new InstantCommand(() -> {
-            s_Arm.intake();
-        }));
+        currentTime = System.currentTimeMillis();
 
-        eventMap.put("drop_cargo", new InstantCommand(() -> {
-            s_Arm.toggleClaw();
-        }));
+        eventMap.put("raise_arm",
+                new FunctionalCommand(this::doNothing, s_Arm::intake, this::doNothing,
+                        () -> System.currentTimeMillis() - currentTime > 1, s_Arm));
 
-        eventMap.put("retract_arm", new InstantCommand(() -> {
-            s_Arm.bringArmHome();
-        }));
+        eventMap.put("drop_cargo",
+                new FunctionalCommand(this::doNothing, s_Arm::toggleClaw, this::doNothing, () -> true, s_Arm));
 
-        return new PathPlannerAutoWEvents(s_Swerve, "Cargo Autonomous", eventMap);
+        eventMap.put("retract_arm",
+                new FunctionalCommand(this::doNothing, s_Arm::bringArmHome, this::doNothing, () -> true, s_Arm));
 
-        // return new PathPlannerAuto(s_Swerve, "Live");
+        // return new PathPlannerAutoWEvents(s_Swerve, "Test", eventMap);
+
+        return new PathPlannerAuto(s_Swerve, "Cargo Autonomous");
 
     }
+
+    public void doNothing(boolean ok) {
+
+    }
+
+    public void doNothing() {
+
+    }
+
 }
