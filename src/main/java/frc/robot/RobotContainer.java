@@ -140,8 +140,8 @@ public class RobotContainer {
       autoCommandTwo = new teleopAutoTwo(
           s_Swerve,
           new Pose2d(
-              s_Swerve.getPose().getX() - at_Vision.getTargetToRobot().getX() + 2,
-              s_Swerve.getPose().getY() - at_Vision.getTargetToRobot().getY(),
+              s_Swerve.getPose().getX() - at_Vision.getTargetToRobot().getX() + 1.5,
+              s_Swerve.getPose().getY() - at_Vision.getTargetToRobot().getY() + .69,
               new Rotation2d(at_Vision.getBotAngle())),
           m_field);
 
