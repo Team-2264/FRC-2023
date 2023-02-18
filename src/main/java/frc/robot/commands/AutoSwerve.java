@@ -31,7 +31,7 @@ public class AutoSwerve {
 
         HashMap<String, Command> eventMap = new HashMap<String, Command>();
 
-        eventMap.put("raise_arm", armOutCmd);
+        eventMap.put("raise_arm", new InstantCommand(() -> s_Arm.simba()));
 
         eventMap.put("drop_cargo",
                 new InstantCommand(() -> s_Arm.toggleClaw()));

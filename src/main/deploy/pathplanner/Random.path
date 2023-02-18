@@ -39,14 +39,14 @@
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
-      "isStopPoint": false,
+      "isStopPoint": true,
       "stopEvent": {
         "names": [
           "raise_arm"
         ],
         "executionBehavior": "parallel",
         "waitBehavior": "after",
-        "waitTime": 1.0
+        "waitTime": 7.0
       }
     },
     {
