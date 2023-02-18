@@ -21,7 +21,8 @@ public class TeleopSwerve extends CommandBase {
     private int translationAxis;
     private int strafeAxis;
     private int rotationAxis;
-    private int rotationSetpoint;
+    private double rotationSetpoint;
+    private double startingRotation;
 
 
 
@@ -55,13 +56,21 @@ public class TeleopSwerve extends CommandBase {
         rAxis = (Math.abs(rAxis) < Constants.stickDeadband) ? 0 : rAxis;
 
         
-        if(this.controller.getPOV() == 0 || this.controller.getPOV() == 180) {
-            rotationSetpoint = this.controller.getPOV();
+        if(this.controller.getRawButton(7)) {
+            rotationSetpoint = .3;
+            startingRotation = Math.abs(s_Swerve.gyro.getYaw() % 360);
+        } 
+        
+        if(this.controller.getRawButton(8)) {
+            rotationSetpoint = -.3;
+            startingRotation = Math.abs(s_Swerve.gyro.getYaw() % 360);
         }
 
         if(rotationSetpoint != -1) {
-            if(Math.abs(s_Swerve.gyro.getYaw() - rotationSetpoint) > 5) {
-                rAxis = 0.3;
+            if(Math.abs(s_Swerve.gyro.getYaw() % 180) > 5) {
+                rAxis = rotationSetpoint;
+            } else if (s_Swerve.gyro.getYaw() - startingRotation < 5) {
+                rAxis = rotationSetpoint;
             } else {
                 rotationSetpoint = -1;
             }

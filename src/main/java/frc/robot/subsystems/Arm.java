@@ -149,6 +149,10 @@ public class Arm extends SubsystemBase {
     armPosition = 0;
   }
 
+  private void setArmLow() {
+    armPosition = 54;
+  }
+
   private void setArmHigh() {
     armPosition = 67.5;
   }
