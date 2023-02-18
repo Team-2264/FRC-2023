@@ -1,5 +1,6 @@
 package frc.robot.autos;
 
+import java.rmi.server.RMISocketFactory;
 import java.util.HashMap;
 
 import com.pathplanner.lib.PathConstraints;
@@ -60,7 +61,8 @@ public class PathPlannerAutoWEvents extends PathPlannerAuto {
      * @see frc.robot.autos.PathPlannerAuto#setCommands()
      */
     @Override
-    public void setCommands() {
+    public void setCommands() {  
+        s_Swerve.gyro.setYaw(trajectory.getInitialPose().getRotation().getDegrees());
         // add those commands to the sequential command group
         addCommands(
                 new InstantCommand(() -> s_Swerve

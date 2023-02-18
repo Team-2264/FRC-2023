@@ -5,11 +5,14 @@
 package frc.robot;
 
 import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.util.function.FloatSupplier;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
@@ -19,6 +22,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+
 
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -62,11 +66,9 @@ public class RobotContainer {
   private final JoystickButton manualDown = new JoystickButton(driver, 9);
   private final JoystickButton manualUp = new JoystickButton(driver, 10);
 
-  private final Trigger turnForward = new Trigger(() -> driver.getPOV() == 0);
-  private final Trigger turnBackward = new Trigger(() -> driver.getPOV() == 180);
-
   private static final NetworkTableInstance TABLE = NetworkTableInstance.getDefault();
 
+  private DoubleSupplier rotationAxisSupplier = () -> driver.getRawAxis(2);
   /* Subsystems */
   private final Swerve s_Swerve = new Swerve();
 
@@ -158,8 +160,6 @@ public class RobotContainer {
 
     manualDown.onTrue(new InstantCommand(() -> s_Arm.wristPosition += 40));
     manualUp.onTrue(new InstantCommand(() -> s_Arm.wristPosition -= 40));
-
-
   }
 
   /**
@@ -169,7 +169,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // Command will run in autonomous
-    return new AutoSwerve(s_Swerve).getCommand();
+    return new AutoSwerve(s_Swerve, s_Arm).getCommand();
   }
 
   public void updateRobotPose() {

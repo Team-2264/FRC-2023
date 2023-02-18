@@ -21,6 +21,9 @@ public class TeleopSwerve extends CommandBase {
     private int translationAxis;
     private int strafeAxis;
     private int rotationAxis;
+    private int rotationSetpoint;
+
+
 
     /**
      * Driver control
@@ -36,6 +39,7 @@ public class TeleopSwerve extends CommandBase {
         this.rotationAxis = rotationAxis;
         this.fieldRelative = fieldRelative;
         this.openLoop = openLoop;
+        this.rotationSetpoint = -1;
 
     }
 
@@ -50,6 +54,18 @@ public class TeleopSwerve extends CommandBase {
         xAxis = (Math.abs(xAxis) < Constants.stickDeadband) ? 0 : xAxis;
         rAxis = (Math.abs(rAxis) < Constants.stickDeadband) ? 0 : rAxis;
 
+        
+        if(this.controller.getPOV() == 0 || this.controller.getPOV() == 180) {
+            rotationSetpoint = this.controller.getPOV();
+        }
+
+        if(rotationSetpoint != -1) {
+            if(Math.abs(s_Swerve.gyro.getYaw() - rotationSetpoint) > 5) {
+                rAxis = 0.3;
+            } else {
+                rotationSetpoint = -1;
+            }
+        }
         
         translation = new Translation2d(curve(yAxis), curve(xAxis)).times(Constants.Swerve.maxSpeed);
         rotation = curve(rAxis) * Constants.Swerve.maxAngularVelocity;
