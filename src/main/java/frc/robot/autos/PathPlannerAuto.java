@@ -83,7 +83,7 @@ public class PathPlannerAuto extends SequentialCommandGroup {
                                                                                                 // controller
                                 thetaController, // PID for the theta (angle)/rotation controller
                                 s_Swerve::setModuleStates, // module state consumer
-                                true, // if the path should be mirrored based on alliance color
+                                false, // if the path should be mirrored based on alliance color
                                 s_Swerve // this uses the swerve subsystem
                 );
 

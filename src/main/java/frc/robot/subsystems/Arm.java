@@ -133,6 +133,7 @@ public class Arm extends SubsystemBase {
     bringShoulderIn();
     setArmHigh();
     setWristFlat();
+    SmartDashboard.putString("penis", "penis");
 
     // openClaw();
   }
@@ -284,7 +285,7 @@ public class Arm extends SubsystemBase {
       _sb.append("\ttrg:");
       _sb.append(armPosition);
 
-      System.out.println(_sb);
+      // System.out.println(_sb);
       _sb.setLength(0);
 
       _sb.append("\tWRIST Out%:");
@@ -300,7 +301,7 @@ public class Arm extends SubsystemBase {
       _sb.append("\ttrg:");
       _sb.append(wristPosition);
 
-      System.out.println(_sb);
+      // System.out.println(_sb);
       _sb.setLength(0);
     }
 

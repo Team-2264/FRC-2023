@@ -24,8 +24,6 @@ public class TeleopSwerve extends CommandBase {
     private double rotationSetpoint;
     private double startingRotation;
 
-
-
     /**
      * Driver control
      */
@@ -75,14 +73,19 @@ public class TeleopSwerve extends CommandBase {
                 rotationSetpoint = -1;
             }
         }
-        
+
         translation = new Translation2d(curve(yAxis), curve(xAxis)).times(Constants.Swerve.maxSpeed);
-        rotation = curve(rAxis) * Constants.Swerve.maxAngularVelocity;
+        rotation = rotationCurve(rAxis) * Constants.Swerve.maxAngularVelocity;
         s_Swerve.drive(translation, rotation, !fieldRelative.getAsBoolean(), openLoop);
-        
+
     }
 
     public double curve(double input) {
-        return (0.5 * input) + (0.2 * Math.pow(input,3)) + (0.25*(Math.pow(input,5)));
+        return (0.5 * input) + (0.2 * Math.pow(input, 3)) + (0.25 * (Math.pow(input, 5)));
     }
+
+    public double rotationCurve(double input) {
+        return (0.5 * input) + (0.25 * Math.pow(input, 3)) + (0.1 * (Math.pow(input, 5)));
+    }
+
 }
