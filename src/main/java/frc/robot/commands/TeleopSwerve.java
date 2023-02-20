@@ -3,6 +3,7 @@ package frc.robot.commands;
 import frc.robot.Constants;
 import frc.robot.subsystems.Swerve;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.util.function.BooleanSupplier;
 
@@ -56,21 +57,25 @@ public class TeleopSwerve extends CommandBase {
         
         if(this.controller.getRawButton(7)) {
             rotationSetpoint = .3;
-            startingRotation = Math.abs(s_Swerve.gyro.getYaw() % 360);
+            startingRotation = s_Swerve.gyro.getYaw();
         } 
         
         if(this.controller.getRawButton(8)) {
             rotationSetpoint = -.3;
-            startingRotation = Math.abs(s_Swerve.gyro.getYaw() % 360);
+            startingRotation = s_Swerve.gyro.getYaw();
         }
 
         if(rotationSetpoint != -1) {
-            if(Math.abs(s_Swerve.gyro.getYaw() % 180) > 5) {
+            if(Math.abs(s_Swerve.gyro.getYaw() % 180) > 3) {
                 rAxis = rotationSetpoint;
-            } else if (s_Swerve.gyro.getYaw() - startingRotation < 5) {
+                SmartDashboard.putString("spinning", "ifone");
+            } else if(Math.abs(s_Swerve.gyro.getYaw() - startingRotation) < 5) {
                 rAxis = rotationSetpoint;
+                SmartDashboard.putString("spinning", "ifone");
             } else {
                 rotationSetpoint = -1;
+                rAxis = 0;
+                SmartDashboard.putString("spinning", "else");
             }
         }
 
