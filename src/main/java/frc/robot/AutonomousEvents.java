@@ -3,10 +3,11 @@ package frc.robot;
 import java.util.HashMap;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.commands.AutoBalance;
 import frc.robot.commands.StopMoving;
 import frc.robot.commands.arm.*;
 import frc.robot.enums.ArmStatus;
-
+import frc.robot.enums.MovementDirection;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Swerve;
 
@@ -27,6 +28,10 @@ public class AutonomousEvents {
 
         EVENT_MAP.put("OPEN_CLAW", new OpenClaw(s_Arm));
         EVENT_MAP.put("CLOSE_CLAW", new CloseClaw(s_Arm));
+
+        EVENT_MAP.put("BALANCE_FORWARD", new AutoBalance(s_Swerve, MovementDirection.FORWARD));
+        EVENT_MAP.put("BALANCE_BACKWARD", new AutoBalance(s_Swerve, MovementDirection.BACKWARD));
+        EVENT_MAP.put("BALANCE_RELATIVE", new AutoBalance(s_Swerve, MovementDirection.RELATIVE));
 
         EVENT_MAP.put("HALT", new StopMoving(s_Swerve));
     }
