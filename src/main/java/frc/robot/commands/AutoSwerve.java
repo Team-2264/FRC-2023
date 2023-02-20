@@ -1,49 +1,37 @@
 package frc.robot.commands;
 
 import frc.robot.autos.PathGroupAuto;
-import frc.robot.autos.PathPlannerAuto;
-import frc.robot.autos.PathPlannerAutoWEvents;
-import frc.robot.commands.ArmCommands.ArmOut;
+import frc.robot.enums.AutoPosition;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.Arm;
 
 import java.util.HashMap;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.FunctionalCommand;
+import frc.robot.AutonomousEvents;
+import frc.robot.Limelight;
 
 public class AutoSwerve {
 
     private Swerve s_Swerve;
-    private Arm s_Arm;
-    private ArmOut armOutCmd;
+    private HashMap<String, Command> EVENT_MAP;
+    private Limelight s_Limelight;
 
-    public AutoSwerve(Swerve s_Swerve, Arm s_Arm) {
+    public AutoSwerve(Swerve s_Swerve, Arm s_Arm, Limelight s_Limelight) {
         this.s_Swerve = s_Swerve;
-        this.s_Arm = s_Arm;
-        this.armOutCmd = new ArmOut(s_Arm);
+        this.s_Limelight = s_Limelight;
+        this.EVENT_MAP = new AutonomousEvents(s_Swerve, s_Arm).getEventMap();
     }
 
     double currentTime;
 
     public Command getCommand() {
+        if (s_Limelight.getAutoPosition() == AutoPosition.EDGE)
+            return new PathGroupAuto(s_Swerve, "Edge", EVENT_MAP);
+        if (s_Limelight.getAutoPosition() == AutoPosition.CENTER)
+            return new PathGroupAuto(s_Swerve, "Center", EVENT_MAP);
 
-        HashMap<String, Command> eventMap = new HashMap<String, Command>();
-
-        eventMap.put("raise_arm", new InstantCommand(() -> s_Arm.simba()));
-
-        eventMap.put("drop_cargo",
-                new InstantCommand(() -> s_Arm.toggleClaw()));
-
-        eventMap.put("retract_arm",
-                new InstantCommand(() -> s_Arm.bringArmHome()));
-
-        // return new PathPlannerAutoWEvents(s_Swerve, "f", eventMap);
-        return new PathGroupAuto(s_Swerve, "Random", eventMap);
-
-        // return new PathPlannerAuto(s_Swerve, "Cargo Autonomous");
-
+        return new PathGroupAuto(s_Swerve, "Inner", EVENT_MAP);
     }
 
 }

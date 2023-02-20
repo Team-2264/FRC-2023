@@ -195,8 +195,15 @@ public final class Constants {
         public static final double kPYController = 1;
         public static final double kPThetaController = 1;
 
+        public static final double ARM_ERROR_TOLERANCE = 10.0;
+
+        public static final String INNER_BORDER_TRAJECTORY = "Inner";
+        public static final String CENTER_TRAJECTORY = "Center";
+        public static final String EDGE_TRAJECTORY = "Edge";
+
         // Constraint for the motion profilied robot angle controller
         public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
                 kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
     }
+
 }

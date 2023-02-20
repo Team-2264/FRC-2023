@@ -19,6 +19,7 @@ public class TeleopSwerve extends CommandBase {
 
     private Swerve s_Swerve;
     private Joystick controller;
+    private Joystick arm;
     private int translationAxis;
     private int strafeAxis;
     private int rotationAxis;
@@ -28,7 +29,8 @@ public class TeleopSwerve extends CommandBase {
     /**
      * Driver control
      */
-    public TeleopSwerve(Swerve s_Swerve, Joystick controller, int translationAxis, int strafeAxis, int rotationAxis,
+    public TeleopSwerve(Swerve s_Swerve, Joystick controller, Joystick arm, int translationAxis, int strafeAxis,
+            int rotationAxis,
             BooleanSupplier fieldRelative, boolean openLoop) {
         this.s_Swerve = s_Swerve;
         addRequirements(s_Swerve);
@@ -40,7 +42,16 @@ public class TeleopSwerve extends CommandBase {
         this.fieldRelative = fieldRelative;
         this.openLoop = openLoop;
         this.rotationSetpoint = -1;
+        this.arm = arm;
 
+    }
+
+    public double curve(double input) {
+        return (0.5 * input) + (0.2 * Math.pow(input, 3)) + (0.25 * (Math.pow(input, 5)));
+    }
+
+    public double rotationCurve(double input) {
+        return (0.5 * input) + (0.25 * Math.pow(input, 3)) + (0.1 * (Math.pow(input, 5)));
     }
 
     @Override
@@ -54,22 +65,21 @@ public class TeleopSwerve extends CommandBase {
         xAxis = (Math.abs(xAxis) < Constants.stickDeadband) ? 0 : xAxis;
         rAxis = (Math.abs(rAxis) < Constants.stickDeadband) ? 0 : rAxis;
 
-        
-        if(this.controller.getRawButton(7)) {
+        if (this.controller.getRawButton(7)) {
             rotationSetpoint = .3;
-            startingRotation = s_Swerve.gyro.getYaw();
-        } 
-        
-        if(this.controller.getRawButton(8)) {
-            rotationSetpoint = -.3;
-            startingRotation = s_Swerve.gyro.getYaw();
+            startingRotation = s_Swerve.pidgey.getYaw();
         }
 
-        if(rotationSetpoint != -1) {
-            if(Math.abs(s_Swerve.gyro.getYaw() % 180) > 3) {
+        if (this.controller.getRawButton(8)) {
+            rotationSetpoint = -.3;
+            startingRotation = s_Swerve.pidgey.getYaw();
+        }
+
+        if (rotationSetpoint != -1) {
+            if (Math.abs(s_Swerve.pidgey.getYaw() % 180) > 3) {
                 rAxis = rotationSetpoint;
                 SmartDashboard.putString("spinning", "ifone");
-            } else if(Math.abs(s_Swerve.gyro.getYaw() - startingRotation) < 5) {
+            } else if (Math.abs(s_Swerve.pidgey.getYaw() - startingRotation) < 5) {
                 rAxis = rotationSetpoint;
                 SmartDashboard.putString("spinning", "ifone");
             } else {
@@ -79,18 +89,18 @@ public class TeleopSwerve extends CommandBase {
             }
         }
 
+        if (Math.abs(controller.getRawAxis(rotationAxis)) > Constants.stickDeadband) {
+            rotationSetpoint = -1;
+        }
+
+        if (Math.abs(arm.getRawAxis(1)) > .1) {
+            rAxis = arm.getRawAxis(1) * .2;
+        }
+
         translation = new Translation2d(curve(yAxis), curve(xAxis)).times(Constants.Swerve.maxSpeed);
         rotation = rotationCurve(rAxis) * Constants.Swerve.maxAngularVelocity;
         s_Swerve.drive(translation, rotation, !fieldRelative.getAsBoolean(), openLoop);
 
-    }
-
-    public double curve(double input) {
-        return (0.5 * input) + (0.2 * Math.pow(input, 3)) + (0.25 * (Math.pow(input, 5)));
-    }
-
-    public double rotationCurve(double input) {
-        return (0.5 * input) + (0.25 * Math.pow(input, 3)) + (0.1 * (Math.pow(input, 5)));
     }
 
 }

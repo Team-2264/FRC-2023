@@ -24,6 +24,8 @@ import frc.robot.autos.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 
+import frc.robot.enums.*;
+
 /**
  * This class is where the bulk of the robot should be declared. Since
  * Command-based is a
@@ -51,40 +53,30 @@ public class RobotContainer {
   private final JoystickButton followTargetButton = new JoystickButton(driver, PS4Controller.Button.kCircle.value);
   private final JoystickButton followIntakeButton = new JoystickButton(driver, PS4Controller.Button.kSquare.value);
 
-  // private final JoystickButton armHome = new JoystickButton(driver,
-  // PS4Controller.Button.kL2.value);
-  private final JoystickButton armHome = new JoystickButton(arm, 1);
-  // private final JoystickButton armOut = new JoystickButton(driver,
-  // PS4Controller.Button.kR2.value);
-  private final JoystickButton armOut = new JoystickButton(arm, 7);
+  private final JoystickButton clawToggleButton = new JoystickButton(arm, 1);
+  private final JoystickButton armIntake = new JoystickButton(arm, 2);
 
-  // private final JoystickButton armUp = new JoystickButton(driver,
-  // PS4Controller.Button.kR1.value);
-  private final JoystickButton armUp = new JoystickButton(arm, 8);
-  // private final JoystickButton clawOpen = new JoystickButton(driver,
-  // PS4Controller.Button.kL1.value);
-  private final JoystickButton clawOpen = new JoystickButton(arm, 2);
+  private final JoystickButton armSimbaCone = new JoystickButton(arm, 7);
+  private final JoystickButton armSimbaCube = new JoystickButton(arm, 8);
 
-  private final JoystickButton manualDown = new JoystickButton(arm, 9);
-  private final JoystickButton manualUp = new JoystickButton(arm, 10);
+  private final JoystickButton armMidCone = new JoystickButton(arm, 9);
+  private final JoystickButton armMidCube = new JoystickButton(arm, 10);
+
+  private final JoystickButton armLow = new JoystickButton(arm, 11);
+  private final JoystickButton armLowIntake = new JoystickButton(arm, 12);
 
   // Emergency Buttons
   private final JoystickButton disableCommandButton = new JoystickButton(driver, PS4Controller.Button.kTriangle.value);
 
   private static final NetworkTableInstance TABLE = NetworkTableInstance.getDefault();
 
-  // private DoubleSupplier rotationAxisSupplier = () -> driver.getRawAxis(2);
   /* Subsystems */
   private final Swerve s_Swerve = new Swerve();
-
   private final Arm s_Arm = new Arm();
+  private final Limelight limelight = new Limelight();
 
-  private final ATVision at_Vision = new ATVision();
-
-  StringBuilder _sb = new StringBuilder();
-
-  private teleopAuto autoCommand;
-  private teleopAutoTwo autoCommandTwo;
+  private TeleopAuto autoCommand;
+  private TeleopAutoTwo autoCommandTwo;
 
   /**
    * `
@@ -95,7 +87,7 @@ public class RobotContainer {
     boolean openLoop = true;
 
     s_Swerve.setDefaultCommand(
-        new TeleopSwerve(s_Swerve, driver, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
+        new TeleopSwerve(s_Swerve, driver, arm, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
 
     SmartDashboard.putData("Field", m_field);
     // Configure the button bindings
@@ -105,7 +97,6 @@ public class RobotContainer {
     TABLE.getTable(Constants.ObjectVision.NETWORK_TABLE_ADDRESS).getEntry("ready").clearPersistent();
 
     // lets the listener on the raspberry pi know it's ready to process and send
-    // vision data
     TABLE.getTable(Constants.ObjectVision.NETWORK_TABLE_ADDRESS).getEntry("ready").setBoolean(true);
   }
 
@@ -125,37 +116,29 @@ public class RobotContainer {
     /* Driver Buttons */
 
     zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
+
     followTargetButton.onTrue(new InstantCommand(() -> {
-      s_Swerve.setPose(at_Vision.getBotPose().toPose2d());
-
-      autoCommand = new teleopAuto(
-          s_Swerve,
-          new Pose2d(
-              s_Swerve.getPose().getX() - at_Vision.getTargetToRobot().getX() + 1.25,
-              s_Swerve.getPose().getY() - at_Vision.getTargetToRobot().getY(),
-              new Rotation2d(at_Vision.getBotAngle())),
-          m_field);
-
-      SmartDashboard.putNumber("Bot Angle", at_Vision.getBotAngle());
-
-      autoCommand.schedule();
-
+      if (limelight.getBotPose() != null) {
+        s_Swerve.setPose(limelight.getBotPose().toPose2d());
+        autoCommand = new TeleopAuto(s_Swerve, m_field);
+        autoCommand.schedule();
+      }
     }));
 
     followIntakeButton.onTrue(new InstantCommand(() -> {
-      s_Swerve.setPose(at_Vision.getBotPose().toPose2d());
-      s_Arm.intake();
-      autoCommandTwo = new teleopAutoTwo(
-          s_Swerve,
-          new Pose2d(
-              s_Swerve.getPose().getX() - at_Vision.getTargetToRobot().getX() + .7,
-              s_Swerve.getPose().getY() - at_Vision.getTargetToRobot().getY() - .7,
-              new Rotation2d(at_Vision.getBotAngle())),
-          m_field);
+      if (limelight.getBotPose() != null) {
+        s_Swerve.setPose(limelight.getBotPose().toPose2d());
+        s_Arm.intake();
+        autoCommandTwo = new TeleopAutoTwo(
+            s_Swerve,
+            new Pose2d(
+                s_Swerve.getPose().getX() - limelight.getTargetToRobot().getX() + .7,
+                s_Swerve.getPose().getY() - limelight.getTargetToRobot().getY() - .7,
+                new Rotation2d(limelight.getBotAngle())),
+            m_field);
 
-      SmartDashboard.putNumber("Bot Angle", at_Vision.getBotAngle());
-
-      autoCommandTwo.schedule();
+        autoCommandTwo.schedule();
+      }
     }));
 
     disableCommandButton.onTrue(new InstantCommand(() -> {
@@ -163,28 +146,41 @@ public class RobotContainer {
       autoCommandTwo.end(true);
     }));
 
-    armOut.onTrue(new InstantCommand(() -> s_Arm.intake()));
-    armHome.onTrue(new InstantCommand(() -> s_Arm.bringArmHome()));
-    armUp.onTrue(new InstantCommand(() -> s_Arm.simba()));
+    clawToggleButton.onTrue(new InstantCommand(() -> s_Arm.openClaw()));
 
-    clawOpen.onTrue(new InstantCommand(() -> s_Arm.toggleClaw()));
+    armIntake.onTrue(new InstantCommand(() -> {
+      if (s_Arm.getStatus() == ArmStatus.HOME) {
+        s_Arm.intake();
+      } else {
+        s_Arm.bringArmHome();
+      }
+    }));
 
-    manualDown.onTrue(new InstantCommand(() -> s_Arm.wristPosition += 40));
-    manualUp.onTrue(new InstantCommand(() -> s_Arm.wristPosition -= 40));
+    armLow.onTrue(new InstantCommand(() -> s_Arm.setLow()));
+    armLowIntake.onTrue(new InstantCommand(() -> s_Arm.setLowIntake()));
+
+    armMidCone.onTrue(new InstantCommand(() -> s_Arm.setMidCone()));
+    armMidCube.onTrue(new InstantCommand(() -> s_Arm.setMidCube()));
+
+    armSimbaCone.onTrue(new InstantCommand(() -> s_Arm.simbaCone()));
+    armSimbaCube.onTrue(new InstantCommand(() -> s_Arm.simbaCube()));
+
   }
 
   /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
+   * 
    *
+   * 
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
     // Command will run in autonomous
-    return new AutoSwerve(s_Swerve, s_Arm).getCommand();
+    return new AutoSwerve(s_Swerve, s_Arm, limelight).getCommand();
   }
 
   public void updateRobotPose() {
     m_field.setRobotPose(s_Swerve.getPose());
+    s_Arm.wristPosition += arm.getRawAxis(2) * -40;
   }
 
   public void armsInit() {

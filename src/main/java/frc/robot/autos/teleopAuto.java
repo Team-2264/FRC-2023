@@ -17,15 +17,13 @@ import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
-public class teleopAuto extends SequentialCommandGroup {
+public class TeleopAuto extends SequentialCommandGroup {
 
     private SwerveControllerCommand swerveControllerCommand;
     private Pose2d currentpose;
     Trajectory exampleTrajectory;
 
-    public teleopAuto(Swerve s_Swerve, Pose2d targetPose, Field2d field) {
-
-        System.out.println("this is the target pose x" + targetPose.getX());
+    public TeleopAuto(Swerve s_Swerve, Field2d field) {
 
         TrajectoryConfig config = new TrajectoryConfig(
                 Constants.AutoConstants.kMaxSpeedMetersPerSecond,

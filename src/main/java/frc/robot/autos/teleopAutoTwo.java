@@ -14,45 +14,44 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 
-public class teleopAutoTwo extends SequentialCommandGroup {
+public class TeleopAutoTwo extends SequentialCommandGroup {
 
-    private SwerveControllerCommand swerveControllerCommand;
+        private SwerveControllerCommand swerveControllerCommand;
 
-    public teleopAutoTwo(Swerve s_Swerve, Pose2d targetPose, Field2d field) {
+        public TeleopAutoTwo(Swerve s_Swerve, Pose2d targetPose, Field2d field) {
 
-        System.out.println("this is the target pose x" + targetPose.getX());
+                TrajectoryConfig config = new TrajectoryConfig(
+                                Constants.AutoConstants.kMaxSpeedMetersPerSecond,
+                                Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared)
+                                .setKinematics(Constants.Swerve.swerveKinematics);
 
-        TrajectoryConfig config = new TrajectoryConfig(
-                Constants.AutoConstants.kMaxSpeedMetersPerSecond,
-                Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared)
-                .setKinematics(Constants.Swerve.swerveKinematics);
+                // An example trajectory to follow. All units in meters.
+                Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
+                                List.of(s_Swerve.getPose(), targetPose),
+                                config);
 
-        // An example trajectory to follow. All units in meters.
-        Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(List.of(s_Swerve.getPose(), targetPose),
-                config);
+                field.getObject("traj").setTrajectory(exampleTrajectory);
 
-        field.getObject("traj").setTrajectory(exampleTrajectory);
+                var thetaController = new ProfiledPIDController(
+                                Constants.AutoConstants.kPThetaController, 0, 0,
+                                Constants.AutoConstants.kThetaControllerConstraints);
+                thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
-        var thetaController = new ProfiledPIDController(
-                Constants.AutoConstants.kPThetaController, 0, 0,
-                Constants.AutoConstants.kThetaControllerConstraints);
-        thetaController.enableContinuousInput(-Math.PI, Math.PI);
+                swerveControllerCommand = new SwerveControllerCommand(
+                                exampleTrajectory,
+                                s_Swerve::getPose,
+                                Constants.Swerve.swerveKinematics,
+                                new PIDController(Constants.AutoConstants.kPXController, 0, 0),
+                                new PIDController(Constants.AutoConstants.kPYController, 0, 0),
+                                thetaController,
+                                s_Swerve::setModuleStates,
+                                s_Swerve);
 
-        swerveControllerCommand = new SwerveControllerCommand(
-                exampleTrajectory,
-                s_Swerve::getPose,
-                Constants.Swerve.swerveKinematics,
-                new PIDController(Constants.AutoConstants.kPXController, 0, 0),
-                new PIDController(Constants.AutoConstants.kPYController, 0, 0),
-                thetaController,
-                s_Swerve::setModuleStates,
-                s_Swerve);
+                addCommands(swerveControllerCommand);
 
-        addCommands(swerveControllerCommand);
+        }
 
-    }
-
-    public void stop() {
-        swerveControllerCommand.end(true);
-    }
+        public void stop() {
+                swerveControllerCommand.end(true);
+        }
 }

@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Pneumatics;
+import frc.robot.enums.ArmStatus;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
@@ -30,10 +31,13 @@ public class Arm extends SubsystemBase {
   boolean canUseArm, canUseWrist;
   int i;
 
+  private ArmStatus status;
+
   StringBuilder _sb = new StringBuilder();
 
   public Arm() {
 
+    status = ArmStatus.HOME;
     armPosition = 0;
     wristPosition = 0;
     i = 0;
@@ -126,13 +130,40 @@ public class Arm extends SubsystemBase {
     setWristHome();
     closeClaw();
 
-    // bringShoulderIn();
+    status = ArmStatus.HOME;
+  }
+
+  public void setLowIntake() {
+    setArmLowIntake();
+    setWristAngledDown();
+    openClaw();
+    bringShoulderIn();
+
+    status = ArmStatus.INTAKE_LOW;
   }
 
   public void setLow() {
     setArmLow();
     setWristFlat();
     bringShoulderIn();
+
+    status = ArmStatus.LOW;
+  }
+
+  public void setMidCube() {
+    setArmMidCube();
+    setWristFlat();
+    bringShoulderIn();
+
+    status = ArmStatus.CUBE_MID;
+  }
+
+  public void setMidCone() {
+    setArmMidCone();
+    setWristHigh();
+    bringShoulderIn();
+
+    status = ArmStatus.CONE_MID;
   }
 
   public void intake() {
@@ -140,12 +171,28 @@ public class Arm extends SubsystemBase {
     setArmHigh();
     setWristFlat();
     openClaw();
+
+    status = ArmStatus.INTAKE;
   }
 
-  public void simba() {
+  public void simbaCone() {
     setWristHigh();
-    setArmHighest();
+    setArmHighestCone();
     takeShoulderOut();
+
+    status = ArmStatus.CONE_SIMBA;
+  }
+
+  public void simbaCube() {
+    setWristFlat();
+    setArmHighestCube();
+    takeShoulderOut();
+
+    status = ArmStatus.CUBE_SIMBA;
+  }
+
+  public ArmStatus getStatus() {
+    return status;
   }
 
   // SETPOINTS
@@ -154,16 +201,32 @@ public class Arm extends SubsystemBase {
     armPosition = 0;
   }
 
+  private void setArmLowIntake() {
+    armPosition = 30;
+  }
+
   private void setArmLow() {
+    armPosition = 30;
+  }
+
+  private void setArmMidCube() {
     armPosition = 54;
+  }
+
+  private void setArmMidCone() {
+    armPosition = 70;
   }
 
   private void setArmHigh() {
     armPosition = 67.5;
   }
 
-  private void setArmHighest() {
+  private void setArmHighestCone() {
     armPosition = 145;
+  }
+
+  private void setArmHighestCube() {
+    armPosition = 130;
   }
 
   private void setWristHome() {
@@ -172,6 +235,10 @@ public class Arm extends SubsystemBase {
 
   private void setWristFlat() {
     wristPosition = 77;
+  }
+
+  private void setWristAngledDown() {
+    wristPosition = 100;
   }
 
   private void setWristHigh() {
@@ -192,7 +259,7 @@ public class Arm extends SubsystemBase {
   // RAW MOVEMENTS
 
   private void moveElbowIn() {
-    leftBelt.set(ControlMode.PercentOutput, -.3);
+    leftBelt.set(ControlMode.PercentOutput, -.15);
   }
 
   public void moveWristUp() {
@@ -206,12 +273,12 @@ public class Arm extends SubsystemBase {
   }
 
   public void openClaw() {
-    if (!claw.extendTest())
+    if (!claw.isExtended())
       claw.solenoidToggle();
   }
 
   public void closeClaw() {
-    if (claw.extendTest())
+    if (claw.isExtended())
       claw.solenoidToggle();
   }
 
@@ -220,12 +287,12 @@ public class Arm extends SubsystemBase {
   }
 
   private void takeShoulderOut() {
-    if (!arms.extendTest())
+    if (!arms.isExtended())
       arms.solenoidToggle();
   }
 
   private void bringShoulderIn() {
-    if (arms.extendTest())
+    if (arms.isExtended())
       arms.solenoidToggle();
   }
 

@@ -1,47 +1,53 @@
 package frc.robot;
 
 import edu.wpi.first.math.geometry.*;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.apriltag.*;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import frc.robot.enums.AutoPosition;
+
 import java.util.ArrayList;
 
-public class ATVision {
+public class Limelight {
 
     private static final NetworkTable TABLE = NetworkTableInstance.getDefault().getTable("limelight");
     AprilTagFieldLayout aprilTagFieldLayout;
-    Transform3d cameraToRobot = new Transform3d(new Translation3d(Units.feetToMeters(1), 0.0, Units.feetToMeters(1)),
-            new Rotation3d(0, 0, 0)); // Cam mounted facing forward, half a meter forward of center, half a meter up
-                                      // from center.
-
-    ArrayList<ArrayList<Double>> positions;
-
-    public ATVision() {
-        positions = new ArrayList<>();
-    }
-
     Transform2d currentTransform;
     double turnAngle;
     Translation2d distanceAndTranslation;
+    ArrayList<ArrayList<Double>> positions;
+
+    public Limelight() {
+        positions = new ArrayList<>();
+    }
+
+    double[] arrNull = { 0, 0, 0, 0, 0, 0 };
+    double[] arr;
 
     public Pose3d getTargetToRobot() {
         double[] arr = TABLE.getEntry("targetpose_robotspace").getDoubleArray(new double[6]);
 
-        // SmartDashboard.putNumberArray("DTargetToCamera", arr);
+        if (arr == arrNull) {
+            return null;
+        }
+
         return new Pose3d(arr[2], -arr[0], arr[1], new Rotation3d());
     }
 
-    double[] arr;
-
     public Pose3d getBotPose() {
-
-        if (DriverStation.getAlliance() == Alliance.Blue)
+        if (DriverStation.getAlliance() == Alliance.Blue) {
             arr = TABLE.getEntry("botpose_wpiblue").getDoubleArray(new double[6]);
-        if (DriverStation.getAlliance() == Alliance.Red)
+        }
+
+        if (DriverStation.getAlliance() == Alliance.Red) {
             arr = TABLE.getEntry("botpose_wpired").getDoubleArray(new double[6]);
+        }
+
+        if (arr == arrNull) {
+            return null;
+        }
 
         return new Pose3d(arr[0], arr[1], arr[2],
                 new Rotation3d(arr[4] * Math.PI / 180, arr[3] * Math.PI / 180, arr[5] * Math.PI / 180));
@@ -51,25 +57,33 @@ public class ATVision {
 
     public Translation3d getBotTranslation() {
 
-        if (DriverStation.getAlliance() == Alliance.Blue)
+        if (DriverStation.getAlliance() == Alliance.Blue) {
             arrTwo = TABLE.getEntry("botpose_wpiblue").getDoubleArray(new double[6]);
-        if (DriverStation.getAlliance() == Alliance.Red)
-            arrTwo = TABLE.getEntry("botpose_wpired").getDoubleArray(new double[6]);
+        }
 
-        // SmartDashboard.putNumberArray("DBotPose", arrTwo);
+        if (DriverStation.getAlliance() == Alliance.Red) {
+            arrTwo = TABLE.getEntry("botpose_wpired").getDoubleArray(new double[6]);
+        }
+
+        if (arrTwo == arrNull) {
+            return null;
+        }
 
         return new Translation3d(arrTwo[0], arrTwo[1], arrTwo[2]);
     }
 
     double[] arrThree;
 
-    public double getBotAngle() {
-        if (DriverStation.getAlliance() == Alliance.Blue)
+    public Double getBotAngle() {
+        if (DriverStation.getAlliance() == Alliance.Blue) {
             arrThree = TABLE.getEntry("botpose_wpiblue").getDoubleArray(new double[6]);
-        if (DriverStation.getAlliance() == Alliance.Red)
+        }
+        if (DriverStation.getAlliance() == Alliance.Red) {
             arrThree = TABLE.getEntry("botpose_wpired").getDoubleArray(new double[6]);
+        }
 
-        // SmartDashboard.putNumberArray("ANGLE", arrThree);
+        if (arrThree == arrNull)
+            return null;
 
         return (arr[5] * Math.PI) / 180;
     }
@@ -95,5 +109,23 @@ public class ATVision {
         Pose3d targetToCameraPose = getTargetToRobot();
         // SmartDashboard.putString("TargetToCamera", targetToCameraPose.toString());
         return new Transform2d(new Pose2d(), targetToCameraPose.toPose2d());
+    }
+
+    public int getTargetID() {
+        return (int) TABLE.getEntry("tid").getNumber(9);
+    }
+
+    public AutoPosition getAutoPosition() {
+        int id = getTargetID();
+
+        if (id == 1 || id == 8)
+            return AutoPosition.EDGE;
+        if (id == 2 || id == 7)
+            return AutoPosition.CENTER;
+        if (id == 3 || id == 6)
+            return AutoPosition.INNER_BORDER;
+
+        return AutoPosition.INNER_BORDER;
+
     }
 }

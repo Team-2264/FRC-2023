@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
  * 
  * Allows Path Following along with triggered events along the route
  */
-public class PathPlannerAutoWEvents extends PathPlannerAuto {
+public class SinglePathAutoWithEvents extends PathPlannerAuto {
 
         private FollowPathWithEvents command;
 
@@ -31,7 +31,7 @@ public class PathPlannerAutoWEvents extends PathPlannerAuto {
          * @param pathName
          * @param eventMap
          */
-        public PathPlannerAutoWEvents(Swerve swerve, String pathName, HashMap<String, Command> eventMap) {
+        public SinglePathAutoWithEvents(Swerve swerve, String pathName, HashMap<String, Command> eventMap) {
                 this.s_Swerve = swerve;
                 addRequirements(s_Swerve);
 

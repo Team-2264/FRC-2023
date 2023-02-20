@@ -20,11 +20,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Swerve extends SubsystemBase {
     public SwerveDriveOdometry swerveOdometry;
     public SwerveModule[] mSwerveMods;
-    public Pigeon2 gyro;
+    public Pigeon2 pidgey;
 
     public Swerve() {
-        gyro = new Pigeon2(Constants.Swerve.pigeonID);
-        gyro.configFactoryDefault();
+        pidgey = new Pigeon2(Constants.Swerve.pigeonID);
+        pidgey.configFactoryDefault();
         zeroGyro();
 
         mSwerveMods = new SwerveModule[] {
@@ -164,24 +164,24 @@ public class Swerve extends SubsystemBase {
     }
 
     public void zeroGyro() {
-        gyro.setYaw(0);
+        pidgey.setYaw(0);
     }
 
     public void invertGyro() {
-        gyro.setYaw(180);
+        pidgey.setYaw(180);
     }
 
     public Rotation2d getYaw() {
         return (Constants.Swerve.invertGyro) ? Rotation2d.fromDegrees(360 -
-                gyro.getYaw())
-                : Rotation2d.fromDegrees(gyro.getYaw());
+                pidgey.getYaw())
+                : Rotation2d.fromDegrees(pidgey.getYaw());
     }
 
     @Override
     public void periodic() {
         swerveOdometry.update(getYaw(), getModulePositions());
 
-        SmartDashboard.putNumber("Gyro", gyro.getYaw());
+        SmartDashboard.putNumber("Gyro", pidgey.getYaw());
 
         for (SwerveModule mod : mSwerveMods) {
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());
