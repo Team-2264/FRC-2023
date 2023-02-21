@@ -11,10 +11,12 @@ public class AutoBalance extends CommandBase {
     private Swerve s_Swerve;
     private MovementDirection direction;
     private boolean balanced = false;
+    private long lastBalanced;
 
     public AutoBalance(Swerve s_Swerve, MovementDirection direction) {
         this.s_Swerve = s_Swerve;
         this.direction = direction;
+        this.lastBalanced = -1;
     }
 
     @Override
@@ -56,18 +58,22 @@ public class AutoBalance extends CommandBase {
         double currAngle = s_Swerve.pidgey.getPitch();
 
         if (currAngle > 2.5) {
+            lastBalanced = -1;
             s_Swerve.setModuleStates(
                     Constants.Swerve.swerveKinematics.toSwerveModuleStates(
                             new ChassisSpeeds(Constants.AutoConstants.AUTO_BALANCE_MAX_SPEED_X / 2, 0, 0)));
         } else if (currAngle < -2.5) {
+            lastBalanced = -1;
             s_Swerve.setModuleStates(
                     Constants.Swerve.swerveKinematics.toSwerveModuleStates(
                             new ChassisSpeeds(-Constants.AutoConstants.AUTO_BALANCE_MAX_SPEED_X / 2, 0, 0)));
         } else {
+            if(lastBalanced == -1) lastBalanced = System.currentTimeMillis();
+            else if(System.currentTimeMillis() - lastBalanced > 2000) balanced = true;
             s_Swerve.setModuleStates(
                     Constants.Swerve.swerveKinematics.toSwerveModuleStates(new ChassisSpeeds(0, 0, 0)));
-            balanced = true;
         }
+
     }
 
     @Override
