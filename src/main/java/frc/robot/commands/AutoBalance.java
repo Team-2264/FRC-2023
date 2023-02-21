@@ -76,6 +76,12 @@ public class AutoBalance extends CommandBase {
 
     }
 
+    public void end() {
+        // Turn wheels sideways so we do not slip if some funny business happens
+        s_Swerve.setModuleStates(
+                    Constants.Swerve.swerveKinematics.toSwerveModuleStates(new ChassisSpeeds(0, 0.0001, 0)));
+    }
+
     @Override
     public boolean isFinished() {
         return balanced;
