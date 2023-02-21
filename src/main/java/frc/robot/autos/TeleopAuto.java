@@ -25,13 +25,18 @@ public class TeleopAuto extends SequentialCommandGroup {
 
     private SwerveControllerCommand swerveControllerCommand;
     private Pose2d currentpose;
+    private Swerve s_Swerve;
     Trajectory exampleTrajectory;
 
     Pose2d blueTop, blueBottom, redTop, redBottom;
 
     Deque<Pose2d> waypoints;
 
-    public TeleopAuto(Swerve s_Swerve, Field2d field) {
+    TrajectoryConfig config;
+
+    public TeleopAuto(Swerve inputSwerve, Field2d field) {
+
+        s_Swerve = inputSwerve;
 
         waypoints = new LinkedList<>();
 
@@ -41,7 +46,7 @@ public class TeleopAuto extends SequentialCommandGroup {
         redTop = new Pose2d(14.3, 4.4, new Rotation2d(0));
         redBottom = new Pose2d(14.3, 1, new Rotation2d(0));
         
-        TrajectoryConfig config = new TrajectoryConfig(
+        config = new TrajectoryConfig(
                 Constants.AutoConstants.kMaxSpeedMetersPerSecond,
                 Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared)
                 .setKinematics(Constants.Swerve.swerveKinematics);
@@ -58,14 +63,21 @@ public class TeleopAuto extends SequentialCommandGroup {
             } else {
                 waypoints = createWaypoints(blueBottom, "blue", "bottom"); 
             }
+
+            actuallyDoCommand(field);
         } else {
             if (currentpose.getY() > 2.8) {
                 waypoints = createWaypoints(redTop, "red", "top"); 
             } else {
                 waypoints = createWaypoints(redBottom, "red", "bottom"); 
             }
+
+            actuallyDoCommand(field);
         }
 
+    }
+
+    private void actuallyDoCommand(Field2d field) {
         exampleTrajectory = TrajectoryGenerator.generateTrajectory(new ArrayList<Pose2d>(waypoints), config);
 
         field.getObject("traj").setTrajectory(exampleTrajectory);
@@ -86,7 +98,6 @@ public class TeleopAuto extends SequentialCommandGroup {
                 s_Swerve);
 
         addCommands(swerveControllerCommand);
-
     }
 
     private Pose2d createWaypoint(Pose2d finalWaypoint, double tX, double tY) {
@@ -101,9 +112,7 @@ public class TeleopAuto extends SequentialCommandGroup {
             output.addFirst(createWaypoint(finalWaypoint, (alliance == "blue" ? 1: -1) * 1.6, side == "top" ? .3 : -.1));
         if (currentpose.getX() > 5 && currentpose.getX() < 11.6)
             output.addFirst(createWaypoint(finalWaypoint, (alliance == "blue" ? 1: -1) * 3.6, side == "top" ? .3 : -.1));
-
         return output;
-
     }
 
     public void stop() {
