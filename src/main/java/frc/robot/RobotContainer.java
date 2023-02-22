@@ -50,8 +50,10 @@ public class RobotContainer {
   private final JoystickButton zeroGyro = new JoystickButton(driver, PS4Controller.Button.kL3.value);
   private final JoystickButton robotCentric = new JoystickButton(driver, PS4Controller.Button.kR3.value);
 
-  private final JoystickButton followTargetButton = new JoystickButton(driver, PS4Controller.Button.kCircle.value);
-  private final JoystickButton followIntakeButton = new JoystickButton(driver, PS4Controller.Button.kSquare.value);
+  private final JoystickButton followRight = new JoystickButton(driver, PS4Controller.Button.kCircle.value);
+  private final JoystickButton followLeft = new JoystickButton(driver, PS4Controller.Button.kSquare.value);
+  private final JoystickButton followMiddle = new JoystickButton(driver, PS4Controller.Button.kTriangle.value);
+  private final JoystickButton followIntakeButton = new JoystickButton(driver, PS4Controller.Button.kCross.value);
 
   private final JoystickButton clawToggleButton = new JoystickButton(arm, 1);
   private final JoystickButton armIntake = new JoystickButton(arm, 2);
@@ -65,14 +67,16 @@ public class RobotContainer {
   private final JoystickButton armLow = new JoystickButton(arm, 11);
   private final JoystickButton armLowIntake = new JoystickButton(arm, 12);
 
+  private final JoystickButton resetWrist = new JoystickButton(arm, 5);
+
   // Emergency Buttons
-  private final JoystickButton disableCommandButton = new JoystickButton(driver, PS4Controller.Button.kTriangle.value);
+  private final JoystickButton disableCommandButton = new JoystickButton(driver, PS4Controller.Button.kR1.value);
 
   private static final NetworkTableInstance TABLE = NetworkTableInstance.getDefault();
 
   /* Subsystems */
   private final Swerve s_Swerve = new Swerve();
-  private final Arm s_Arm = new Arm();
+  private final Arm s_Arm = new Arm(arm);
   private final Limelight limelight = new Limelight();
 
   private TeleopAuto autoCommand;
@@ -117,7 +121,7 @@ public class RobotContainer {
 
     zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
 
-    followTargetButton.onTrue(new InstantCommand(() -> {
+    followMiddle.onTrue(new InstantCommand(() -> {
       if (limelight.getBotPose() != null) {
         s_Swerve.setPose(limelight.getBotPose().toPose2d());
         autoCommandTwo = new TeleopAutoTwo(
@@ -129,6 +133,39 @@ public class RobotContainer {
             m_field);
 
         autoCommandTwo.schedule();
+        s_Arm.setMidCube();
+      }
+    }));
+
+    followLeft.onTrue(new InstantCommand(() -> {
+      if (limelight.getBotPose() != null) {
+        s_Swerve.setPose(limelight.getBotPose().toPose2d());
+        autoCommandTwo = new TeleopAutoTwo(
+            s_Swerve,
+            new Pose2d(
+                s_Swerve.getPose().getX() - limelight.getTargetToRobot().getX() + .92,
+                s_Swerve.getPose().getY() - limelight.getTargetToRobot().getY() + .56,
+                new Rotation2d(limelight.getBotAngle())),
+            m_field);
+
+        autoCommandTwo.schedule();
+        s_Arm.setMidCone();
+      }
+    }));
+
+    followRight.onTrue(new InstantCommand(() -> {
+      if (limelight.getBotPose() != null) {
+        s_Swerve.setPose(limelight.getBotPose().toPose2d());
+        autoCommandTwo = new TeleopAutoTwo(
+            s_Swerve,
+            new Pose2d(
+                s_Swerve.getPose().getX() - limelight.getTargetToRobot().getX() + .92,
+                s_Swerve.getPose().getY() - limelight.getTargetToRobot().getY() - .56,
+                new Rotation2d(limelight.getBotAngle())),
+            m_field);
+
+        autoCommandTwo.schedule();
+        s_Arm.setMidCone();
       }
     }));
 
@@ -171,6 +208,8 @@ public class RobotContainer {
 
     armSimbaCone.onTrue(new InstantCommand(() -> s_Arm.simbaCone()));
     armSimbaCube.onTrue(new InstantCommand(() -> s_Arm.simbaCube()));
+
+    resetWrist.onTrue(new InstantCommand(() -> s_Arm.init()));
   }
 
   /**

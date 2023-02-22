@@ -18,6 +18,8 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 
+import edu.wpi.first.wpilibj.Joystick;
+
 public class Arm extends SubsystemBase {
 
   public TalonFX leftBelt, rightBelt;
@@ -27,15 +29,19 @@ public class Arm extends SubsystemBase {
   boolean compressorOn = false;
   DigitalInput shoulderLimitSwitch;
 
-  public double armPosition, wristPosition;
+  public double armPosition, wristPosition, startTime;
   boolean canUseArm, canUseWrist;
   int i;
 
   private ArmStatus status;
 
+  private Joystick arm;
+
   StringBuilder _sb = new StringBuilder();
 
-  public Arm() {
+  public Arm(Joystick input) {
+
+    arm = input;
 
     status = ArmStatus.HOME;
     armPosition = 0;
@@ -164,6 +170,7 @@ public class Arm extends SubsystemBase {
     setWristFlat();
     bringShoulderIn();
 
+    startTime = System.currentTimeMillis();
     status = ArmStatus.CUBE_MID;
   }
 
@@ -172,6 +179,7 @@ public class Arm extends SubsystemBase {
     setWristMid();
     bringShoulderIn();
 
+    startTime = System.currentTimeMillis();
     status = ArmStatus.CONE_MID;
   }
 
@@ -196,7 +204,8 @@ public class Arm extends SubsystemBase {
     setWristHigh();
     setArmHighestCone();
     takeShoulderOut();
-
+    
+    startTime = System.currentTimeMillis();
     status = ArmStatus.CONE_SIMBA;
   }
 
@@ -205,6 +214,7 @@ public class Arm extends SubsystemBase {
     setArmHighestCube();
     takeShoulderOut();
 
+    startTime = System.currentTimeMillis();
     status = ArmStatus.CUBE_SIMBA;
   }
 
@@ -259,11 +269,12 @@ public class Arm extends SubsystemBase {
   }
 
   private void setWristMid() {
-    wristPosition = 15;
+    wristPosition = 30;
   }
 
   private void setWristHigh() {
-    wristPosition = 5;
+    wristPosition = 0;
+
   }
 
   // SETFUNCTIONS
@@ -357,7 +368,7 @@ public class Arm extends SubsystemBase {
       setElbow(armPosition);
     }
 
-    if (canUseWrist) {
+    if (canUseWrist && (System.currentTimeMillis() - startTime > 2000)) {
       setWrist(wristPosition);
     }
 
