@@ -181,6 +181,14 @@ public class Arm extends SubsystemBase {
     status = ArmStatus.INTAKE;
   }
 
+  public void intermediateAuto() {
+    bringShoulderIn();
+    setArmHigh();
+    setWristHome();
+
+    status = ArmStatus.INTERMEDIATE;
+  }
+
   public void simbaCone() {
     setWristHigh();
     setArmHighestCone();
