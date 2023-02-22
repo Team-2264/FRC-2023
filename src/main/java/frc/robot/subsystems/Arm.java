@@ -122,6 +122,12 @@ public class Arm extends SubsystemBase {
     bringShoulderIn();
   }
 
+  public void adjustWrist(double amounts) {
+    wristPosition =  wristPosition + amounts;
+    SmartDashboard.putNumber("WRIST", wristPosition);
+    SmartDashboard.putNumber("WRIST AFTER", amounts);
+  }
+
   // COMBINED MOVEMENTS (THESE SHOULD BE THE ONLY ONES CALLED)
 
   public void bringArmHome() {
@@ -160,7 +166,7 @@ public class Arm extends SubsystemBase {
 
   public void setMidCone() {
     setArmMidCone();
-    setWristHigh();
+    setWristMid();
     bringShoulderIn();
 
     status = ArmStatus.CONE_MID;
@@ -202,11 +208,11 @@ public class Arm extends SubsystemBase {
   }
 
   private void setArmLowIntake() {
-    armPosition = 30;
+    armPosition = 15;
   }
 
   private void setArmLow() {
-    armPosition = 30;
+    armPosition = 15;
   }
 
   private void setArmMidCube() {
@@ -238,7 +244,11 @@ public class Arm extends SubsystemBase {
   }
 
   private void setWristAngledDown() {
-    wristPosition = 100;
+    wristPosition = 120;
+  }
+
+  private void setWristMid() {
+    wristPosition = 15;
   }
 
   private void setWristHigh() {

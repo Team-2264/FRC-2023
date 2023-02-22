@@ -91,10 +91,11 @@ public class TeleopSwerve extends CommandBase {
 
         if (Math.abs(controller.getRawAxis(rotationAxis)) > Constants.stickDeadband) {
             rotationSetpoint = -1;
+            rAxis = -controller.getRawAxis(rotationAxis);
         }
 
-        if (Math.abs(arm.getRawAxis(1)) > .1) {
-            rAxis = arm.getRawAxis(1) * .2;
+        if (Math.abs(arm.getRawAxis(2)) > .2) {
+            rAxis = arm.getRawAxis(2) * -.2;
         }
 
         translation = new Translation2d(curve(yAxis), curve(xAxis)).times(Constants.Swerve.maxSpeed);

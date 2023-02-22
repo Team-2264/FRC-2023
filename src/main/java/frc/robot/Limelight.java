@@ -112,7 +112,7 @@ public class Limelight {
     }
 
     public int getTargetID() {
-        return (int) TABLE.getEntry("tid").getNumber(9);
+        return TABLE.getEntry("tid").getNumber(9).intValue();
     }
 
     public AutoPosition getAutoPosition() {

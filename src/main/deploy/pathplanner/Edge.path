@@ -22,7 +22,7 @@
         ],
         "executionBehavior": "parallel",
         "waitBehavior": "after",
-        "waitTime": 0
+        "waitTime": 2.0
       }
     },
     {
@@ -65,7 +65,7 @@
         "x": 5.585741385824678,
         "y": 0.7833322129860398
       },
-      "holonomicAngle": -180.0,
+      "holonomicAngle": -90.0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
@@ -102,7 +102,7 @@
   ],
   "markers": [
     {
-      "position": 1.9041870117187498,
+      "position": 1.3963636363636254,
       "names": [
         "HOME"
       ]

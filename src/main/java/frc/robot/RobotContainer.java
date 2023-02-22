@@ -146,7 +146,7 @@ public class RobotContainer {
       autoCommandTwo.end(true);
     }));
 
-    clawToggleButton.onTrue(new InstantCommand(() -> s_Arm.openClaw()));
+    clawToggleButton.onTrue(new InstantCommand(() -> s_Arm.toggleClaw()));
 
     armIntake.onTrue(new InstantCommand(() -> {
       if (s_Arm.getStatus() == ArmStatus.HOME) {
@@ -164,7 +164,6 @@ public class RobotContainer {
 
     armSimbaCone.onTrue(new InstantCommand(() -> s_Arm.simbaCone()));
     armSimbaCube.onTrue(new InstantCommand(() -> s_Arm.simbaCube()));
-
   }
 
   /**
@@ -180,7 +179,9 @@ public class RobotContainer {
 
   public void updateRobotPose() {
     m_field.setRobotPose(s_Swerve.getPose());
-    s_Arm.wristPosition += arm.getRawAxis(2) * -40;
+    // if(Math.abs(arm.getRawAxis(1)) > .1) s_Arm.adjustWrist(arm.getRawAxis(1));
+
+    
   }
 
   public void armsInit() {
