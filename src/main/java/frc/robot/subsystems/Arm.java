@@ -118,7 +118,7 @@ public class Arm extends SubsystemBase {
 
   public void init() {
     moveElbowIn();
-    // moveWristUp();
+    moveWristUp();
     bringShoulderIn();
   }
 
@@ -327,8 +327,7 @@ public class Arm extends SubsystemBase {
     SmartDashboard.putBoolean("WRIST LIMIT", wristMotor.getSensorCollection().isRevLimitSwitchClosed());
     SmartDashboard.putBoolean("SHOULDER LIMIT", !shoulderLimitSwitch.get());
 
-    // if (wristMotor.getSensorCollection().isRevLimitSwitchClosed() && !canUseWrist) {
-    if(!canUseWrist) {
+    if (wristMotor.getSensorCollection().isRevLimitSwitchClosed() && !canUseWrist) {
       wristMotor.setSelectedSensorPosition(0);
       setWristHome();
       // wristMotor.configForwardSoftLimitThreshold(650);
