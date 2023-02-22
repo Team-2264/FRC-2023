@@ -40,6 +40,9 @@ public class SetArmToPosition extends CommandBase {
             case CONE_SIMBA:
                 s_Arm.simbaCone();
                 break;
+            case INTERMEDIATE:
+                s_Arm.intermediateAuto();
+                break;
             case LOW:
                 s_Arm.setLow();
                 break;

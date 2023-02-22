@@ -26,12 +26,13 @@ public class AutoSwerve {
     double currentTime;
 
     public Command getCommand() {
-        if (s_Limelight.getAutoPosition() == AutoPosition.EDGE)
-            return new PathGroupAuto(s_Swerve, "Edge", EVENT_MAP);
-        if (s_Limelight.getAutoPosition() == AutoPosition.CENTER)
-            return new PathGroupAuto(s_Swerve, "Center", EVENT_MAP);
+        // if (s_Limelight.getAutoPosition() == AutoPosition.EDGE)
+        // return new PathGroupAuto(s_Swerve, "Edge", EVENT_MAP);
+        // if (s_Limelight.getAutoPosition() == AutoPosition.CENTER)
+        // return new PathGroupAuto(s_Swerve, "Center", EVENT_MAP);
 
-        return new PathGroupAuto(s_Swerve, "Inner", EVENT_MAP);
+        // return new PathGroupAuto(s_Swerve, "Inner", EVENT_MAP);
+        return new PathGroupAuto(s_Swerve, "Test", EVENT_MAP);
     }
 
 }

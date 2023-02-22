@@ -14,8 +14,12 @@ public class StopMoving extends CommandBase {
     }
 
     @Override
-    public void execute() {
+    public void initialize() {
         s_Swerve.setModuleStates(Constants.Swerve.swerveKinematics.toSwerveModuleStates(new ChassisSpeeds(0, 0, 0)));
+    }
+
+    @Override
+    public void execute() {
     }
 
     @Override

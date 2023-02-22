@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class Delay extends CommandBase {
 
     private double delay;
+    private long startTime;
 
     public Delay(double delayTime) {
         this.delay = delayTime;
@@ -13,14 +14,15 @@ public class Delay extends CommandBase {
     @Override
     public void initialize() {
         System.out.println("Delaying for " + delay + " seconds");
+        this.startTime = System.currentTimeMillis();
     }
 
     @Override
     public void execute() {
-        try {
-            Thread.sleep((int) (delay * 1000));
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    }
+
+    @Override
+    public boolean isFinished() {
+        return !(System.currentTimeMillis() - startTime < delay * 1000);
     }
 }

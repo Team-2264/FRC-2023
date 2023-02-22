@@ -19,12 +19,15 @@ public class AutonomousEvents {
     public AutonomousEvents(Swerve s_Swerve, Arm s_Arm) {
         EVENT_MAP.put("HOME", new SetArmToPosition(s_Arm, ArmStatus.HOME));
 
+        EVENT_MAP.put("INTAKE", new SetArmToPosition(s_Arm, ArmStatus.INTAKE));
+
         EVENT_MAP.put("CONE_SIMBA", new SetArmToPosition(s_Arm, ArmStatus.CONE_SIMBA));
         EVENT_MAP.put("CUBE_SIMBA", new SetArmToPosition(s_Arm, ArmStatus.CUBE_SIMBA));
 
         EVENT_MAP.put("CUBE_MID", new SetArmToPosition(s_Arm, ArmStatus.CUBE_MID));
         EVENT_MAP.put("CONE_MID", new SetArmToPosition(s_Arm, ArmStatus.CONE_MID));
 
+        EVENT_MAP.put("INTERMEDIATE", new SetArmToPosition(s_Arm, ArmStatus.INTERMEDIATE));
         EVENT_MAP.put("LOW", new SetArmToPosition(s_Arm, ArmStatus.LOW));
 
         EVENT_MAP.put("OPEN_CLAW", new OpenClaw(s_Arm));
@@ -42,6 +45,7 @@ public class AutonomousEvents {
     }
 
     public HashMap<String, Command> getEventMap() {
+        System.out.println(EVENT_MAP);
         return EVENT_MAP;
     }
 
