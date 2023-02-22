@@ -4,16 +4,19 @@
 
 package frc.robot;
 
+import java.sql.Driver;
 import java.util.function.BooleanSupplier;
 // import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -129,7 +132,7 @@ public class RobotContainer {
             new Pose2d(
                 s_Swerve.getPose().getX() - limelight.getTargetToRobot().getX() + 1,
                 s_Swerve.getPose().getY() - limelight.getTargetToRobot().getY(),
-                new Rotation2d(limelight.getBotAngle())),
+                new Rotation2d((DriverStation.getAlliance() == Alliance.Blue ? Math.PI : 0))),
             m_field);
 
         autoCommandTwo.schedule();
@@ -145,7 +148,7 @@ public class RobotContainer {
             new Pose2d(
                 s_Swerve.getPose().getX() - limelight.getTargetToRobot().getX() + .92,
                 s_Swerve.getPose().getY() - limelight.getTargetToRobot().getY() + .56,
-                new Rotation2d(limelight.getBotAngle())),
+                new Rotation2d((DriverStation.getAlliance() == Alliance.Blue ? Math.PI : 0))),
             m_field);
 
         autoCommandTwo.schedule();
@@ -161,7 +164,7 @@ public class RobotContainer {
             new Pose2d(
                 s_Swerve.getPose().getX() - limelight.getTargetToRobot().getX() + .92,
                 s_Swerve.getPose().getY() - limelight.getTargetToRobot().getY() - .56,
-                new Rotation2d(limelight.getBotAngle())),
+                new Rotation2d((DriverStation.getAlliance() == Alliance.Blue ? Math.PI : 0))),
             m_field);
 
         autoCommandTwo.schedule();
