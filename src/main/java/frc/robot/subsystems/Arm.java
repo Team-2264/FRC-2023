@@ -120,6 +120,9 @@ public class Arm extends SubsystemBase {
     moveElbowIn();
     moveWristUp();
     bringShoulderIn();
+
+    canUseArm = false;
+    canUseWrist = false;
   }
 
   public void adjustWrist(double amounts) {
