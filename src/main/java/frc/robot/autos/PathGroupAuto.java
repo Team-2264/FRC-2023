@@ -59,7 +59,6 @@ public class PathGroupAuto extends SequentialCommandGroup {
         }
 
         private void resetOdometry(Pose2d pose) {
-                s_Swerve.pidgey.setYaw(pose.getRotation().getDegrees());
                 s_Swerve.resetOdometry(pose);
         }
 

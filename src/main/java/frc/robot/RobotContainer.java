@@ -230,7 +230,10 @@ public class RobotContainer {
     m_field.setRobotPose(s_Swerve.getPose());
     // if(Math.abs(arm.getRawAxis(1)) > .1) s_Arm.adjustWrist(arm.getRawAxis(1));
 
-    
+  }
+
+  public void setYawToCurrentPose() {
+    s_Swerve.pidgey.setYaw(s_Swerve.getPose().getRotation().getDegrees());
   }
 
   public void armsInit() {
