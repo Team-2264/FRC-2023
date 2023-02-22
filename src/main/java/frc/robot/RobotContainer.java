@@ -120,8 +120,15 @@ public class RobotContainer {
     followTargetButton.onTrue(new InstantCommand(() -> {
       if (limelight.getBotPose() != null) {
         s_Swerve.setPose(limelight.getBotPose().toPose2d());
-        autoCommand = new TeleopAuto(s_Swerve, m_field);
-        autoCommand.schedule();
+        autoCommandTwo = new TeleopAutoTwo(
+            s_Swerve,
+            new Pose2d(
+                s_Swerve.getPose().getX() - limelight.getTargetToRobot().getX() + 1,
+                s_Swerve.getPose().getY() - limelight.getTargetToRobot().getY(),
+                new Rotation2d(limelight.getBotAngle())),
+            m_field);
+
+        autoCommandTwo.schedule();
       }
     }));
 
