@@ -2,13 +2,13 @@
   "waypoints": [
     {
       "anchorPoint": {
-        "x": 1.9,
-        "y": 2.7433779206751123
+        "x": 2.43197766625568,
+        "y": 2.740447716409755
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.9010055271982287,
-        "y": 2.758015378633839
+        "x": 2.4329831934539086,
+        "y": 2.7550851743684817
       },
       "holonomicAngle": -180.0,
       "isReversal": false,
@@ -16,23 +16,55 @@
       "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
-        "names": [],
+        "names": [
+          "CUBE_SIMBA",
+          "HALT"
+        ],
         "executionBehavior": "parallel",
-        "waitBehavior": "none",
-        "waitTime": 0
+        "waitBehavior": "after",
+        "waitTime": 2.0
       }
     },
     {
       "anchorPoint": {
-        "x": 2.7910237313258914,
-        "y": 2.7389826142770777
+        "x": 1.9120245169608177,
+        "y": 2.7409161504249657
       },
       "prevControl": {
-        "x": 2.7953574255130276,
-        "y": 2.7385884773397153
+        "x": 2.4202476878057584,
+        "y": 2.750399914374047
+      },
+      "nextControl": {
+        "x": 1.4038013461158756,
+        "y": 2.7314323864758845
+      },
+      "holonomicAngle": -180.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": true,
+      "stopEvent": {
+        "names": [
+          "OPEN_CLAW",
+          "DELAY_1",
+          "HOME"
+        ],
+        "executionBehavior": "sequential",
+        "waitBehavior": "after",
+        "waitTime": 0.5
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 3.888838712695329,
+        "y": 2.7831703482959913
+      },
+      "prevControl": {
+        "x": 3.8931724068824654,
+        "y": 2.782776211358629
       },
       "nextControl": null,
-      "holonomicAngle": 0,
+      "holonomicAngle": -179.27818529019808,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,

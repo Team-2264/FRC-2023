@@ -17,11 +17,12 @@
       "isStopPoint": false,
       "stopEvent": {
         "names": [
-          "HALT"
+          "HALT",
+          "CUBE_SIMBA"
         ],
         "executionBehavior": "parallel",
         "waitBehavior": "after",
-        "waitTime": 5.0
+        "waitTime": 2.0
       }
     },
     {
@@ -44,7 +45,8 @@
       "isStopPoint": true,
       "stopEvent": {
         "names": [
-          "OPEN_CLAW"
+          "OPEN_CLAW",
+          "HALT"
         ],
         "executionBehavior": "parallel",
         "waitBehavior": "minimum",
@@ -92,7 +94,9 @@
       "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
-        "names": [],
+        "names": [
+          "HOME"
+        ],
         "executionBehavior": "parallel",
         "waitBehavior": "none",
         "waitTime": 0

@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.AutoBalance;
+import frc.robot.commands.Delay;
 import frc.robot.commands.StopMoving;
 import frc.robot.commands.arm.*;
 import frc.robot.enums.ArmStatus;
@@ -34,6 +35,10 @@ public class AutonomousEvents {
         EVENT_MAP.put("BALANCE_RELATIVE", new AutoBalance(s_Swerve, MovementDirection.RELATIVE));
 
         EVENT_MAP.put("HALT", new StopMoving(s_Swerve));
+
+        for (double delayTime = 0.5; delayTime <= 5; delayTime += 0.5) {
+            EVENT_MAP.put("DELAY_" + delayTime, new Delay(delayTime));
+        }
     }
 
     public HashMap<String, Command> getEventMap() {
