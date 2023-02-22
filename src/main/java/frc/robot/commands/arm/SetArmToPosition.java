@@ -1,7 +1,6 @@
 package frc.robot.commands.arm;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 import frc.robot.enums.ArmStatus;
 import frc.robot.subsystems.Arm;
 
@@ -54,6 +53,8 @@ public class SetArmToPosition extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return Math.abs(s_Arm.leftBelt.getClosedLoopError()) <= Constants.AutoConstants.ARM_ERROR_TOLERANCE;
+        // return Math.abs(s_Arm.leftBelt.getClosedLoopError()) <=
+        // Constants.AutoConstants.ARM_ERROR_TOLERANCE;
+        return true;
     }
 }

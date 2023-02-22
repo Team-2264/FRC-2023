@@ -198,7 +198,7 @@ public final class Constants {
         public static final double AUTO_BALANCE_MAX_SPEED_Y = 0.5; // m/s
         public static final double AUTO_BALANCE_MAX_SPEED_X = 0.5; // m/s
 
-        public static final double ARM_ERROR_TOLERANCE = 10.0;
+        public static final double ARM_ERROR_TOLERANCE = 100.0;
 
         public static final String INNER_BORDER_TRAJECTORY = "Inner";
         public static final String CENTER_TRAJECTORY = "Center";

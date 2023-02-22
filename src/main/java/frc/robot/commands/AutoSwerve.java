@@ -8,6 +8,7 @@ import frc.robot.subsystems.Arm;
 import java.util.HashMap;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.AutonomousEvents;
 import frc.robot.Limelight;
 
@@ -26,13 +27,15 @@ public class AutoSwerve {
     double currentTime;
 
     public Command getCommand() {
-        // if (s_Limelight.getAutoPosition() == AutoPosition.EDGE)
-        // return new PathGroupAuto(s_Swerve, "Edge", EVENT_MAP);
-        // if (s_Limelight.getAutoPosition() == AutoPosition.CENTER)
-        // return new PathGroupAuto(s_Swerve, "Center", EVENT_MAP);
+        if (s_Limelight.getAutoPosition() == AutoPosition.EDGE)
+            return new PathGroupAuto(s_Swerve, "Edge", EVENT_MAP);
+        if (s_Limelight.getAutoPosition() == AutoPosition.CENTER)
+            return new PathGroupAuto(s_Swerve, "Center", EVENT_MAP);
+        if (s_Limelight.getAutoPosition() == AutoPosition.INNER_BORDER)
+            return new PathGroupAuto(s_Swerve, "Inner", EVENT_MAP);
 
-        // return new PathGroupAuto(s_Swerve, "Inner", EVENT_MAP);
-        return new PathGroupAuto(s_Swerve, "Test", EVENT_MAP);
+        return new InstantCommand(() -> {
+        });
     }
 
 }

@@ -125,7 +125,7 @@ public class Limelight {
         if (id == 3 || id == 6)
             return AutoPosition.INNER_BORDER;
 
-        return AutoPosition.INNER_BORDER;
+        return null;
 
     }
 }

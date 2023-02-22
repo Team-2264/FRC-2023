@@ -55,7 +55,6 @@ public class PathGroupAuto extends SequentialCommandGroup {
                 Command fullAuto = autoBuilder.fullAuto(pathGroup);
 
                 // actually make the command, command, yk? ⏣
-
                 addCommands(fullAuto);
         }
 
