@@ -100,21 +100,21 @@ public class Arm extends SubsystemBase {
     /* Set Motion Magic gains in slot0 - see documentation */
     leftBelt.selectProfileSlot(0, 0);
     leftBelt.config_kF(0, .047, 10);
-    leftBelt.config_kP(0, 0.35, 10);
+    leftBelt.config_kP(0, 0.5, 10);
     leftBelt.config_kI(0, 0, 10);
-    leftBelt.config_kD(0, 8.1, 10);
+    leftBelt.config_kD(0, 10, 10);
 
     /* Set acceleration and vcruise velocity - see documentation */
-    leftBelt.configMotionCruiseVelocity(375, 10);
-    leftBelt.configMotionAcceleration(750, 10);
+    leftBelt.configMotionCruiseVelocity(750, 10);
+    leftBelt.configMotionAcceleration(1500, 10);
 
     leftBelt.configNeutralDeadband(0.05, 10);
 
     // // PID
 
-    wristMotor.config_kP(0, 1.2, 10);
+    wristMotor.config_kP(0,4, 10);
     wristMotor.config_kI(0, 0, 10);
-    wristMotor.config_kD(0, 11, 10);
+    wristMotor.config_kD(0, 40, 10);
 
     wristMotor.configNeutralDeadband(0.001, 10);
 
