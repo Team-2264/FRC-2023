@@ -36,8 +36,9 @@ public class AutoSwerve {
         if (s_Limelight.getAutoPosition() == AutoPosition.INNER_BORDER)
             return new PathGroupAuto(s_Swerve, "Inner", EVENT_MAP);
 
-        return new InstantCommand(() -> {
-        });
+        // return new InstantCommand(() -> {
+        // });
+        return new PathGroupAuto(s_Swerve, "Inner", EVENT_MAP);
 
     }
 
