@@ -132,7 +132,7 @@ public class Arm extends SubsystemBase {
   }
 
   public void adjustWrist(double amounts) {
-    wristPosition =  wristPosition + amounts;
+    wristPosition = wristPosition + amounts;
     SmartDashboard.putNumber("WRIST", wristPosition);
     SmartDashboard.putNumber("WRIST AFTER", amounts);
   }
@@ -204,7 +204,7 @@ public class Arm extends SubsystemBase {
     setWristHigh();
     setArmHighestCone();
     takeShoulderOut();
-    
+
     startTime = System.currentTimeMillis();
     status = ArmStatus.CONE_SIMBA;
   }
@@ -249,7 +249,7 @@ public class Arm extends SubsystemBase {
   }
 
   private void setArmHighestCone() {
-    armPosition = 145;
+    armPosition = 150;
   }
 
   private void setArmHighestCube() {
@@ -274,7 +274,6 @@ public class Arm extends SubsystemBase {
 
   private void setWristHigh() {
     wristPosition = 0;
-
   }
 
   // SETFUNCTIONS
