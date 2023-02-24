@@ -200,7 +200,7 @@ public final class Constants {
 
         public static final double ARM_ERROR_TOLERANCE = 100.0;
 
-        public static final String INNER_BORDER_TRAJECTORY = "Inner";
+        public static final String INNER_BORDER_TRAJECTORY = "Inner Updated";
         public static final String CENTER_TRAJECTORY = "Center";
         public static final String EDGE_TRAJECTORY = "Edge";
 
