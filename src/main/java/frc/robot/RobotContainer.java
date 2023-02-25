@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import java.sql.Driver;
 import java.util.function.BooleanSupplier;
 // import java.util.function.DoubleSupplier;
 
@@ -235,6 +234,7 @@ public class RobotContainer {
   }
 
   public void updateRobotPose() {
+    // System.out.println(s_Swerve.getPose().toString());
     m_field.setRobotPose(s_Swerve.getPose());
     // if(Math.abs(arm.getRawAxis(1)) > .1) s_Arm.adjustWrist(arm.getRawAxis(1));
 
@@ -242,6 +242,12 @@ public class RobotContainer {
 
   public void setYawToCurrentPose() {
     s_Swerve.pidgey.setYaw(s_Swerve.getPose().getRotation().getDegrees());
+  }
+
+  public void postCurrentAutonomousCommand() {
+
+    SmartDashboard.putString("Current Autonomous Command",
+        (limelight.getAutoPosition() != null) ? limelight.getAutoPosition().toString() : "None");
   }
 
   public void armsInit() {

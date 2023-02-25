@@ -20,6 +20,7 @@ public class AutonomousEvents {
         EVENT_MAP.put("HOME", new SetArmToPosition(s_Arm, ArmStatus.HOME));
 
         EVENT_MAP.put("INTAKE", new SetArmToPosition(s_Arm, ArmStatus.INTAKE));
+        EVENT_MAP.put("INTAKE_LOW", new SetArmToPosition(s_Arm, ArmStatus.INTAKE_LOW));
 
         EVENT_MAP.put("CONE_SIMBA", new SetArmToPosition(s_Arm, ArmStatus.CONE_SIMBA));
         EVENT_MAP.put("CUBE_SIMBA", new SetArmToPosition(s_Arm, ArmStatus.CUBE_SIMBA));

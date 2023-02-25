@@ -184,9 +184,9 @@ public final class Constants {
     }
 
     public static final class AutoConstants {
-        public static final double kMaxSpeedMetersPerSecond = 1;
+        public static final double kMaxSpeedMetersPerSecond = 4;
         // public static final double kMaxSpeedMetersPerSecond = 3;
-        public static final double kMaxAccelerationMetersPerSecondSquared = .5;
+        public static final double kMaxAccelerationMetersPerSecondSquared = 0.5;
         // public static final double kMaxAccelerationMetersPerSecondSquared = 3;
         public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
         public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
@@ -200,7 +200,7 @@ public final class Constants {
 
         public static final double ARM_ERROR_TOLERANCE = 100.0;
 
-        public static final String INNER_BORDER_TRAJECTORY = "Inner";
+        public static final String INNER_BORDER_TRAJECTORY = "Inner Updated";
         public static final String CENTER_TRAJECTORY = "Center";
         public static final String EDGE_TRAJECTORY = "Edge";
 
