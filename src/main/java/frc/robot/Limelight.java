@@ -9,8 +9,6 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.enums.AutoPosition;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 import java.util.ArrayList;
 
 public class Limelight {
@@ -27,10 +25,10 @@ public class Limelight {
     public Limelight() {
         positions = new ArrayList<>();
 
-        m_chooser.setDefaultOption("Middle", "Center");
-        m_chooser.addOption("Outer", "Edge");
-        m_chooser.addOption("Inner", "Inner");
-        SmartDashboard.putData("Backup Autonomous", m_chooser);
+        // m_chooser.setDefaultOption("Middle", "Center");
+        // m_chooser.addOption("Outer", "Edge");
+        // m_chooser.addOption("Inner", "Inner");
+        // SmartDashboard.putData("Backup Autonomous", m_chooser);
     }
 
     double[] arrNull = { 0, 0, 0, 0, 0, 0 };
