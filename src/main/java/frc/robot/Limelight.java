@@ -6,8 +6,8 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.apriltag.*;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import frc.robot.enums.AutoPosition;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import frc.robot.enums.AutoPosition;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -22,7 +22,7 @@ public class Limelight {
     Translation2d distanceAndTranslation;
     ArrayList<ArrayList<Double>> positions;
 
-    private final SendableChooser<String> m_chooser = new SendableChooser<>();
+    private SendableChooser<String> m_chooser;
 
     public Limelight() {
         positions = new ArrayList<>();
@@ -44,6 +44,10 @@ public class Limelight {
         }
 
         return new Pose3d(arr[2], -arr[0], arr[1], new Rotation3d());
+    }
+
+    public void setChooser(SendableChooser<String> chooser) {
+        this.m_chooser = chooser;
     }
 
     public Pose3d getBotPose() {
@@ -128,6 +132,13 @@ public class Limelight {
     public AutoPosition getAutoPosition() {
         int id = getTargetID();
 
+        String failSafeString = m_chooser.getSelected();
+        AutoPosition failSafe = null;
+        for (AutoPosition position : AutoPosition.values()) {
+            if (failSafeString == position.toString())
+                failSafe = position;
+        }
+
         if (id == 1 || id == 8)
             return AutoPosition.EDGE;
         if (id == 2 || id == 7)
@@ -135,11 +146,8 @@ public class Limelight {
         if (id == 3 || id == 6)
             return AutoPosition.INNER_BORDER;
 
-        if(m_chooser.getSelected() == "Inner") return AutoPosition.INNER_BORDER;
-        if(m_chooser.getSelected() == "Edge") return AutoPosition.EDGE;
-        if(m_chooser.getSelected() == "Center") return AutoPosition.CENTER;
-
-        return null;
+        return failSafe;
 
     }
+
 }

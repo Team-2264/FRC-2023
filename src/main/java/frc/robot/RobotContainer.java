@@ -14,9 +14,11 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -86,6 +88,13 @@ public class RobotContainer {
 
   private TeleopAuto autoCommand;
   private TeleopAutoTwo autoCommandTwo;
+
+  SendableChooser<String> autoPathChooser = new SendableChooser<>();
+  SendableChooser<String> autoModeChooser = new SendableChooser<>();
+
+  String kDefaultAuto = AutoMode.REGULAR.toString();
+  String kCustomAuto = AutoMode.BALANCE.toString();
+
   /**
    * `
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -106,6 +115,24 @@ public class RobotContainer {
 
     // lets the listener on the raspberry pi know it's ready to process and send
     TABLE.getTable(Constants.ObjectVision.NETWORK_TABLE_ADDRESS).getEntry("ready").setBoolean(true);
+
+    for (AutoPosition position : AutoPosition.values()) {
+      autoPathChooser.addOption(position.toString(), position.toString());
+    }
+
+    autoModeChooser.addOption("Balance", kCustomAuto);
+    autoModeChooser.addOption("No Balance", kDefaultAuto);
+
+    SmartDashboard.putData("Auto Pos.", autoPathChooser);
+    SmartDashboard.putData("Balance Mode", autoModeChooser);
+
+    limelight.setChooser(autoPathChooser);
+
+    PowerDistribution pdh = new PowerDistribution();
+
+    pdh.clearStickyFaults();
+
+    pdh.close();
   }
 
   public void resetEncoders() {
@@ -137,8 +164,10 @@ public class RobotContainer {
             m_field);
 
         autoCommandTwo.schedule();
-        if(driver.getRawButton(PS4Controller.Button.kR1.value)) s_Arm.simbaCube();
-        else s_Arm.setMidCube();
+        if (driver.getRawButton(PS4Controller.Button.kR1.value))
+          s_Arm.simbaCube();
+        else
+          s_Arm.setMidCube();
       }
     }));
 
@@ -154,8 +183,10 @@ public class RobotContainer {
             m_field);
 
         autoCommandTwo.schedule();
-        if(driver.getRawButton(PS4Controller.Button.kR1.value)) s_Arm.simbaCone();
-        else s_Arm.setMidCone();
+        if (driver.getRawButton(PS4Controller.Button.kR1.value))
+          s_Arm.simbaCone();
+        else
+          s_Arm.setMidCone();
       }
     }));
 
@@ -171,8 +202,10 @@ public class RobotContainer {
             m_field);
 
         autoCommandTwo.schedule();
-        if(driver.getRawButton(PS4Controller.Button.kR1.value)) s_Arm.simbaCone();
-        else s_Arm.setMidCone();
+        if (driver.getRawButton(PS4Controller.Button.kR1.value))
+          s_Arm.simbaCone();
+        else
+          s_Arm.setMidCone();
       }
     }));
 
@@ -193,8 +226,10 @@ public class RobotContainer {
     }));
 
     disableCommandButton.onTrue(new InstantCommand(() -> {
-      if(autoCommand.isScheduled()) autoCommand.end(true);
-      if(autoCommandTwo.isScheduled()) autoCommandTwo.end(true);
+      if (autoCommand.isScheduled())
+        autoCommand.end(true);
+      if (autoCommandTwo.isScheduled())
+        autoCommandTwo.end(true);
     }));
 
     clawToggleButton.onTrue(new InstantCommand(() -> s_Arm.toggleClaw()));
@@ -230,7 +265,8 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // Command will run in autonomous
-    return new AutoSwerve(s_Swerve, s_Arm, limelight).getCommand();
+    return new AutoSwerve(s_Swerve, s_Arm, limelight, (autoModeChooser.getSelected() == kDefaultAuto ? false : true))
+        .getCommand();
   }
 
   public void updateRobotPose() {
@@ -240,12 +276,17 @@ public class RobotContainer {
 
   }
 
+  public AutoPosition getAutoPosition() {
+    if (limelight.getAutoPosition() != null)
+      return limelight.getAutoPosition();
+    return limelight.getAutoPosition();
+  }
+
   public void setYawToCurrentPose() {
     s_Swerve.pidgey.setYaw(s_Swerve.getPose().getRotation().getDegrees());
   }
 
   public void postCurrentAutonomousCommand() {
-
     SmartDashboard.putString("Current Autonomous Command",
         (limelight.getAutoPosition() != null) ? limelight.getAutoPosition().toString() : "None");
   }

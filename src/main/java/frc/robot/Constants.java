@@ -104,8 +104,8 @@ public final class Constants {
         public static final double driveKA = (0.27 / 12);
 
         /* Swerve Profiling Values */
-        public static final double maxSpeed = 1; // meters per second
-        public static final double maxAngularVelocity = 3;
+        public static final double maxSpeed = 4; // meters per second
+        public static final double maxAngularVelocity = Math.PI; // radians per second (rad/s)
 
         /* Neutral Modes */
         public static final NeutralMode angleNeutralMode = NeutralMode.Coast;
@@ -184,9 +184,9 @@ public final class Constants {
     }
 
     public static final class AutoConstants {
-        public static final double kMaxSpeedMetersPerSecond = 4;
+        public static final double kMaxSpeedMetersPerSecond = 1;
         // public static final double kMaxSpeedMetersPerSecond = 3;
-        public static final double kMaxAccelerationMetersPerSecondSquared = 0.5;
+        public static final double kMaxAccelerationMetersPerSecondSquared = 1;
         // public static final double kMaxAccelerationMetersPerSecondSquared = 3;
         public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
         public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
@@ -200,10 +200,11 @@ public final class Constants {
 
         public static final double ARM_ERROR_TOLERANCE = 100.0;
 
-        public static final String INNER_BORDER_TRAJECTORY = "Inner Updated";
+        public static final String INNER_BORDER_TRAJECTORY = "Inner";
+        public static final String INNER_BORDER_TRAJECTORY_BALANCE = "Inner Balance";
         public static final String CENTER_TRAJECTORY = "Center";
         public static final String EDGE_TRAJECTORY = "Edge";
-
+        public static final String EDGE_TRAJECTORY_BALANCE = "Edge Balance";
         // Constraint for the motion profilied robot angle controller
         public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
                 kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);

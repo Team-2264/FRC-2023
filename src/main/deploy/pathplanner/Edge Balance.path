@@ -85,11 +85,11 @@
     },
     {
       "anchorPoint": {
-        "x": 2.411576322922069,
+        "x": 2.6,
         "y": 2.1916867812414003
       },
       "prevControl": {
-        "x": 2.3718368999238,
+        "x": 2.5602605770017313,
         "y": 2.2183748352414234
       },
       "nextControl": null,
@@ -99,37 +99,14 @@
       "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
-        "names": [],
-        "executionBehavior": "parallel",
-        "waitBehavior": "none",
+        "names": [
+          "BALANCE_BACKWARD"
+        ],
+        "executionBehavior": "sequential",
+        "waitBehavior": "after",
         "waitTime": 0
       }
     }
   ],
-  "markers": [
-    {
-      "position": 0.12941006747159078,
-      "names": [
-        "HOME"
-      ]
-    },
-    {
-      "position": 0.8921264648437498,
-      "names": [
-        "INTAKE_LOW"
-      ]
-    },
-    {
-      "position": 1.0443603515625002,
-      "names": [
-        "HOME"
-      ]
-    },
-    {
-      "position": 1.8347966974431813,
-      "names": [
-        "CONE_SIMBA"
-      ]
-    }
-  ]
+  "markers": []
 }

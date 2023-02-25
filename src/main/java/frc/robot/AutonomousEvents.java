@@ -17,6 +17,7 @@ public class AutonomousEvents {
     public static final HashMap<String, Command> EVENT_MAP = new HashMap<String, Command>();
 
     public AutonomousEvents(Swerve s_Swerve, Arm s_Arm) {
+        // Arm Positions
         EVENT_MAP.put("HOME", new SetArmToPosition(s_Arm, ArmStatus.HOME));
 
         EVENT_MAP.put("INTAKE", new SetArmToPosition(s_Arm, ArmStatus.INTAKE));
@@ -31,16 +32,18 @@ public class AutonomousEvents {
         EVENT_MAP.put("INTERMEDIATE", new SetArmToPosition(s_Arm, ArmStatus.INTERMEDIATE));
         EVENT_MAP.put("LOW", new SetArmToPosition(s_Arm, ArmStatus.LOW));
 
+        // Claw States (Evaluate Instantly)
         EVENT_MAP.put("OPEN_CLAW", new OpenClaw(s_Arm));
         EVENT_MAP.put("CLOSE_CLAW", new CloseClaw(s_Arm));
 
+        // Driving/Swerve States
         EVENT_MAP.put("BALANCE_FORWARD", new AutoBalance(s_Swerve, MovementDirection.FORWARD));
         EVENT_MAP.put("BALANCE_BACKWARD", new AutoBalance(s_Swerve, MovementDirection.BACKWARD));
         EVENT_MAP.put("BALANCE_RELATIVE", new AutoBalance(s_Swerve, MovementDirection.RELATIVE));
 
         EVENT_MAP.put("HALT", new StopMoving(s_Swerve));
 
-        for (double delayTime = 0.5; delayTime <= 5; delayTime += 0.5) {
+        for (double delayTime = 0.1; delayTime <= 5; delayTime += 0.1) {
             EVENT_MAP.put("DELAY_" + delayTime, new Delay(delayTime));
         }
     }
