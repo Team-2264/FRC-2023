@@ -100,13 +100,13 @@ public class Arm extends SubsystemBase {
     /* Set Motion Magic gains in slot0 - see documentation */
     leftBelt.selectProfileSlot(0, 0);
     leftBelt.config_kF(0, .047, 10);
-    leftBelt.config_kP(0, 0.5, 10);
+    leftBelt.config_kP(0, 0.6, 10);
     leftBelt.config_kI(0, 0, 10);
-    leftBelt.config_kD(0, 10, 10);
+    leftBelt.config_kD(0, 13, 10);
 
     /* Set acceleration and vcruise velocity - see documentation */
     leftBelt.configMotionCruiseVelocity(750, 10);
-    leftBelt.configMotionAcceleration(1500, 10);
+    leftBelt.configMotionAcceleration(1000, 10);
 
     leftBelt.configNeutralDeadband(0.05, 10);
 
@@ -159,8 +159,9 @@ public class Arm extends SubsystemBase {
 
   public void setLow() {
     setArmLow();
-    setWristFlat();
+    setWristAngledDownMore();
     bringShoulderIn();
+    openClaw();
 
     status = ArmStatus.LOW;
   }
@@ -210,7 +211,7 @@ public class Arm extends SubsystemBase {
   }
 
   public void simbaCube() {
-    setWristFlat();
+    setWristMid();
     setArmHighestCube();
     takeShoulderOut();
 
@@ -229,7 +230,7 @@ public class Arm extends SubsystemBase {
   }
 
   private void setArmLowIntake() {
-    armPosition = 15;
+    armPosition = 5;
   }
 
   private void setArmLow() {
@@ -245,11 +246,11 @@ public class Arm extends SubsystemBase {
   }
 
   private void setArmHigh() {
-    armPosition = 67.5;
+    armPosition = 75;
   }
 
   private void setArmHighestCone() {
-    armPosition = 145;
+    armPosition = 142;
   }
 
   private void setArmHighestCube() {
@@ -257,15 +258,19 @@ public class Arm extends SubsystemBase {
   }
 
   private void setWristHome() {
-    wristPosition = 0;
+    wristPosition = 0;  
   }
 
   private void setWristFlat() {
-    wristPosition = 77;
+    wristPosition = 57;
   }
 
   private void setWristAngledDown() {
-    wristPosition = 120;
+    wristPosition = 130;
+  }
+
+  private void setWristAngledDownMore() {
+    wristPosition = 165;
   }
 
   private void setWristMid() {
@@ -281,7 +286,7 @@ public class Arm extends SubsystemBase {
 
   private void setElbow(double deg) {
     leftBelt.set(ControlMode.MotionMagic, deg * Constants.Arm.ENCODER_UNITS_PER_DEGREE_ELBOW,
-        DemandType.ArbitraryFeedForward, .065 * Math.cos(deg * (Math.PI / 180)));
+        DemandType.ArbitraryFeedForward, 0.07 * Math.cos(deg * (Math.PI / 180)));
   }
 
   private void setWrist(double deg) {
@@ -368,7 +373,7 @@ public class Arm extends SubsystemBase {
       setElbow(armPosition);
     }
 
-    if (canUseWrist && (System.currentTimeMillis() - startTime > 2000)) {
+    if (canUseWrist && (System.currentTimeMillis() - startTime > 1250)) {
       setWrist(wristPosition);
     }
 

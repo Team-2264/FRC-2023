@@ -24,7 +24,7 @@ public class TeleopSwerve extends CommandBase {
     private int strafeAxis;
     private int rotationAxis;
     private double rotationSetpoint;
-    private double startingRotation;
+    private double startingRotation, finalRotation;
 
     /**
      * Driver control
@@ -66,27 +66,34 @@ public class TeleopSwerve extends CommandBase {
         rAxis = (Math.abs(rAxis) < Constants.stickDeadband) ? 0 : rAxis;
 
         if (this.controller.getRawButton(7)) {
-            rotationSetpoint = .3;
-            startingRotation = s_Swerve.pidgey.getYaw();
+            if(normalizedGyro() > 0 && normalizedGyro() < 180) finalRotation = 0;
+            else if(normalizedGyro() > 180 && normalizedGyro() < 360) finalRotation = 180;
+
+            if(normalizedGyro() < 5 || normalizedGyro() > 355) finalRotation = 180;
+            else if(normalizedGyro() < 185 && normalizedGyro() > 175) finalRotation = 0;
+
+            rotationSetpoint = .2;
+            SmartDashboard.putNumber("TARGET", finalRotation);
         }
 
         if (this.controller.getRawButton(8)) {
-            rotationSetpoint = -.3;
-            startingRotation = s_Swerve.pidgey.getYaw();
+            if(normalizedGyro() > 0 && normalizedGyro() < 180) finalRotation = 180;
+            else if(normalizedGyro() > 180 && normalizedGyro() < 360) finalRotation = 0;
+
+            if(normalizedGyro() < 5 || normalizedGyro() > 355) finalRotation = 180;
+            else if(normalizedGyro() < 185 && normalizedGyro() > 175) finalRotation = 0;
+
+            rotationSetpoint = -.2;
+            SmartDashboard.putNumber("TARGET", finalRotation);
         }
 
         if (rotationSetpoint != -1) {
-            if (Math.abs(s_Swerve.pidgey.getYaw() % 180) > 3) {
-                rAxis = rotationSetpoint;
-                SmartDashboard.putString("spinning", "ifone");
-            } else if (Math.abs(s_Swerve.pidgey.getYaw() - startingRotation) < 5) {
-                rAxis = rotationSetpoint;
-                SmartDashboard.putString("spinning", "ifone");
-            } else {
+            if(Math.abs(normalizedGyro() - finalRotation) < 5) {
                 rotationSetpoint = -1;
                 rAxis = 0;
-                SmartDashboard.putString("spinning", "else");
-            }
+            } else {
+                rAxis = rotationSetpoint;
+            } 
         }
 
         if (Math.abs(controller.getRawAxis(rotationAxis)) > Constants.stickDeadband) {
@@ -94,7 +101,7 @@ public class TeleopSwerve extends CommandBase {
             rAxis = -controller.getRawAxis(rotationAxis);
         }
 
-        if (Math.abs(arm.getRawAxis(2)) > .2) {
+        if (Math.abs(arm.getRawAxis(2)) > .3) {
             rAxis = arm.getRawAxis(2) * -.2;
         }
 
@@ -102,6 +109,11 @@ public class TeleopSwerve extends CommandBase {
         rotation = rotationCurve(rAxis) * Constants.Swerve.maxAngularVelocity;
         s_Swerve.drive(translation, rotation, !fieldRelative.getAsBoolean(), openLoop);
 
+    }
+
+    public double normalizedGyro() {
+        SmartDashboard.putNumber("NORMALIZED GYRO", Math.abs(s_Swerve.pidgey.getYaw() % 360));
+        return Math.abs(s_Swerve.pidgey.getYaw() % 360);
     }
 
 }

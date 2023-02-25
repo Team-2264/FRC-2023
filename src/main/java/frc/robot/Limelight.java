@@ -7,6 +7,9 @@ import edu.wpi.first.apriltag.*;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.enums.AutoPosition;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.util.ArrayList;
 
@@ -19,8 +22,15 @@ public class Limelight {
     Translation2d distanceAndTranslation;
     ArrayList<ArrayList<Double>> positions;
 
+    private final SendableChooser<String> m_chooser = new SendableChooser<>();
+
     public Limelight() {
         positions = new ArrayList<>();
+
+        m_chooser.setDefaultOption("Middle", "Center");
+        m_chooser.addOption("Outer", "Edge");
+        m_chooser.addOption("Inner", "Inner");
+        SmartDashboard.putData("Backup Autonomous", m_chooser);
     }
 
     double[] arrNull = { 0, 0, 0, 0, 0, 0 };
@@ -124,6 +134,10 @@ public class Limelight {
             return AutoPosition.CENTER;
         if (id == 3 || id == 6)
             return AutoPosition.INNER_BORDER;
+
+        if(m_chooser.getSelected() == "Inner") return AutoPosition.INNER_BORDER;
+        if(m_chooser.getSelected() == "Edge") return AutoPosition.EDGE;
+        if(m_chooser.getSelected() == "Center") return AutoPosition.CENTER;
 
         return null;
 
