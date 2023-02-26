@@ -28,16 +28,16 @@
     },
     {
       "anchorPoint": {
-        "x": 5.315304099737974,
-        "y": 4.658207967091389
+        "x": 6.115076806352614,
+        "y": 4.627573560377155
       },
       "prevControl": {
-        "x": 2.856732248186719,
-        "y": 4.876975259782768
+        "x": 3.089813960199751,
+        "y": 5.211628325708908
       },
       "nextControl": {
-        "x": 6.201384264039603,
-        "y": 4.579363267665789
+        "x": 6.121648389800126,
+        "y": 4.626304855863372
       },
       "holonomicAngle": 0,
       "isReversal": false,
@@ -45,10 +45,14 @@
       "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
-        "names": [],
-        "executionBehavior": "parallel",
-        "waitBehavior": "none",
-        "waitTime": 0
+        "names": [
+          "CLOSE_CLAW",
+          "DELAY_0.5",
+          "HOME"
+        ],
+        "executionBehavior": "sequential",
+        "waitBehavior": "after",
+        "waitTime": 0.5
       }
     },
     {
@@ -97,7 +101,7 @@
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
-      "isStopPoint": false,
+      "isStopPoint": true,
       "stopEvent": {
         "names": [
           "CONE_SIMBA"
@@ -176,12 +180,6 @@
       "position": 2.2683271928267033,
       "names": [
         "HOME"
-      ]
-    },
-    {
-      "position": 2.3700339577414775,
-      "names": [
-        "CONE_SIMBA"
       ]
     }
   ]
