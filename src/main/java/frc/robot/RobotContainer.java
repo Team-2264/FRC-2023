@@ -76,6 +76,7 @@ public class RobotContainer {
   private final JoystickButton moveWristDown = new JoystickButton(arm, 3);
   private final JoystickButton moveWristUp = new JoystickButton(arm, 4);
 
+  private final JoystickButton testingButton = new JoystickButton(arm, 6);
   // Emergency Buttons
   private final JoystickButton disableCommandButton = new JoystickButton(driver, PS4Controller.Button.kL1.value);
 
@@ -148,6 +149,10 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    testingButton.onTrue(new InstantCommand(() -> {
+      new AutoBalance(s_Swerve, MovementDirection.BACKWARD).schedule();
+    }));
+
     /* Driver Buttons */
 
     zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
@@ -270,6 +275,8 @@ public class RobotContainer {
   }
 
   public void updateRobotPose() {
+
+    SmartDashboard.putNumber("pitch", s_Swerve.pidgey.getPitch());
     // System.out.println(s_Swerve.getPose().toString());
     m_field.setRobotPose(s_Swerve.getPose());
     // if(Math.abs(arm.getRawAxis(1)) > .1) s_Arm.adjustWrist(arm.getRawAxis(1));

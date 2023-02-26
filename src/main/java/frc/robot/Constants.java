@@ -125,7 +125,7 @@ public final class Constants {
             public static final int angleMotorID = 41;
             public static final int canCoderID = 48;
             // public static final double angleOffset = 101.68;
-            public static final double angleOffset = 204;
+            public static final double angleOffset = 203.55;
             public static final boolean angleInverted = false;
             public static final boolean driveInverted = false;
 
@@ -140,7 +140,23 @@ public final class Constants {
             public static final int angleMotorID = 43;
             public static final int canCoderID = 49;
             // public static final double angleOffset = 350.45;
-            public static final double angleOffset = 24;
+            public static final double angleOffset = 25.8398;
+            public static final boolean angleInverted = false;
+            public static final boolean driveInverted = true;
+
+            public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID,
+                    angleMotorID,
+                    canCoderID, angleOffset);
+        }
+
+        /* Back Left Module - Module 2 */
+        public static final class Mod2 {
+            public static final int driveMotorID = 46;
+            public static final int angleMotorID = 47;
+            public static final int canCoderID = 51;
+            // public static final double angleOffset = 302.34375;
+            // public static final double angleOffset = 236.7;
+            public static final double angleOffset = 149.238;
             public static final boolean angleInverted = false;
             public static final boolean driveInverted = true;
 
@@ -156,25 +172,9 @@ public final class Constants {
             public static final int canCoderID = 50;
             // public static final double angleOffset = 241.70;
             // public static final double angleOffset = 210.9;
-            public static final double angleOffset = 128;
+            public static final double angleOffset = 127.705;
             public static final boolean angleInverted = false;
             public static final boolean driveInverted = false;
-
-            public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID,
-                    angleMotorID,
-                    canCoderID, angleOffset);
-        }
-
-        /* Back Left Module - Module 2 */
-        public static final class Mod2 {
-            public static final int driveMotorID = 46;
-            public static final int angleMotorID = 47;
-            public static final int canCoderID = 51;
-            // public static final double angleOffset = 302.34375;
-            // public static final double angleOffset = 236.7;
-            public static final double angleOffset = 149;
-            public static final boolean angleInverted = false;
-            public static final boolean driveInverted = true;
 
             public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID,
                     angleMotorID,
@@ -184,16 +184,16 @@ public final class Constants {
     }
 
     public static final class AutoConstants {
-        public static final double kMaxSpeedMetersPerSecond = 1;
+        public static final double kMaxSpeedMetersPerSecond = 4;
         // public static final double kMaxSpeedMetersPerSecond = 3;
         public static final double kMaxAccelerationMetersPerSecondSquared = 1;
         // public static final double kMaxAccelerationMetersPerSecondSquared = 3;
         public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
-        public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
+        public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI / 2;
 
         public static final double kPXController = 1;
         public static final double kPYController = 1;
-        public static final double kPThetaController = 1;
+        public static final double kPThetaController = 1.1;
 
         public static final double AUTO_BALANCE_MAX_SPEED_Y = 0.5; // m/s
         public static final double AUTO_BALANCE_MAX_SPEED_X = 0.5; // m/s

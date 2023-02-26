@@ -2,13 +2,13 @@
   "waypoints": [
     {
       "anchorPoint": {
-        "x": 1.85,
-        "y": 4.458392974243169
+        "x": 1.89,
+        "y": 4.429179070068752
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.6476419728289056,
-        "y": 4.601565052820861
+        "x": 2.8900000000000015,
+        "y": 4.429179070068752
       },
       "holonomicAngle": -180.0,
       "isReversal": false,
@@ -18,26 +18,26 @@
       "stopEvent": {
         "names": [
           "CUBE_SIMBA",
-          "DELAY_0.8",
+          "DELAY_1.2",
           "OPEN_CLAW"
         ],
         "executionBehavior": "sequential",
         "waitBehavior": "after",
-        "waitTime": 0
+        "waitTime": 0.5
       }
     },
     {
       "anchorPoint": {
-        "x": 6.6,
-        "y": 4.6
+        "x": 6.65,
+        "y": 4.56
       },
       "prevControl": {
-        "x": 5.212705261542251,
-        "y": 4.916384592363911
+        "x": 3.6247371538471373,
+        "y": 5.144054765331752
       },
       "nextControl": {
-        "x": 6.627357010479937,
-        "y": 4.59376099658634
+        "x": 6.656571583447512,
+        "y": 4.558731295486217
       },
       "holonomicAngle": 0,
       "isReversal": false,
@@ -46,36 +46,37 @@
       "isStopPoint": true,
       "stopEvent": {
         "names": [
-          "HALT",
           "CLOSE_CLAW",
-          "DELAY_0.2",
+          "DELAY_0.5",
           "HOME"
         ],
         "executionBehavior": "sequential",
         "waitBehavior": "after",
-        "waitTime": 1.0
+        "waitTime": 0.5
       }
     },
     {
       "anchorPoint": {
-        "x": 3.514407263108146,
-        "y": 4.7389466921946
+        "x": 3.3197267206301992,
+        "y": 4.659359571798028
       },
       "prevControl": {
-        "x": 5.245347651442143,
-        "y": 4.810499575995552
+        "x": 4.529478362487259,
+        "y": 4.689583197035358
       },
       "nextControl": {
-        "x": 2.7810108409930363,
-        "y": 4.708629860185067
+        "x": 2.109975078773137,
+        "y": 4.629135946560698
       },
-      "holonomicAngle": 180.0,
+      "holonomicAngle": -180.0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
-      "isStopPoint": false,
+      "isStopPoint": true,
       "stopEvent": {
-        "names": [],
+        "names": [
+          "CONE_SIMBA"
+        ],
         "executionBehavior": "parallel",
         "waitBehavior": "none",
         "waitTime": 0
@@ -83,39 +84,39 @@
     },
     {
       "anchorPoint": {
-        "x": 1.89,
-        "y": 3.3
+        "x": 1.85,
+        "y": 3.32
       },
       "prevControl": {
-        "x": 1.9635473949286393,
-        "y": 4.887557664798026
+        "x": 1.9490421299364735,
+        "y": 4.016225491679498
       },
       "nextControl": {
-        "x": 1.8379489712538453,
-        "y": 2.176452256034938
+        "x": 1.8469163452523059,
+        "y": 3.2983231737417174
       },
-      "holonomicAngle": 180.0,
+      "holonomicAngle": -180.0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
-      "isStopPoint": false,
+      "isStopPoint": true,
       "stopEvent": {
         "names": [
           "OPEN_CLAW"
         ],
         "executionBehavior": "sequential",
-        "waitBehavior": "none",
-        "waitTime": 0
+        "waitBehavior": "before",
+        "waitTime": 0.25
       }
     },
     {
       "anchorPoint": {
-        "x": 2.7930152554369783,
-        "y": 2.1774688575147545
+        "x": 2.893191727016592,
+        "y": 3.32
       },
       "prevControl": {
-        "x": 2.784083296980613,
-        "y": 2.1912038502353917
+        "x": 2.89719199041534,
+        "y": 3.3130899187292084
       },
       "nextControl": null,
       "holonomicAngle": -180.0,
@@ -125,13 +126,38 @@
       "isStopPoint": false,
       "stopEvent": {
         "names": [
-          "BALANCE_BACKWARD"
+          "HOME"
         ],
-        "executionBehavior": "sequential",
+        "executionBehavior": "parallel",
         "waitBehavior": "none",
         "waitTime": 0
       }
     }
   ],
-  "markers": []
+  "markers": [
+    {
+      "position": 0.1450827858664773,
+      "names": [
+        "HOME"
+      ]
+    },
+    {
+      "position": 0.7820567737926136,
+      "names": [
+        "INTAKE_LOW"
+      ]
+    },
+    {
+      "position": 1.3624711470170445,
+      "names": [
+        "HOME"
+      ]
+    },
+    {
+      "position": 1.965780362215909,
+      "names": [
+        "CONE_SIMBA"
+      ]
+    }
+  ]
 }

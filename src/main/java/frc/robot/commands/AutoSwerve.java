@@ -45,22 +45,24 @@ public class AutoSwerve {
      */
     public Command getCommand() {
 
-        String EDGE_TRAJECTORY = (balance) ? Constants.AutoConstants.EDGE_TRAJECTORY_BALANCE
-                : Constants.AutoConstants.EDGE_TRAJECTORY;
-        String INNER_BORDER_TRAJECTORY = (balance) ? Constants.AutoConstants.INNER_BORDER_TRAJECTORY_BALANCE
-                : Constants.AutoConstants.INNER_BORDER_TRAJECTORY;
+        // String EDGE_TRAJECTORY = (balance) ?
+        // Constants.AutoConstants.EDGE_TRAJECTORY_BALANCE
+        // : Constants.AutoConstants.EDGE_TRAJECTORY;
+        // String INNER_BORDER_TRAJECTORY = (balance) ?
+        // Constants.AutoConstants.INNER_BORDER_TRAJECTORY_BALANCE
+        // : Constants.AutoConstants.INNER_BORDER_TRAJECTORY;
 
-        if (s_Limelight.getAutoPosition() == AutoPosition.EDGE)
-            return new PathGroupAuto(s_Swerve, EDGE_TRAJECTORY, EVENT_MAP);
-        if (s_Limelight.getAutoPosition() == AutoPosition.CENTER)
-            return new PathGroupAuto(s_Swerve, Constants.AutoConstants.CENTER_TRAJECTORY,
-                    EVENT_MAP);
-        if (s_Limelight.getAutoPosition() == AutoPosition.INNER_BORDER)
-            return new PathGroupAuto(s_Swerve, INNER_BORDER_TRAJECTORY, EVENT_MAP);
+        // if (s_Limelight.getAutoPosition() == AutoPosition.EDGE)
+        // return new PathGroupAuto(s_Swerve, EDGE_TRAJECTORY, EVENT_MAP);
+        // if (s_Limelight.getAutoPosition() == AutoPosition.CENTER)
+        // return new PathGroupAuto(s_Swerve, Constants.AutoConstants.CENTER_TRAJECTORY,
+        // EVENT_MAP);
+        // if (s_Limelight.getAutoPosition() == AutoPosition.INNER_BORDER)
+        // return new PathGroupAuto(s_Swerve, INNER_BORDER_TRAJECTORY, EVENT_MAP);
 
-        return new InstantCommand(() -> {
-        });
-        // return new PathGroupAuto(s_Swerve, "Inner", EVENT_MAP);
+        // // return new InstantCommand(() -> {
+        // // });
+        return new PathGroupAuto(s_Swerve, "New Path Copy", EVENT_MAP);
 
     }
 
