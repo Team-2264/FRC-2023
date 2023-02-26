@@ -62,7 +62,7 @@ public class AutoSwerve {
 
         // // return new InstantCommand(() -> {
         // // });
-        return new PathGroupAuto(s_Swerve, "New Path Copy", EVENT_MAP);
+        return new PathGroupAuto(s_Swerve, "New New New New New Path", EVENT_MAP);
 
     }
 

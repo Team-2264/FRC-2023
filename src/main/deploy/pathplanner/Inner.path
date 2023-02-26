@@ -135,31 +135,7 @@
   "isReversed": null,
   "markers": [
     {
-      "position": 0.13730468750000005,
-      "names": [
-        "HOME"
-      ]
-    },
-    {
-      "position": 0.7902476917613638,
-      "names": [
-        "INTAKE_LOW"
-      ]
-    },
-    {
-      "position": 1.345569957386362,
-      "names": [
-        "HOME"
-      ]
-    },
-    {
-      "position": 2.008172052556818,
-      "names": [
-        "CONE_SIMBA"
-      ]
-    },
-    {
-      "position": 3.4273171164772736,
+      "position": 0.12379039417613638,
       "names": [
         "HOME"
       ]
