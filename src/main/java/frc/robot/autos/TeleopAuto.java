@@ -3,7 +3,6 @@ package frc.robot.autos;
 import frc.robot.Constants;
 import frc.robot.subsystems.Swerve;
 
-import java.util.List;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -42,10 +41,10 @@ public class TeleopAuto extends SequentialCommandGroup {
 
         blueTop = new Pose2d(2.3, 4.4, new Rotation2d(Math.PI));
         blueBottom = new Pose2d(2.3, 1, new Rotation2d(Math.PI));
-        
+
         redTop = new Pose2d(14.3, 4.4, new Rotation2d(0));
         redBottom = new Pose2d(14.3, 1, new Rotation2d(0));
-        
+
         config = new TrajectoryConfig(
                 Constants.AutoConstants.kMaxSpeedMetersPerSecond,
                 Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared)
@@ -59,17 +58,17 @@ public class TeleopAuto extends SequentialCommandGroup {
             // DEADZONES NEED TO FIND A WAY TO END CODE
         } else if (DriverStation.getAlliance() == Alliance.Blue) {
             if (currentpose.getY() > 2.8) {
-                waypoints = createWaypoints(blueTop, "blue", "top"); 
+                waypoints = createWaypoints(blueTop, "blue", "top");
             } else {
-                waypoints = createWaypoints(blueBottom, "blue", "bottom"); 
+                waypoints = createWaypoints(blueBottom, "blue", "bottom");
             }
 
             actuallyDoCommand(field);
         } else {
             if (currentpose.getY() > 2.8) {
-                waypoints = createWaypoints(redTop, "red", "top"); 
+                waypoints = createWaypoints(redTop, "red", "top");
             } else {
-                waypoints = createWaypoints(redBottom, "red", "bottom"); 
+                waypoints = createWaypoints(redBottom, "red", "bottom");
             }
 
             actuallyDoCommand(field);
@@ -109,9 +108,11 @@ public class TeleopAuto extends SequentialCommandGroup {
 
         output.addFirst(finalWaypoint);
         if (currentpose.getX() > 3 && currentpose.getX() < 13.6)
-            output.addFirst(createWaypoint(finalWaypoint, (alliance == "blue" ? 1: -1) * 1.6, side == "top" ? .3 : -.1));
+            output.addFirst(
+                    createWaypoint(finalWaypoint, (alliance == "blue" ? 1 : -1) * 1.6, side == "top" ? .3 : -.1));
         if (currentpose.getX() > 5 && currentpose.getX() < 11.6)
-            output.addFirst(createWaypoint(finalWaypoint, (alliance == "blue" ? 1: -1) * 3.6, side == "top" ? .3 : -.1));
+            output.addFirst(
+                    createWaypoint(finalWaypoint, (alliance == "blue" ? 1 : -1) * 3.6, side == "top" ? .3 : -.1));
         return output;
     }
 

@@ -6,7 +6,6 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.apriltag.*;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.enums.AutoPosition;
 
 import java.util.ArrayList;
@@ -19,8 +18,6 @@ public class Limelight {
     double turnAngle;
     Translation2d distanceAndTranslation;
     ArrayList<ArrayList<Double>> positions;
-
-    private SendableChooser<String> m_chooser;
 
     public Limelight() {
         positions = new ArrayList<>();
@@ -42,10 +39,6 @@ public class Limelight {
         }
 
         return new Pose3d(arr[2], -arr[0], arr[1], new Rotation3d());
-    }
-
-    public void setChooser(SendableChooser<String> chooser) {
-        this.m_chooser = chooser;
     }
 
     public Pose3d getBotPose() {

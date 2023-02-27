@@ -300,6 +300,8 @@ public class RobotContainer {
     }
 
     String failSafeString = autoPathChooser.getSelected();
+
+    // this is the default return value
     AutoPosition failSafe = AutoPosition.NONE;
 
     for (AutoPosition position : AutoPosition.values()) {
