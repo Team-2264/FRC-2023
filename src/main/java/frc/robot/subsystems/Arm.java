@@ -112,7 +112,7 @@ public class Arm extends SubsystemBase {
 
     // // PID
 
-    wristMotor.config_kP(0,4, 10);
+    wristMotor.config_kP(0, 4, 10);
     wristMotor.config_kI(0, 0, 10);
     wristMotor.config_kD(0, 40, 10);
 
@@ -258,7 +258,7 @@ public class Arm extends SubsystemBase {
   }
 
   private void setWristHome() {
-    wristPosition = 0;  
+    wristPosition = 0;
   }
 
   private void setWristFlat() {
@@ -345,9 +345,11 @@ public class Arm extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("LEFT BELT", leftBelt.getSelectedSensorPosition());
+    SmartDashboard.putNumber("LEFT BELT",
+        leftBelt.getSelectedSensorPosition() / Constants.Arm.ENCODER_UNITS_PER_DEGREE_ELBOW);
     SmartDashboard.putNumber("RIGHT BELT", rightBelt.getSelectedSensorPosition());
-    SmartDashboard.putNumber("WRIST", wristMotor.getSelectedSensorPosition());
+    SmartDashboard.putNumber("WRIST",
+        wristMotor.getSelectedSensorPosition() / Constants.Arm.ENCODER_UNITS_PER_DEGREE_WRIST);
 
     SmartDashboard.putBoolean("BELT LIMIT", leftBelt.getSensorCollection().isRevLimitSwitchClosed() == 1);
     SmartDashboard.putBoolean("WRIST LIMIT", wristMotor.getSensorCollection().isRevLimitSwitchClosed());

@@ -93,8 +93,8 @@ public class RobotContainer {
   SendableChooser<String> autoPathChooser = new SendableChooser<>();
   SendableChooser<String> autoModeChooser = new SendableChooser<>();
 
-  String kDefaultAuto = AutoMode.REGULAR.toString();
-  String kCustomAuto = AutoMode.BALANCE.toString();
+  String noBalanceMode = AutoMode.REGULAR.toString();
+  String balanceMode = AutoMode.BALANCE.toString();
 
   /**
    * `
@@ -118,16 +118,17 @@ public class RobotContainer {
     TABLE.getTable(Constants.ObjectVision.NETWORK_TABLE_ADDRESS).getEntry("ready").setBoolean(true);
 
     for (AutoPosition position : AutoPosition.values()) {
-      autoPathChooser.addOption(position.toString(), position.toString());
+      if (position == AutoPosition.INNER_CONE)
+        autoPathChooser.setDefaultOption(position.toString(), position.toString());
+      else
+        autoPathChooser.addOption(position.toString(), position.toString());
     }
 
-    autoModeChooser.addOption("Balance", kCustomAuto);
-    autoModeChooser.addOption("No Balance", kDefaultAuto);
+    autoModeChooser.addOption("Balance", balanceMode);
+    autoModeChooser.setDefaultOption("No Balance", noBalanceMode);
 
     SmartDashboard.putData("Auto Pos.", autoPathChooser);
     SmartDashboard.putData("Balance Mode", autoModeChooser);
-
-    limelight.setChooser(autoPathChooser);
 
     PowerDistribution pdh = new PowerDistribution();
 
@@ -263,14 +264,11 @@ public class RobotContainer {
   }
 
   /**
-   * 
-   *
-   * 
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
     // Command will run in autonomous
-    return new AutoSwerve(s_Swerve, s_Arm, limelight, (autoModeChooser.getSelected() == kDefaultAuto ? false : true))
+    return new AutoSwerve(s_Swerve, s_Arm, getAutoPosition())
         .getCommand();
   }
 
@@ -284,9 +282,34 @@ public class RobotContainer {
   }
 
   public AutoPosition getAutoPosition() {
-    if (limelight.getAutoPosition() != null)
-      return limelight.getAutoPosition();
-    return limelight.getAutoPosition();
+    AutoPosition limePos = limelight.getAutoPosition();
+
+    if (limePos != AutoPosition.NONE) {
+      if (autoModeChooser.getSelected() == balanceMode) {
+        switch (limePos) {
+          case CENTER:
+            return AutoPosition.CENTER;
+          case EDGE:
+            return AutoPosition.EDGE_BALANCE;
+          case INNER:
+            return AutoPosition.INNER_BALANCE;
+        }
+      } else {
+        return limelight.getAutoPosition();
+      }
+    }
+
+    String failSafeString = autoPathChooser.getSelected();
+
+    // this is the default return value
+    AutoPosition failSafe = AutoPosition.NONE;
+
+    for (AutoPosition position : AutoPosition.values()) {
+      if (failSafeString == position.toString())
+        failSafe = position;
+    }
+
+    return failSafe;
   }
 
   public void setYawToCurrentPose() {
@@ -295,7 +318,8 @@ public class RobotContainer {
 
   public void postCurrentAutonomousCommand() {
     SmartDashboard.putString("Current Autonomous Command",
-        (limelight.getAutoPosition() != null) ? limelight.getAutoPosition().toString() : "None");
+        getAutoPosition().toString());
+
   }
 
   public void armsInit() {
