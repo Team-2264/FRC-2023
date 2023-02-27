@@ -51,7 +51,7 @@ public class TeleopSwerve extends CommandBase {
     }
 
     public double rotationCurve(double input) {
-        return (0.5 * input) + (0.25 * Math.pow(input, 3)) + (0.1 * (Math.pow(input, 5)));
+        return (0.5 * input) + (0.25 * Math.pow(input, 3)) + (0.3 * (Math.pow(input, 5)));
     }
 
     @Override
