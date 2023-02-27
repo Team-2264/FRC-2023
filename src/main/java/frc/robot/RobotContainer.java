@@ -125,7 +125,7 @@ public class RobotContainer {
     }
 
     autoModeChooser.addOption("Balance", balanceMode);
-    autoModeChooser.addOption("No Balance", noBalanceMode);
+    autoModeChooser.setDefaultOption("No Balance", noBalanceMode);
 
     SmartDashboard.putData("Auto Pos.", autoPathChooser);
     SmartDashboard.putData("Balance Mode", autoModeChooser);
