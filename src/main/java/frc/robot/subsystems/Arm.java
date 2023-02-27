@@ -246,7 +246,7 @@ public class Arm extends SubsystemBase {
   }
 
   private void setArmHigh() {
-    armPosition = 75;
+    armPosition = 70;
   }
 
   private void setArmHighestCone() {

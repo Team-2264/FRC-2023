@@ -51,7 +51,9 @@ public class TeleopSwerve extends CommandBase {
     }
 
     public double rotationCurve(double input) {
-        return (0.5 * input) + (0.25 * Math.pow(input, 3)) + (0.3 * (Math.pow(input, 5)));
+        // return (0.5 * input) + (0.25 * Math.pow(input, 3)) + (0.3 * (Math.pow(input, 5)));
+        // return (Math.pow(input,3));
+        return input;
     }
 
     @Override
@@ -101,9 +103,9 @@ public class TeleopSwerve extends CommandBase {
             rAxis = -controller.getRawAxis(rotationAxis);
         }
 
-        if (Math.abs(arm.getRawAxis(2)) > .3) {
-            rAxis = arm.getRawAxis(2) * -.2;
-        }
+        // if (Math.abs(arm.getRawAxis(2)) > .3) {
+        //     rAxis = arm.getRawAxis(2) * -.2;
+        // }
 
         translation = new Translation2d(curve(yAxis), curve(xAxis)).times(Constants.Swerve.maxSpeed);
         rotation = rotationCurve(rAxis) * Constants.Swerve.maxAngularVelocity;
