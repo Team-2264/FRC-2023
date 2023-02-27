@@ -1,5 +1,5 @@
 package frc.robot.enums;
 
 public enum AutoPosition {
-    INNER_BORDER, CENTER, EDGE
+    INNER, INNER_CONE, INNER_BALANCE, CENTER, EDGE_CONE, EDGE, EDGE_BALANCE, NONE
 }

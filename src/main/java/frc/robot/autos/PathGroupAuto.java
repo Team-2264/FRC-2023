@@ -36,8 +36,15 @@ public class PathGroupAuto extends SequentialCommandGroup {
                 ArrayList<PathPlannerTrajectory> pathGroup = (ArrayList<PathPlannerTrajectory>) PathPlanner
                                 .loadPathGroup(
                                                 pathName,
-                                                new PathConstraints(Constants.AutoConstants.kMaxSpeedMetersPerSecond,
-                                                                Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared));
+                                                Constants.AutoConstants.kMaxSpeedMetersPerSecond,
+                                                Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared, true);
+                // ArrayList<PathPlannerTrajectory> pathGroup =
+                // (ArrayList<PathPlannerTrajectory>) PathPlanner
+                // .loadPathGroup(
+                // pathName,
+                // new PathConstraints(Constants.AutoConstants.kMaxSpeedMetersPerSecond,
+                // Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared),
+                // );
 
                 // creates the auto builder
                 SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(s_Swerve::getPose, s_Swerve::resetOdometry,

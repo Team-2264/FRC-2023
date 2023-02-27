@@ -130,22 +130,14 @@ public class Limelight {
     public AutoPosition getAutoPosition() {
         int id = getTargetID();
 
-        String failSafeString = m_chooser.getSelected();
-        AutoPosition failSafe = null;
-        for (AutoPosition position : AutoPosition.values()) {
-            if (failSafeString == position.toString())
-                failSafe = position;
-        }
-
         if (id == 1 || id == 8)
             return AutoPosition.EDGE;
         if (id == 2 || id == 7)
             return AutoPosition.CENTER;
         if (id == 3 || id == 6)
-            return AutoPosition.INNER_BORDER;
+            return AutoPosition.INNER;
 
-        return failSafe;
-
+        return AutoPosition.NONE;
     }
 
 }
