@@ -107,7 +107,7 @@ public final class Constants {
         public static final double driveKA = (0.27 / 12);
 
         /* Swerve Profiling Values */
-        public static final double maxSpeed = 4; // meters per second
+        public static final double maxSpeed = 5; // meters per second
         public static final double maxAngularVelocity = Math.PI; // radians per second (rad/s)
 
         /* Neutral Modes */
@@ -187,16 +187,16 @@ public final class Constants {
     }
 
     public static final class AutoConstants {
-        public static final double kMaxSpeedMetersPerSecond = 2;
+        public static final double kMaxSpeedMetersPerSecond = 4;
         // public static final double kMaxSpeedMetersPerSecond = 3;
-        public static final double kMaxAccelerationMetersPerSecondSquared = 1.5;
+        public static final double kMaxAccelerationMetersPerSecondSquared = 3;
         // public static final double kMaxAccelerationMetersPerSecondSquared = 3;
         public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
         public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI / 2;
 
-        public static final double kPXController = 1;
-        public static final double kPYController = 1;
-        public static final double kPThetaController = 3.2;
+        public static final double kPXController = 1.25;
+        public static final double kPYController = 1.25;
+        public static final double kPThetaController = 3.4;
 
         public static final double AUTO_BALANCE_MAX_SPEED_Y = 0.5; // m/s
         public static final double AUTO_BALANCE_MAX_SPEED_X = 0.5; // m/s
