@@ -14,6 +14,7 @@ import frc.lib.util.SwerveModuleConstants;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.CANCoder;
 
 public class SwerveModule {
@@ -23,8 +24,8 @@ public class SwerveModule {
     private double angleOffsetDouble;
     public SwerveModuleConstants moduleConstants;
 
-    private TalonFX mAngleMotor;
-    private TalonFX mDriveMotor;
+    private WPI_TalonFX mAngleMotor;
+    private WPI_TalonFX mDriveMotor;
     private CANCoder angleEncoder;
 
     private boolean angleMotorInvert;
@@ -51,11 +52,11 @@ public class SwerveModule {
         configAngleEncoder();
 
         /* Angle Motor Config */
-        mAngleMotor = new TalonFX(moduleConstants.angleMotorID);
+        mAngleMotor = new WPI_TalonFX(moduleConstants.angleMotorID);
         configAngleMotor();
 
         /* Drive Motor Config */
-        mDriveMotor = new TalonFX(moduleConstants.driveMotorID);
+        mDriveMotor = new WPI_TalonFX(moduleConstants.driveMotorID);
         configDriveMotor();
 
         lastAngle = getState().angle;
