@@ -319,6 +319,7 @@ public class RobotContainer {
   public void postCurrentAutonomousCommand() {
     SmartDashboard.putString("Current Autonomous Command",
         getAutoPosition().toString());
+      m_field.getObject("autoTraj").setTrajectory(PathPlannerAuto.getTrajectory(getAutoPosition().toString()));
 
   }
 

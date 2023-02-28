@@ -18,7 +18,7 @@
       "stopEvent": {
         "names": [
           "CONE_SIMBA",
-          "DELAY_0.5"
+          "DELAY_0.7"
         ],
         "executionBehavior": "parallel",
         "waitBehavior": "none",

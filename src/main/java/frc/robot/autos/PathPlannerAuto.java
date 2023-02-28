@@ -11,6 +11,7 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -51,8 +52,13 @@ public class PathPlannerAuto extends SequentialCommandGroup {
                 this.setCommands();
         }
 
-        public PathPlannerAuto() {
+           public PathPlannerAuto() {
         };
+        public static final Trajectory getTrajectory(String pathName) {
+                return PathPlanner.loadPath(pathName,
+                                new PathConstraints(Constants.AutoConstants.kMaxSpeedMetersPerSecond,
+                                                Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared));
+        }
 
         public PathPlannerAuto(Swerve swerve, String pathName, HashMap<String, Command> eventMap) {
 

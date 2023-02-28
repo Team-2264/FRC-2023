@@ -174,13 +174,14 @@ public class Robot extends TimedRobot {
     drive = new DifferentialDrive(leftMotor, rightMotor);
     drive.setDeadband(0);
 
+    //
     // Configure gyro
+    //
 
     // Note that the angle from the NavX and all implementors of WPILib Gyro
     // must be negated because getAngle returns a clockwise positive angle
     // Uncomment for Pigeon
     PigeonIMU pigeon = new PigeonIMU(15);
-    // Pigeon2 pigeon2 = new Pigeon2(15);
     gyroAngleRadians = () -> {
       // Allocating a new array every loop is bad but concise
       double[] xyz = new double[3];
