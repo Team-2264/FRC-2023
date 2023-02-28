@@ -2,13 +2,13 @@
   "waypoints": [
     {
       "anchorPoint": {
-        "x": 2.43197766625568,
-        "y": 2.740447716409755
+        "x": 1.87,
+        "y": 2.751508920389802
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.446649621150644,
-        "y": 2.740447716409755
+        "x": 3.014651140182814,
+        "y": 2.793050047525876
       },
       "holonomicAngle": -180.0,
       "isReversal": false,
@@ -17,68 +17,45 @@
       "isStopPoint": false,
       "stopEvent": {
         "names": [
-          "INTERMEDIATE",
+          "CUBE_SIMBA",
           "DELAY_2.0",
-          "CUBE_SIMBA"
-        ],
-        "executionBehavior": "sequential",
-        "waitBehavior": "after",
-        "waitTime": 2.0
-      }
-    },
-    {
-      "anchorPoint": {
-        "x": 1.9001410617838599,
-        "y": 2.7391284902469972
-      },
-      "prevControl": {
-        "x": 1.8916816041404951,
-        "y": 2.7391284902469972
-      },
-      "nextControl": {
-        "x": 1.925494351194642,
-        "y": 2.7391284902469972
-      },
-      "holonomicAngle": -180.0,
-      "isReversal": false,
-      "velOverride": null,
-      "isLocked": false,
-      "isStopPoint": true,
-      "stopEvent": {
-        "names": [
           "OPEN_CLAW",
-          "DELAY_1.0",
-          "HOME"
+          "DELAY_0.5"
         ],
         "executionBehavior": "sequential",
         "waitBehavior": "after",
-        "waitTime": 0.5
+        "waitTime": 0
       }
     },
     {
       "anchorPoint": {
-        "x": 2.903987907883585,
-        "y": 2.7414362299698993
+        "x": 3.9700286566371745,
+        "y": 2.75
       },
       "prevControl": {
-        "x": 2.899636327798948,
-        "y": 2.7414362299698993
+        "x": 2.7060296863920543,
+        "y": 2.693045853458243
       },
       "nextControl": null,
-      "holonomicAngle": -179.27818529019808,
+      "holonomicAngle": -180.0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
-        "names": [
-          "BALANCE_BACKWARD"
-        ],
+        "names": [],
         "executionBehavior": "parallel",
-        "waitBehavior": "after",
+        "waitBehavior": "none",
         "waitTime": 0
       }
     }
   ],
-  "markers": []
+  "markers": [
+    {
+      "position": 0.22351240678267045,
+      "names": [
+        "HOME"
+      ]
+    }
+  ]
 }
