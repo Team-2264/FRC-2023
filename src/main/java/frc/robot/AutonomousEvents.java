@@ -44,9 +44,11 @@ public class AutonomousEvents {
         EVENT_MAP.put("BALANCE_FORWARD", new AutoBalance(s_Swerve, MovementDirection.FORWARD));
         EVENT_MAP.put("BALANCE_BACKWARD", new AutoBalance(s_Swerve, MovementDirection.BACKWARD));
         EVENT_MAP.put("BALANCE_RELATIVE", new AutoBalance(s_Swerve, MovementDirection.RELATIVE));
+        EVENT_MAP.put("BALANCE", new AutoBalance(s_Swerve, MovementDirection.NONE));
 
         EVENT_MAP.put("HALT", new StopMoving(s_Swerve));
 
+        // QoL
         for (double delayTime = 0.1; delayTime <= 5; delayTime += 0.1) {
             EVENT_MAP.put("DELAY_" + delayTime, new Delay(delayTime));
         }

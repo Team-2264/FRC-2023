@@ -1,5 +1,5 @@
 package frc.robot.enums;
 
 public enum MovementDirection {
-    FORWARD, BACKWARD, LEFT, RIGHT, RELATIVE
+    FORWARD, BACKWARD, LEFT, RIGHT, RELATIVE, NONE
 }
