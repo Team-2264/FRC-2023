@@ -108,7 +108,7 @@ public final class Constants {
 
         /* Swerve Profiling Values */
         public static final double maxSpeed = 4; // meters per second
-        public static final double maxAngularVelocity = Math.PI*1.5; // radians per second (rad/s)
+        public static final double maxAngularVelocity = Math.PI * 1.5; // radians per second (rad/s)
 
         /* Neutral Modes */
         public static final NeutralMode angleNeutralMode = NeutralMode.Coast;
@@ -208,10 +208,12 @@ public final class Constants {
                 put(AutoPosition.INNER_CONE, AutoPosition.INNER_CONE.toString());
                 put(AutoPosition.INNER, AutoPosition.INNER.toString());
                 put(AutoPosition.INNER_BALANCE, AutoPosition.INNER_BALANCE.toString());
+                put(AutoPosition.INNER_CONE_BALANCE, AutoPosition.INNER_CONE_BALANCE.toString());
 
                 put(AutoPosition.EDGE, AutoPosition.EDGE.toString());
                 put(AutoPosition.EDGE_CONE, AutoPosition.EDGE_CONE.toString());
                 put(AutoPosition.EDGE_BALANCE, AutoPosition.EDGE_BALANCE.toString());
+                put(AutoPosition.EDGE_CONE_BALANCE, AutoPosition.EDGE_CONE_BALANCE.toString());
 
                 put(AutoPosition.CENTER, AutoPosition.CENTER.toString());
             }

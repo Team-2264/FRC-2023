@@ -293,6 +293,10 @@ public class RobotContainer {
             return AutoPosition.EDGE_BALANCE;
           case INNER:
             return AutoPosition.INNER_BALANCE;
+          case INNER_CONE:
+            return AutoPosition.INNER_CONE_BALANCE;
+          case EDGE_CONE:
+            return AutoPosition.EDGE_CONE_BALANCE;
         }
       } else {
         return limelight.getAutoPosition();
@@ -319,7 +323,7 @@ public class RobotContainer {
   public void postCurrentAutonomousCommand() {
     SmartDashboard.putString("Current Autonomous Command",
         getAutoPosition().toString());
-      m_field.getObject("autoTraj").setTrajectory(PathPlannerAuto.getTrajectory(getAutoPosition().toString()));
+    m_field.getObject("autoTraj").setTrajectory(PathPlannerAuto.getTrajectory(getAutoPosition().toString()));
 
   }
 
