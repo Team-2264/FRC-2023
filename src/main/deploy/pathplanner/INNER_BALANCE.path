@@ -87,12 +87,12 @@
         "y": 3.3
       },
       "prevControl": {
-        "x": 1.9635473949286393,
-        "y": 4.887557664798026
+        "x": 2.065725792651592,
+        "y": 4.879515433339198
       },
       "nextControl": {
-        "x": 1.8379489712538453,
-        "y": 2.176452256034938
+        "x": 1.828640544067655,
+        "y": 2.748469082631524
       },
       "holonomicAngle": 180.0,
       "isReversal": false,
@@ -110,12 +110,12 @@
     },
     {
       "anchorPoint": {
-        "x": 2.7930152554369783,
-        "y": 2.1774688575147545
+        "x": 3.9826890599147955,
+        "y": 2.996401149594834
       },
       "prevControl": {
-        "x": 2.784083296980613,
-        "y": 2.1912038502353917
+        "x": 3.97375710145843,
+        "y": 3.010136142315471
       },
       "nextControl": null,
       "holonomicAngle": -180.0,
@@ -125,7 +125,7 @@
       "isStopPoint": false,
       "stopEvent": {
         "names": [
-          "BALANCE_BACKWARD"
+          "BALANCE"
         ],
         "executionBehavior": "sequential",
         "waitBehavior": "none",
@@ -133,5 +133,36 @@
       }
     }
   ],
-  "markers": []
+  "markers": [
+    {
+      "position": 0.17706853693181818,
+      "names": [
+        "HOME"
+      ]
+    },
+    {
+      "position": 0.712344637784091,
+      "names": [
+        "INTAKE_LOW"
+      ]
+    },
+    {
+      "position": 2.2893621271306817,
+      "names": [
+        "CONE_SIMBA"
+      ]
+    },
+    {
+      "position": 2.992440518465909,
+      "names": [
+        "OPEN_CLAW"
+      ]
+    },
+    {
+      "position": 3.2694535688920463,
+      "names": [
+        "HOME"
+      ]
+    }
+  ]
 }
