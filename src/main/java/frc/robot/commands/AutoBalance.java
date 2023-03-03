@@ -57,8 +57,7 @@ public class AutoBalance extends CommandBase {
     @Override
     public void execute() {
         double currAngle = (s_Swerve.pidgey.getPitch() * 180) / Math.PI;
-        double speedPercent = Math.abs((currAngle - DEGREE_DEADZONE) / DEGREE_DEADZONE);
-        double speedX = speedPercent * Constants.AutoConstants.AUTO_BALANCE_MAX_SPEED_X;
+        double speedX = Constants.AutoConstants.AUTO_BALANCE_MAX_SPEED_X;
 
         speedX = (currAngle > 12.5) ? Constants.AutoConstants.AUTO_BALANCE_MAX_SPEED_X
                 : Constants.AutoConstants.AUTO_BALANCE_MAX_SPEED_X / 2;

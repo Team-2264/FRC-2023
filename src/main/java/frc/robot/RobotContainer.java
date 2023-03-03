@@ -80,7 +80,8 @@ public class RobotContainer {
   // Emergency Buttons
   private final JoystickButton disableCommandButton = new JoystickButton(driver, PS4Controller.Button.kL1.value);
 
-  private static final NetworkTableInstance TABLE = NetworkTableInstance.getDefault();
+  // private static final NetworkTableInstance TABLE =
+  // NetworkTableInstance.getDefault();
 
   /* Subsystems */
   private final Swerve s_Swerve = new Swerve();
@@ -112,10 +113,10 @@ public class RobotContainer {
     configureButtonBindings();
 
     // make sure we're not accidentally ready across reboots
-    TABLE.getTable(Constants.ObjectVision.NETWORK_TABLE_ADDRESS).getEntry("ready").clearPersistent();
+    // TABLE.getTable(Constants.ObjectVision.NETWORK_TABLE_ADDRESS).getEntry("ready").clearPersistent();
 
-    // lets the listener on the raspberry pi know it's ready to process and send
-    TABLE.getTable(Constants.ObjectVision.NETWORK_TABLE_ADDRESS).getEntry("ready").setBoolean(true);
+    // // lets the listener on the raspberry pi know it's ready to process and send
+    // TABLE.getTable(Constants.ObjectVision.NETWORK_TABLE_ADDRESS).getEntry("ready").setBoolean(true);
 
     for (AutoPosition position : AutoPosition.values()) {
       if (position == AutoPosition.INNER_CONE)
@@ -282,26 +283,28 @@ public class RobotContainer {
   }
 
   public AutoPosition getAutoPosition() {
-    AutoPosition limePos = limelight.getAutoPosition();
+    // AutoPosition limePos = limelight.getAutoPosition();
 
-    if (limePos != AutoPosition.NONE) {
-      if (autoModeChooser.getSelected() == balanceMode) {
-        switch (limePos) {
-          case CENTER:
-            return AutoPosition.CENTER;
-          case EDGE:
-            return AutoPosition.EDGE_BALANCE;
-          case INNER:
-            return AutoPosition.INNER_BALANCE;
-          case INNER_CONE:
-            return AutoPosition.INNER_CONE_BALANCE;
-          case EDGE_CONE:
-            return AutoPosition.EDGE_CONE_BALANCE;
-        }
-      } else {
-        return limelight.getAutoPosition();
-      }
-    }
+    // // if (limePos != AutoPosition.NONE) {
+    // if (autoModeChooser.getSelected() == balanceMode) {
+    // switch (limePos) {
+    // case CENTER:
+    // return AutoPosition.CENTER;
+    // case EDGE:
+    // return AutoPosition.EDGE_BALANCE;
+    // case INNER:
+    // return AutoPosition.INNER_BALANCE;
+    // case INNER_CONE:
+    // return AutoPosition.INNER_CONE_BALANCE;
+    // case EDGE_CONE:
+    // return AutoPosition.EDGE_CONE_BALANCE;
+    // }
+
+    // return AutoPosition.NONE;
+    // // } else {
+    // // return limelight.getAutoPosition();
+    // // }
+    // }
 
     String failSafeString = autoPathChooser.getSelected();
 
@@ -323,7 +326,7 @@ public class RobotContainer {
   public void postCurrentAutonomousCommand() {
     SmartDashboard.putString("Current Autonomous Command",
         getAutoPosition().toString());
-    m_field.getObject("autoTraj").setTrajectory(PathPlannerAuto.getTrajectory(getAutoPosition().toString()));
+    // m_field.getObject("autoTraj").setTrajectory(PathPlannerAuto.getTrajectory(getAutoPosition().toString()));
 
   }
 

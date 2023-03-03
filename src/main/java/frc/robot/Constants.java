@@ -198,8 +198,8 @@ public final class Constants {
         public static final double kPYController = 1;
         public static final double kPThetaController = 3.2;
 
-        public static final double AUTO_BALANCE_MAX_SPEED_Y = 0.5; // m/s
-        public static final double AUTO_BALANCE_MAX_SPEED_X = 0.5; // m/s
+        public static final double AUTO_BALANCE_MAX_SPEED_Y = 0.1; // m/s
+        public static final double AUTO_BALANCE_MAX_SPEED_X = 0.1; // m/s
 
         public static final double ARM_ERROR_TOLERANCE = 100.0;
 

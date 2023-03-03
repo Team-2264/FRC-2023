@@ -139,12 +139,12 @@
         "y": 4.46
       },
       "prevControl": {
-        "x": 1.8901643540620103,
-        "y": 4.510252410605028
+        "x": 1.8877126221368932,
+        "y": 4.509709808366992
       },
       "nextControl": {
-        "x": 2.2314398864637575,
-        "y": 2.7666030059978954
+        "x": 2.309711286089239,
+        "y": 2.8024722716112103
       },
       "holonomicAngle": -180.0,
       "isReversal": false,
@@ -154,7 +154,8 @@
       "stopEvent": {
         "names": [
           "OPEN_CLAW",
-          "DELAY_0.1"
+          "DELAY_0.4",
+          "HOME"
         ],
         "executionBehavior": "sequential",
         "waitBehavior": "none",
@@ -163,12 +164,12 @@
     },
     {
       "anchorPoint": {
-        "x": 4.02341382525647,
-        "y": 2.7877677065032946
+        "x": 4.33,
+        "y": 2.8431123528913735
       },
       "prevControl": {
-        "x": 4.024542778414984,
-        "y": 2.7838254310677453
+        "x": 4.3311289531585135,
+        "y": 2.839170077455824
       },
       "nextControl": null,
       "holonomicAngle": -180.0,
@@ -180,14 +181,48 @@
         "names": [
           "BALANCE"
         ],
-        "executionBehavior": "parallel",
-        "waitBehavior": "after",
-        "waitTime": 0
+        "executionBehavior": "sequential",
+        "waitBehavior": "before",
+        "waitTime": 0.5
       }
     }
   ],
-  "maxVelocity": null,
-  "maxAcceleration": 1.5,
-  "isReversed": null,
-  "markers": []
+  "markers": [
+    {
+      "position": 1.309090909090834,
+      "names": [
+        "HOME"
+      ]
+    },
+    {
+      "position": 2.0072727272725874,
+      "names": [
+        "INTAKE_LOW"
+      ]
+    },
+    {
+      "position": 3.5345454545452446,
+      "names": [
+        "HOME"
+      ]
+    },
+    {
+      "position": 3.6654545454545358,
+      "names": [
+        "CUBE_SIMBA"
+      ]
+    },
+    {
+      "position": 5.410909090909081,
+      "names": [
+        "HOME"
+      ]
+    },
+    {
+      "position": 1.9636363636363123,
+      "names": [
+        "OPEN_CLAW"
+      ]
+    }
+  ]
 }
