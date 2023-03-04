@@ -107,7 +107,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    m_robotContainer.armsInit();
+    // m_robotContainer.armsInit();
 
     m_robotContainer.setYawToCurrentPose();
 

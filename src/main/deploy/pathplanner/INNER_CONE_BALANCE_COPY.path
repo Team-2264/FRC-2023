@@ -100,7 +100,7 @@
         "names": [
           "HALT",
           "CLOSE_CLAW",
-          "DELAY_0.4",
+          "DELAY_0.2",
           "HOME"
         ],
         "executionBehavior": "sequential",
@@ -135,22 +135,22 @@
     },
     {
       "anchorPoint": {
-        "x": 2.0264964923653097,
-        "y": 4.494134979710759
+        "x": 1.9,
+        "y": 4.46
       },
       "prevControl": {
-        "x": 2.014209114502203,
-        "y": 4.543844788077751
+        "x": 1.8877126221368932,
+        "y": 4.509709808366992
       },
       "nextControl": {
-        "x": 2.4362077784545493,
-        "y": 2.836607251321969
+        "x": 2.309711286089239,
+        "y": 2.8024722716112103
       },
       "holonomicAngle": -180.0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
-      "isStopPoint": false,
+      "isStopPoint": true,
       "stopEvent": {
         "names": [
           "OPEN_CLAW",
@@ -187,36 +187,5 @@
       }
     }
   ],
-  "markers": [
-    {
-      "position": 1.309090909090834,
-      "names": [
-        "HOME"
-      ]
-    },
-    {
-      "position": 2.0072727272725874,
-      "names": [
-        "INTAKE_LOW"
-      ]
-    },
-    {
-      "position": 3.5345454545452446,
-      "names": [
-        "HOME"
-      ]
-    },
-    {
-      "position": 5.410909090909081,
-      "names": [
-        "HOME"
-      ]
-    },
-    {
-      "position": 1.9636363636363123,
-      "names": [
-        "OPEN_CLAW"
-      ]
-    }
-  ]
+  "markers": []
 }

@@ -131,6 +131,14 @@ public class Arm extends SubsystemBase {
     canUseWrist = false;
   }
 
+  public void forceEnableArm() {
+    canUseArm = true;
+    canUseWrist = true;
+
+    leftBelt.setSelectedSensorPosition(0);
+    wristMotor.setSelectedSensorPosition(0);
+  }
+
   public void adjustWrist(double amounts) {
     wristPosition = wristPosition + amounts;
     SmartDashboard.putNumber("WRIST", wristPosition);
@@ -187,7 +195,7 @@ public class Arm extends SubsystemBase {
   public void intake() {
     bringShoulderIn();
     setArmHigh();
-    setWristFlat();
+    setWristFlatIntake();
     openClaw();
 
     status = ArmStatus.INTAKE;
@@ -219,6 +227,16 @@ public class Arm extends SubsystemBase {
     status = ArmStatus.CUBE_SIMBA;
   }
 
+  public void midIntake() {
+    wristPosition = 43;
+    armPosition = 49;
+    bringShoulderIn();
+    openClaw();
+
+    status = ArmStatus.INTAKE;
+
+  }
+
   public ArmStatus getStatus() {
     return status;
   }
@@ -242,7 +260,7 @@ public class Arm extends SubsystemBase {
   }
 
   private void setArmMidCone() {
-    armPosition = 70;
+    armPosition = 60;
   }
 
   private void setArmHigh() {
@@ -265,6 +283,10 @@ public class Arm extends SubsystemBase {
     wristPosition = 57;
   }
 
+  private void setWristFlatIntake() {
+    wristPosition = 100;
+  }
+
   private void setWristAngledDown() {
     wristPosition = 130;
   }
@@ -284,7 +306,7 @@ public class Arm extends SubsystemBase {
   // SETFUNCTIONS
 
   private void setElbow(double deg) {
-    leftBelt.set(ControlMode.MotionMagic, deg * Constants.Arm.ENCODER_UNITS_PER_DEGREE_ELBOW,
+    leftBelt.set(ControlMode.MotionMagic, (deg - 5) * Constants.Arm.ENCODER_UNITS_PER_DEGREE_ELBOW,
         DemandType.ArbitraryFeedForward, 0.07 * Math.cos(deg * (Math.PI / 180)));
   }
 

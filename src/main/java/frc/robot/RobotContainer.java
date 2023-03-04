@@ -151,9 +151,7 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    testingButton.onTrue(new InstantCommand(() -> {
-      new AutoBalance(s_Swerve, MovementDirection.BACKWARD).schedule();
-    }));
+    testingButton.onTrue(new InstantCommand(() -> s_Arm.forceEnableArm()));
 
     /* Driver Buttons */
 
@@ -249,7 +247,7 @@ public class RobotContainer {
       }
     }));
 
-    armLow.onTrue(new InstantCommand(() -> s_Arm.setLow()));
+    armLow.onTrue(new InstantCommand(() -> s_Arm.midIntake()));
     armLowIntake.onTrue(new InstantCommand(() -> s_Arm.setLowIntake()));
 
     armMidCone.onTrue(new InstantCommand(() -> s_Arm.setMidCone()));
