@@ -214,6 +214,7 @@ public final class Constants {
                 put(AutoPosition.EDGE_CONE, AutoPosition.EDGE_CONE.toString());
                 put(AutoPosition.EDGE_BALANCE, AutoPosition.EDGE_BALANCE.toString());
                 put(AutoPosition.EDGE_CONE_BALANCE, AutoPosition.EDGE_CONE_BALANCE.toString());
+                put(AutoPosition.EDGE_SINGLE, AutoPosition.EDGE_SINGLE.toString());
 
                 put(AutoPosition.CENTER, AutoPosition.CENTER.toString());
             }
