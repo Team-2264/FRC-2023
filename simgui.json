@@ -1,10 +1,32 @@
 {
+  "HALProvider": {
+    "Other Devices": {
+      "Talon FX[41]": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[46]": {
+        "header": {
+          "open": true
+        }
+      }
+    }
+  },
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
       "/SmartDashboard/Auto Pos.": "String Chooser",
       "/SmartDashboard/Balance Mode": "String Chooser",
-      "/SmartDashboard/Field": "Field2d"
+      "/SmartDashboard/Field": "Field2d",
+      "/SmartDashboard/PPSwerveControllerCommand_field": "Field2d"
+    }
+  },
+  "NetworkTables": {
+    "transitory": {
+      "FMSInfo": {
+        "open": true
+      }
     }
   }
 }
