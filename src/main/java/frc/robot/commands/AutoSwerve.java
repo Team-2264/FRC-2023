@@ -18,6 +18,7 @@ public class AutoSwerve {
     private HashMap<String, Command> EVENT_MAP;
 
     private AutoPosition position;
+    private String positionString;
 
     /**
      * @param s_Swerve - Swerve Drive Subsystem
