@@ -9,6 +9,7 @@ import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
@@ -296,7 +297,11 @@ public class RobotContainer {
   public void postCurrentAutonomousCommand() {
     SmartDashboard.putString("Current Autonomous Command",
         getAutoPosition().toString());
-    // m_field.getObject("autoTraj").setTrajectory(PathPlannerAuto.getTrajectory(getAutoPosition().toString()));
+    try {
+      m_field.getObject("autoTraj").setTrajectory(PathPlannerAuto.getTrajectory(getAutoPosition().toString()));
+    } catch (Exception e) {
+      m_field.getObject("autoTraj").setTrajectory(new Trajectory());
+    }
 
   }
 

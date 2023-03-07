@@ -4,7 +4,8 @@
       "/FMSInfo": "FMSInfo",
       "/SmartDashboard/Auto Pos.": "String Chooser",
       "/SmartDashboard/Balance Mode": "String Chooser",
-      "/SmartDashboard/Field": "Field2d"
+      "/SmartDashboard/Field": "Field2d",
+      "/SmartDashboard/PPSwerveControllerCommand_field": "Field2d"
     }
   }
 }
