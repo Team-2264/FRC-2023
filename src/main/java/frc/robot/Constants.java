@@ -61,7 +61,7 @@ public final class Constants {
         /* Drivetrain Constants */
         public static final double trackWidth = Units.inchesToMeters(25.5);
         public static final double wheelBase = Units.inchesToMeters(30);
-        public static final double wheelDiameter = Units.inchesToMeters(4);
+        public static final double wheelDiameter = Units.inchesToMeters(3.92);
         public static final double wheelCircumference = wheelDiameter * Math.PI;
 
         public static final double openLoopRamp = 0.5;
@@ -107,7 +107,7 @@ public final class Constants {
         public static final double driveKA = (0.27 / 12);
 
         /* Swerve Profiling Values */
-        public static final double maxSpeed = 4; // meters per second
+        public static final double maxSpeed = 4.5; // meters per second
         public static final double maxAngularVelocity = Math.PI * 1.5; // radians per second (rad/s)
 
         /* Neutral Modes */
@@ -128,7 +128,7 @@ public final class Constants {
             public static final int angleMotorID = 41;
             public static final int canCoderID = 48;
             // public static final double angleOffset = 101.68;
-            public static final double angleOffset = 203.55;
+            public static final double angleOffset = 202.14;
             public static final boolean angleInverted = false;
             public static final boolean driveInverted = false;
 
@@ -143,7 +143,7 @@ public final class Constants {
             public static final int angleMotorID = 43;
             public static final int canCoderID = 49;
             // public static final double angleOffset = 350.45;
-            public static final double angleOffset = 25.8398;
+            public static final double angleOffset = 25.9;
             public static final boolean angleInverted = false;
             public static final boolean driveInverted = true;
 
@@ -159,7 +159,7 @@ public final class Constants {
             public static final int canCoderID = 51;
             // public static final double angleOffset = 302.34375;
             // public static final double angleOffset = 236.7;
-            public static final double angleOffset = 149.238;
+            public static final double angleOffset = 148.7;
             public static final boolean angleInverted = false;
             public static final boolean driveInverted = true;
 
@@ -175,7 +175,7 @@ public final class Constants {
             public static final int canCoderID = 50;
             // public static final double angleOffset = 241.70;
             // public static final double angleOffset = 210.9;
-            public static final double angleOffset = 127.705;
+            public static final double angleOffset = 126.1;
             public static final boolean angleInverted = false;
             public static final boolean driveInverted = false;
 
