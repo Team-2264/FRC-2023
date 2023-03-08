@@ -1,4 +1,4 @@
-package frc.robot;
+package frc.lib;
 
 import java.util.HashMap;
 
@@ -52,6 +52,7 @@ public class AutonomousEvents {
         for (double delayTime = 0.1; delayTime <= 5; delayTime += 0.1) {
             EVENT_MAP.put("DELAY_" + delayTime, new Delay(delayTime));
         }
+
     }
 
     public HashMap<String, Command> getEventMap() {

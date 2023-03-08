@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -36,6 +38,10 @@ public class Robot extends TimedRobot {
     // and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+
+    UsbCamera camera = CameraServer.startAutomaticCapture();
+
+    camera.setExposureManual(65);
 
     m_robotContainer.resetEncoders();
 
@@ -100,7 +106,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    m_robotContainer.armsInit();
+    // m_robotContainer.armsInit();
 
     m_robotContainer.setYawToCurrentPose();
 

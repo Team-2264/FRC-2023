@@ -9,7 +9,7 @@ import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
@@ -80,7 +80,8 @@ public class RobotContainer {
   // Emergency Buttons
   private final JoystickButton disableCommandButton = new JoystickButton(driver, PS4Controller.Button.kL1.value);
 
-  private static final NetworkTableInstance TABLE = NetworkTableInstance.getDefault();
+  // private static final NetworkTableInstance TABLE =
+  // NetworkTableInstance.getDefault();
 
   /* Subsystems */
   private final Swerve s_Swerve = new Swerve();
@@ -91,10 +92,6 @@ public class RobotContainer {
   private TeleopAutoTwo autoCommandTwo;
 
   SendableChooser<String> autoPathChooser = new SendableChooser<>();
-  SendableChooser<String> autoModeChooser = new SendableChooser<>();
-
-  String noBalanceMode = AutoMode.REGULAR.toString();
-  String balanceMode = AutoMode.BALANCE.toString();
 
   /**
    * `
@@ -112,10 +109,10 @@ public class RobotContainer {
     configureButtonBindings();
 
     // make sure we're not accidentally ready across reboots
-    TABLE.getTable(Constants.ObjectVision.NETWORK_TABLE_ADDRESS).getEntry("ready").clearPersistent();
+    // TABLE.getTable(Constants.ObjectVision.NETWORK_TABLE_ADDRESS).getEntry("ready").clearPersistent();
 
-    // lets the listener on the raspberry pi know it's ready to process and send
-    TABLE.getTable(Constants.ObjectVision.NETWORK_TABLE_ADDRESS).getEntry("ready").setBoolean(true);
+    // // lets the listener on the raspberry pi know it's ready to process and send
+    // TABLE.getTable(Constants.ObjectVision.NETWORK_TABLE_ADDRESS).getEntry("ready").setBoolean(true);
 
     for (AutoPosition position : AutoPosition.values()) {
       if (position == AutoPosition.INNER_CONE)
@@ -124,11 +121,7 @@ public class RobotContainer {
         autoPathChooser.addOption(position.toString(), position.toString());
     }
 
-    autoModeChooser.addOption("Balance", balanceMode);
-    autoModeChooser.setDefaultOption("No Balance", noBalanceMode);
-
     SmartDashboard.putData("Auto Pos.", autoPathChooser);
-    SmartDashboard.putData("Balance Mode", autoModeChooser);
 
     PowerDistribution pdh = new PowerDistribution();
 
@@ -150,9 +143,7 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    testingButton.onTrue(new InstantCommand(() -> {
-      new AutoBalance(s_Swerve, MovementDirection.BACKWARD).schedule();
-    }));
+    testingButton.onTrue(new InstantCommand(() -> s_Arm.forceEnableArm()));
 
     /* Driver Buttons */
 
@@ -248,7 +239,7 @@ public class RobotContainer {
       }
     }));
 
-    armLow.onTrue(new InstantCommand(() -> s_Arm.setLow()));
+    armLow.onTrue(new InstantCommand(() -> s_Arm.midIntake()));
     armLowIntake.onTrue(new InstantCommand(() -> s_Arm.setLowIntake()));
 
     armMidCone.onTrue(new InstantCommand(() -> s_Arm.setMidCone()));
@@ -282,27 +273,6 @@ public class RobotContainer {
   }
 
   public AutoPosition getAutoPosition() {
-    AutoPosition limePos = limelight.getAutoPosition();
-
-    if (limePos != AutoPosition.NONE) {
-      if (autoModeChooser.getSelected() == balanceMode) {
-        switch (limePos) {
-          case CENTER:
-            return AutoPosition.CENTER;
-          case EDGE:
-            return AutoPosition.EDGE_BALANCE;
-          case INNER:
-            return AutoPosition.INNER_BALANCE;
-          case INNER_CONE:
-            return AutoPosition.INNER_CONE_BALANCE;
-          case EDGE_CONE:
-            return AutoPosition.EDGE_CONE_BALANCE;
-        }
-      } else {
-        return limelight.getAutoPosition();
-      }
-    }
-
     String failSafeString = autoPathChooser.getSelected();
 
     // this is the default return value
@@ -316,6 +286,10 @@ public class RobotContainer {
     return failSafe;
   }
 
+  public String getAutoTraj() {
+    return autoPathChooser.getSelected();
+  }
+
   public void setYawToCurrentPose() {
     s_Swerve.pidgey.setYaw(s_Swerve.getPose().getRotation().getDegrees());
   }
@@ -323,7 +297,11 @@ public class RobotContainer {
   public void postCurrentAutonomousCommand() {
     SmartDashboard.putString("Current Autonomous Command",
         getAutoPosition().toString());
-    m_field.getObject("autoTraj").setTrajectory(PathPlannerAuto.getTrajectory(getAutoPosition().toString()));
+    try {
+      m_field.getObject("autoTraj").setTrajectory(PathPlannerAuto.getTrajectory(getAutoPosition().toString()));
+    } catch (Exception e) {
+      m_field.getObject("autoTraj").setTrajectory(new Trajectory());
+    }
 
   }
 

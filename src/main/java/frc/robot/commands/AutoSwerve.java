@@ -9,13 +9,15 @@ import java.util.HashMap;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.AutonomousEvents;
+import frc.lib.AutonomousEvents;
+import frc.lib.AutonomousPositions;
 import frc.robot.Constants;
 
 public class AutoSwerve {
 
     private Swerve s_Swerve;
     private HashMap<String, Command> EVENT_MAP;
+    private HashMap<AutoPosition, String> POSITION_MAP;
 
     private AutoPosition position;
 
@@ -29,6 +31,7 @@ public class AutoSwerve {
         this.position = position;
         // initialize the event map which requires the Arm and Swerve Subsystems
         this.EVENT_MAP = new AutonomousEvents(s_Swerve, s_Arm).getEventMap();
+        this.POSITION_MAP = new AutonomousPositions().getPositionMap();
     }
 
     /**
@@ -40,10 +43,10 @@ public class AutoSwerve {
      */
     public Command getCommand() {
 
-        if (this.position == AutoPosition.NONE)
+        if (this.position == AutoPosition.NONE || POSITION_MAP.get(position) == null)
             return new InstantCommand();
 
-        return new PathGroupAuto(s_Swerve, Constants.AutoConstants.Trajectories.get(position),
+        return new PathGroupAuto(s_Swerve, POSITION_MAP.get(position),
                 EVENT_MAP);
 
     }

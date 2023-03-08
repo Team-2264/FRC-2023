@@ -51,7 +51,8 @@ public class TeleopSwerve extends CommandBase {
     }
 
     public double rotationCurve(double input) {
-        // return (0.5 * input) + (0.25 * Math.pow(input, 3)) + (0.3 * (Math.pow(input, 5)));
+        // return (0.5 * input) + (0.25 * Math.pow(input, 3)) + (0.3 * (Math.pow(input,
+        // 5)));
         // return (Math.pow(input,3));
         return input;
     }
@@ -66,46 +67,6 @@ public class TeleopSwerve extends CommandBase {
         yAxis = (Math.abs(yAxis) < Constants.stickDeadband) ? 0 : yAxis;
         xAxis = (Math.abs(xAxis) < Constants.stickDeadband) ? 0 : xAxis;
         rAxis = (Math.abs(rAxis) < Constants.stickDeadband) ? 0 : rAxis;
-
-        if (this.controller.getRawButton(7)) {
-            if(normalizedGyro() > 0 && normalizedGyro() < 180) finalRotation = 0;
-            else if(normalizedGyro() > 180 && normalizedGyro() < 360) finalRotation = 180;
-
-            if(normalizedGyro() < 5 || normalizedGyro() > 355) finalRotation = 180;
-            else if(normalizedGyro() < 185 && normalizedGyro() > 175) finalRotation = 0;
-
-            rotationSetpoint = .2;
-            SmartDashboard.putNumber("TARGET", finalRotation);
-        }
-
-        if (this.controller.getRawButton(8)) {
-            if(normalizedGyro() > 0 && normalizedGyro() < 180) finalRotation = 180;
-            else if(normalizedGyro() > 180 && normalizedGyro() < 360) finalRotation = 0;
-
-            if(normalizedGyro() < 5 || normalizedGyro() > 355) finalRotation = 180;
-            else if(normalizedGyro() < 185 && normalizedGyro() > 175) finalRotation = 0;
-
-            rotationSetpoint = -.2;
-            SmartDashboard.putNumber("TARGET", finalRotation);
-        }
-
-        if (rotationSetpoint != -1) {
-            if(Math.abs(normalizedGyro() - finalRotation) < 5) {
-                rotationSetpoint = -1;
-                rAxis = 0;
-            } else {
-                rAxis = rotationSetpoint;
-            } 
-        }
-
-        if (Math.abs(controller.getRawAxis(rotationAxis)) > Constants.stickDeadband) {
-            rotationSetpoint = -1;
-            rAxis = -controller.getRawAxis(rotationAxis);
-        }
-
-        // if (Math.abs(arm.getRawAxis(2)) > .3) {
-        //     rAxis = arm.getRawAxis(2) * -.2;
-        // }
 
         translation = new Translation2d(curve(yAxis), curve(xAxis)).times(Constants.Swerve.maxSpeed);
         rotation = rotationCurve(rAxis) * Constants.Swerve.maxAngularVelocity;

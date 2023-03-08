@@ -1,7 +1,5 @@
 package frc.robot;
 
-import java.util.HashMap;
-
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import edu.wpi.first.math.geometry.Translation2d;
@@ -9,7 +7,6 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import frc.lib.util.SwerveModuleConstants;
-import frc.robot.enums.AutoPosition;
 
 public final class Constants {
     public static final double stickDeadband = 0.1;
@@ -198,26 +195,11 @@ public final class Constants {
         public static final double kPYController = 1;
         public static final double kPThetaController = 3.2;
 
-        public static final double AUTO_BALANCE_MAX_SPEED_Y = 0.5; // m/s
-        public static final double AUTO_BALANCE_MAX_SPEED_X = 0.5; // m/s
+        public static final double AUTO_BALANCE_MAX_SPEED_Y = 0.1; // m/s
+        public static final double AUTO_BALANCE_MAX_SPEED_X = 0.1; // m/s
 
         public static final double ARM_ERROR_TOLERANCE = 100.0;
 
-        public static final HashMap<AutoPosition, String> Trajectories = new HashMap<AutoPosition, String>() {
-            {
-                put(AutoPosition.INNER_CONE, AutoPosition.INNER_CONE.toString());
-                put(AutoPosition.INNER, AutoPosition.INNER.toString());
-                put(AutoPosition.INNER_BALANCE, AutoPosition.INNER_BALANCE.toString());
-                put(AutoPosition.INNER_CONE_BALANCE, AutoPosition.INNER_CONE_BALANCE.toString());
-
-                put(AutoPosition.EDGE, AutoPosition.EDGE.toString());
-                put(AutoPosition.EDGE_CONE, AutoPosition.EDGE_CONE.toString());
-                put(AutoPosition.EDGE_BALANCE, AutoPosition.EDGE_BALANCE.toString());
-                put(AutoPosition.EDGE_CONE_BALANCE, AutoPosition.EDGE_CONE_BALANCE.toString());
-
-                put(AutoPosition.CENTER, AutoPosition.CENTER.toString());
-            }
-        };
         // Constraint for the motion profilied robot angle controller
         public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
                 kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
