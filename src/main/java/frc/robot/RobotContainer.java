@@ -9,7 +9,7 @@ import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
@@ -92,10 +92,6 @@ public class RobotContainer {
   private TeleopAutoTwo autoCommandTwo;
 
   SendableChooser<String> autoPathChooser = new SendableChooser<>();
-  SendableChooser<String> autoModeChooser = new SendableChooser<>();
-
-  String noBalanceMode = AutoMode.REGULAR.toString();
-  String balanceMode = AutoMode.BALANCE.toString();
 
   /**
    * `
@@ -125,11 +121,7 @@ public class RobotContainer {
         autoPathChooser.addOption(position.toString(), position.toString());
     }
 
-    autoModeChooser.addOption("Balance", balanceMode);
-    autoModeChooser.setDefaultOption("No Balance", noBalanceMode);
-
     SmartDashboard.putData("Auto Pos.", autoPathChooser);
-    SmartDashboard.putData("Balance Mode", autoModeChooser);
 
     PowerDistribution pdh = new PowerDistribution();
 
@@ -281,29 +273,6 @@ public class RobotContainer {
   }
 
   public AutoPosition getAutoPosition() {
-    // AutoPosition limePos = limelight.getAutoPosition();
-
-    // // if (limePos != AutoPosition.NONE) {
-    // if (autoModeChooser.getSelected() == balanceMode) {
-    // switch (limePos) {
-    // case CENTER:
-    // return AutoPosition.CENTER;
-    // case EDGE:
-    // return AutoPosition.EDGE_BALANCE;
-    // case INNER:
-    // return AutoPosition.INNER_BALANCE;
-    // case INNER_CONE:
-    // return AutoPosition.INNER_CONE_BALANCE;
-    // case EDGE_CONE:
-    // return AutoPosition.EDGE_CONE_BALANCE;
-    // }
-
-    // return AutoPosition.NONE;
-    // // } else {
-    // // return limelight.getAutoPosition();
-    // // }
-    // }
-
     String failSafeString = autoPathChooser.getSelected();
 
     // this is the default return value
@@ -317,6 +286,10 @@ public class RobotContainer {
     return failSafe;
   }
 
+  public String getAutoTraj() {
+    return autoPathChooser.getSelected();
+  }
+
   public void setYawToCurrentPose() {
     s_Swerve.pidgey.setYaw(s_Swerve.getPose().getRotation().getDegrees());
   }
@@ -324,7 +297,11 @@ public class RobotContainer {
   public void postCurrentAutonomousCommand() {
     SmartDashboard.putString("Current Autonomous Command",
         getAutoPosition().toString());
-    // m_field.getObject("autoTraj").setTrajectory(PathPlannerAuto.getTrajectory(getAutoPosition().toString()));
+    try {
+      m_field.getObject("autoTraj").setTrajectory(PathPlannerAuto.getTrajectory(getAutoPosition().toString()));
+    } catch (Exception e) {
+      m_field.getObject("autoTraj").setTrajectory(new Trajectory());
+    }
 
   }
 
