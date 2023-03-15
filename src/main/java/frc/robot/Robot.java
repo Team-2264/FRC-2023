@@ -35,17 +35,16 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     ctreConfigs = new CTREConfigs();
-    m_robotContainer = new RobotContainer();
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our
     // autonomous chooser on the dashboard.
-    // m_robotContainer = new RobotContainer();
+    m_robotContainer = new RobotContainer();
 
-    // UsbCamera camera = CameraServer.startAutomaticCapture();
+    UsbCamera camera = CameraServer.startAutomaticCapture();
 
-    // camera.setExposureManual(65);
+    camera.setExposureManual(65);
 
-    // m_robotContainer.resetEncoders();
+    m_robotContainer.resetEncoders();
 
   }
 
