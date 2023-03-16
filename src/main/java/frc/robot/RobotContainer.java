@@ -23,7 +23,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-
+import frc.lib.AutonomousEvents;
 import frc.robot.autos.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
@@ -51,6 +51,8 @@ public class RobotContainer {
   private final int rotationAxis = (int) (Joystick.AxisType.kZ.value);
 
   /* Driver Buttons */
+  private final JoystickButton lockToObject = new JoystickButton(driver, PS4Controller.Button.kShare.value);
+
   private final JoystickButton zeroGyro = new JoystickButton(driver, PS4Controller.Button.kL3.value);
   private final JoystickButton robotCentric = new JoystickButton(driver, PS4Controller.Button.kR3.value);
 
@@ -87,11 +89,14 @@ public class RobotContainer {
   private final Swerve s_Swerve = new Swerve();
   private final Arm s_Arm = new Arm(arm);
   private final Limelight limelight = new Limelight();
+  private final ObjectVision objectVision = new ObjectVision();
 
   private TeleopAuto autoCommand;
   private TeleopAutoTwo autoCommandTwo;
 
   SendableChooser<String> autoPathChooser = new SendableChooser<>();
+
+  private AutonomousEvents autoEvents;
 
   /**
    * `
@@ -128,6 +133,8 @@ public class RobotContainer {
     pdh.clearStickyFaults();
 
     pdh.close();
+    autoEvents = new AutonomousEvents(s_Swerve, s_Arm);
+
   }
 
   public void resetEncoders() {
@@ -143,6 +150,8 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    lockToObject.onTrue(new LockToObject(s_Swerve, objectVision));
+
     testingButton.onTrue(new InstantCommand(() -> s_Arm.forceEnableArm()));
 
     /* Driver Buttons */
@@ -323,6 +332,7 @@ public class RobotContainer {
       m_field.getObject("autoTraj").setTrajectory(new Trajectory());
     }
 
+    System.out.println(autoEvents.getEventMap());
   }
 
   public void armsInit() {
