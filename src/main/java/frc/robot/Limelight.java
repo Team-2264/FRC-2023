@@ -6,6 +6,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.apriltag.*;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import frc.robot.LimelightHelpers.LimelightTarget_Fiducial;
 import frc.robot.enums.AutoPosition;
 
 import java.util.ArrayList;
@@ -21,11 +22,6 @@ public class Limelight {
 
     public Limelight() {
         positions = new ArrayList<>();
-
-        // m_chooser.setDefaultOption("Middle", "Center");
-        // m_chooser.addOption("Outer", "Edge");
-        // m_chooser.addOption("Inner", "Inner");
-        // SmartDashboard.putData("Backup Autonomous", m_chooser);
     }
 
     double[] arrNull = { 0, 0, 0, 0, 0, 0 };
@@ -38,7 +34,8 @@ public class Limelight {
             return null;
         }
 
-        return new Pose3d(arr[2], -arr[0], arr[1], new Rotation3d());
+        // return new Pose3d(arr[2], -arr[0], arr[1], new Rotation3d());
+        return LimelightHelpers.getTargetPose3d_RobotSpace("");
     }
 
     public Pose3d getBotPose() {

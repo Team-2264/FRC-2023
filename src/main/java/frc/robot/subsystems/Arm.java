@@ -303,7 +303,7 @@ public class Arm extends SubsystemBase {
     wristPosition = 0;
   }
 
-  // SETFUNCTIONS
+  // SETFUNCTIONS 
 
   private void setElbow(double deg) {
     leftBelt.set(ControlMode.MotionMagic, (deg - 5) * Constants.Arm.ENCODER_UNITS_PER_DEGREE_ELBOW,

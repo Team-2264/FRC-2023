@@ -26,11 +26,11 @@ public class TeleopAutoTwo extends SequentialCommandGroup {
                                 .setKinematics(Constants.Swerve.swerveKinematics);
 
                 // An example trajectory to follow. All units in meters.
-                Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
+                Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
                                 List.of(s_Swerve.getPose(), targetPose),
                                 config);
 
-                field.getObject("traj").setTrajectory(exampleTrajectory);
+                field.getObject("traj").setTrajectory(trajectory);
 
                 var thetaController = new ProfiledPIDController(
                                 Constants.AutoConstants.kPThetaController, 0, 0,
@@ -38,7 +38,7 @@ public class TeleopAutoTwo extends SequentialCommandGroup {
                 thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
                 swerveControllerCommand = new SwerveControllerCommand(
-                                exampleTrajectory,
+                                trajectory,
                                 s_Swerve::getPose,
                                 Constants.Swerve.swerveKinematics,
                                 new PIDController(Constants.AutoConstants.kPXController, 0, 0),

@@ -124,8 +124,8 @@ public final class Constants {
             public static final int driveMotorID = 40;
             public static final int angleMotorID = 41;
             public static final int canCoderID = 48;
-            // public static final double angleOffset = 101.68;
-            public static final double angleOffset = 202.14;
+
+            public static final double angleOffset = 203.8;
             public static final boolean angleInverted = false;
             public static final boolean driveInverted = false;
 
@@ -139,8 +139,8 @@ public final class Constants {
             public static final int driveMotorID = 42;
             public static final int angleMotorID = 43;
             public static final int canCoderID = 49;
-            // public static final double angleOffset = 350.45;
-            public static final double angleOffset = 25.9;
+
+            public static final double angleOffset = 26.1;
             public static final boolean angleInverted = false;
             public static final boolean driveInverted = true;
 
@@ -153,12 +153,12 @@ public final class Constants {
         public static final class Mod2 {
             public static final int driveMotorID = 46;
             public static final int angleMotorID = 47;
-            public static final int canCoderID = 51;
-            // public static final double angleOffset = 302.34375;
-            // public static final double angleOffset = 236.7;
-            public static final double angleOffset = 148.7;
+            public static final int canCoderID = 50;
+
+            public static final double angleOffset = 330.18359375;
+
             public static final boolean angleInverted = false;
-            public static final boolean driveInverted = true;
+            public static final boolean driveInverted = false;
 
             public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID,
                     angleMotorID,
@@ -169,10 +169,10 @@ public final class Constants {
         public static final class Mod3 {
             public static final int driveMotorID = 44;
             public static final int angleMotorID = 45;
-            public static final int canCoderID = 50;
-            // public static final double angleOffset = 241.70;
-            // public static final double angleOffset = 210.9;
-            public static final double angleOffset = 126.1;
+            public static final int canCoderID = 51;
+
+            public static final double angleOffset = 125;
+
             public static final boolean angleInverted = false;
             public static final boolean driveInverted = false;
 
@@ -184,16 +184,16 @@ public final class Constants {
     }
 
     public static final class AutoConstants {
-        public static final double kMaxSpeedMetersPerSecond = 2;
+        public static final double kMaxSpeedMetersPerSecond = 1;
         // public static final double kMaxSpeedMetersPerSecond = 3;
-        public static final double kMaxAccelerationMetersPerSecondSquared = 1.5;
+        public static final double kMaxAccelerationMetersPerSecondSquared = .75;
         // public static final double kMaxAccelerationMetersPerSecondSquared = 3;
         public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
         public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI / 2;
 
         public static final double kPXController = 1;
         public static final double kPYController = 1;
-        public static final double kPThetaController = 3.2;
+        public static final double kPThetaController = 3.2/2;
 
         public static final double AUTO_BALANCE_MAX_SPEED_Y = 0.1; // m/s
         public static final double AUTO_BALANCE_MAX_SPEED_X = 0.1; // m/s

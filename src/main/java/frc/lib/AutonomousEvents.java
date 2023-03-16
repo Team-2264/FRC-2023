@@ -15,6 +15,9 @@ import frc.robot.subsystems.Swerve;
 public class AutonomousEvents {
 
     public static final HashMap<String, Command> EVENT_MAP = new HashMap<String, Command>();
+    // public static final HashMap<String, Command> CONSTRAINT_MAP = new HashMap<String, >();
+
+
 
     public AutonomousEvents(Swerve s_Swerve, Arm s_Arm) {
         // Arm Positions
@@ -50,7 +53,8 @@ public class AutonomousEvents {
 
         // QoL
         for (double delayTime = 0.1; delayTime <= 5; delayTime += 0.1) {
-            EVENT_MAP.put("DELAY_" + delayTime, new Delay(delayTime));
+            String truncated = "DELAY_" + delayTime;
+            EVENT_MAP.put(truncated.substring(0,9), new Delay(delayTime));
         }
 
     }

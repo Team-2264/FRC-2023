@@ -168,22 +168,40 @@ public class RobotContainer {
       }
     }));
 
+    // followLeft.onTrue(new InstantCommand(() -> {
+    //   if (limelight.getAutoPosition() != null) {
+    //     s_Swerve.setPose(limelight.getBotPose().toPose2d());
+    //     autoCommandTwo = new TeleopAutoTwo(
+    //         s_Swerve,
+    //         new Pose2d(
+    //             s_Swerve.getPose().getX() - limelight.getTargetToRobot().getX() + .87,
+    //             s_Swerve.getPose().getY() - limelight.getTargetToRobot().getY() + .53,
+    //             new Rotation2d((DriverStation.getAlliance() == Alliance.Blue ? Math.PI : Math.PI))),
+    //         m_field);
+
+    //     autoCommandTwo.schedule();
+    //     if (driver.getRawButton(PS4Controller.Button.kR1.value))
+    //       s_Arm.simbaCone();
+    //     else
+    //       s_Arm.setMidCone();
+    //   }
+    // }));
+
     followLeft.onTrue(new InstantCommand(() -> {
-      if (limelight.getAutoPosition() != null) {
-        s_Swerve.setPose(limelight.getBotPose().toPose2d());
+      if ((int) limelight.getTargetID() != -1) {
+
+        s_Swerve.setPose(LimelightHelpers.getBotPose2d_wpiBlue(""));
+        
+        // s_Arm.intake();
         autoCommandTwo = new TeleopAutoTwo(
             s_Swerve,
             new Pose2d(
-                s_Swerve.getPose().getX() - limelight.getTargetToRobot().getX() + .87,
-                s_Swerve.getPose().getY() - limelight.getTargetToRobot().getY() + .53,
-                new Rotation2d((DriverStation.getAlliance() == Alliance.Blue ? Math.PI : Math.PI))),
+                13.4,
+                7.3,
+                new Rotation2d(Math.PI/2)),
             m_field);
 
         autoCommandTwo.schedule();
-        if (driver.getRawButton(PS4Controller.Button.kR1.value))
-          s_Arm.simbaCone();
-        else
-          s_Arm.setMidCone();
       }
     }));
 
@@ -207,15 +225,17 @@ public class RobotContainer {
     }));
 
     followIntakeButton.onTrue(new InstantCommand(() -> {
-      if (limelight.getAutoPosition() != null) {
-        s_Swerve.setPose(limelight.getBotPose().toPose2d());
-        s_Arm.intake();
+      if ((int) limelight.getTargetID() != -1) {
+
+        s_Swerve.setPose(LimelightHelpers.getBotPose2d_wpiBlue(""));
+        
+        // s_Arm.intake();
         autoCommandTwo = new TeleopAutoTwo(
             s_Swerve,
             new Pose2d(
-                s_Swerve.getPose().getX() - limelight.getTargetToRobot().getX() + .7,
-                s_Swerve.getPose().getY() - limelight.getTargetToRobot().getY() - .7,
-                new Rotation2d(limelight.getBotAngle())),
+                15.3,
+                7.6,
+                new Rotation2d(0)),
             m_field);
 
         autoCommandTwo.schedule();
