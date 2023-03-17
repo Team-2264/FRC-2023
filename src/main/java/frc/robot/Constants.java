@@ -13,6 +13,8 @@ public final class Constants {
 
     public static final class ObjectVision {
         public static final String NETWORK_TABLE_ADDRESS = "ObjectVision";
+        public static final double CAMERA_HEIGHT_METERS = 0.88; // MEASUREMENT NEEDS REFINEMENT
+        public static final double CAMERA_DISTANCE_FROM_CENTER_IN_NEUTRAL_POSITION = 0.127;// TODO: REFINE MEASUREMENT
     }
 
     public static final class AprilTag {
@@ -23,6 +25,8 @@ public final class Constants {
     }
 
     public static final class Arm {
+
+        public static final double ARM_POS_OFFSET_RADIANS = -0.05;
 
         public static final int COMPRESSOR_ID = 33;
 

@@ -2,23 +2,54 @@ package frc.robot.GamepieceDetection;
 
 import java.util.Optional;
 
+import org.apache.commons.lang3.Conversion;
+
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.lib.math.Conversions;
+import frc.robot.Constants;
+import frc.robot.subsystems.Arm;
 
 public class ObjectDetection {
     public float pitch;
     public float yaw;
-    //public float distance;
     //public float area;
     public ObjectType type;
 
-    public static Optional<ObjectDetection> getBestDetection() {
+    public static Optional<ObjectDetection> getBestDetectionAdjustedForArm(Arm arm) {
+        var armpos = arm.armPosition/180*Math.PI + Constants.Arm.ARM_POS_OFFSET_RADIANS; // TODO: use data from encoder instead for more accuracy
+
+        var armpos_experimental = Conversions.falconToDegrees(0, arm.leftBelt.getSelectedSensorPosition()) * (Math.PI/180) - Constants.Arm.ARM_POS_OFFSET_RADIANS;
+        SmartDashboard.putNumber("arm_pos_encoder", armpos_experimental);
+
+        var detection = getBestDetectionRaw();
+
+        if(detection.isPresent()) {
+           var det = detection.get();
+
+            det.pitch -= armpos;
+
+            var dist = Constants.ObjectVision.CAMERA_HEIGHT_METERS/Math.sin(armpos);
+
+            float robot_yaw = (float) Math.atan2(dist*Math.sin(det.yaw), Constants.ObjectVision.CAMERA_DISTANCE_FROM_CENTER_IN_NEUTRAL_POSITION + dist*Math.cos(det.yaw));
+            det.yaw = robot_yaw;
+
+            return Optional.of(det);
+        } else {
+            return Optional.empty();
+        }
+
+    }
+
+    public static Optional<ObjectDetection> getBestDetectionRaw() {
         var table = NetworkTableInstance.getDefault().getTable("ObjectVision");
 
         boolean object_detected = table.getEntry("detected").getBoolean(false);
         var pitch = table.getEntry("pitch").getFloat(Float.NaN);
         var yaw = table.getEntry("yaw").getFloat(Float.NaN);
+        var distance = table.getEntry("distance").getFloat(Float.NaN);
 
-        if(pitch == Double.NaN || yaw == Double.NaN || !object_detected) {
+        if(pitch == Double.NaN || yaw == Double.NaN || distance == Double.NaN || !object_detected) {
             return Optional.empty();
         }
 
