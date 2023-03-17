@@ -21,13 +21,14 @@ public class TeleopAutoTwo extends SequentialCommandGroup {
         public TeleopAutoTwo(Swerve s_Swerve, Pose2d targetPose, Field2d field) {
 
                 TrajectoryConfig config = new TrajectoryConfig(
-                                Constants.AutoConstants.kMaxSpeedMetersPerSecond,
-                                Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared)
+                                2,
+                                1.5)
                                 .setKinematics(Constants.Swerve.swerveKinematics);
 
                 // An example trajectory to follow. All units in meters.
                 Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
-                                List.of(s_Swerve.getPose(), targetPose),
+                                List.of(s_Swerve.getPose(),
+                                                targetPose),
                                 config);
 
                 field.getObject("traj").setTrajectory(trajectory);
