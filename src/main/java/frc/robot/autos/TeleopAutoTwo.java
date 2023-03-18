@@ -21,8 +21,8 @@ public class TeleopAutoTwo extends SequentialCommandGroup {
         public TeleopAutoTwo(Swerve s_Swerve, Pose2d targetPose, Field2d field) {
 
                 TrajectoryConfig config = new TrajectoryConfig(
-                                2,
-                                1.5)
+                                3,
+                                2.25)
                                 .setKinematics(Constants.Swerve.swerveKinematics);
 
                 // An example trajectory to follow. All units in meters.

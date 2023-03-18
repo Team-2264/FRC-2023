@@ -11,7 +11,7 @@ public class ObjectVision {
     public double getYaw() {
         double yaw = TABLE.getValue("yaw").getDouble(); 
       
-        return yaw;
+        return -yaw * (180/Math.PI);
 
     };
 

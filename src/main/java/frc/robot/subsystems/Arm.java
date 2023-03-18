@@ -158,7 +158,7 @@ public class Arm extends SubsystemBase {
 
   public void setLowIntake() {
     setArmLowIntake();
-    setWristAngledDown();
+    setWristSpecial();
     openClaw();
     bringShoulderIn();
 
@@ -281,6 +281,10 @@ public class Arm extends SubsystemBase {
 
   private void setWristFlat() {
     wristPosition = 57;
+  }
+
+  private void setWristSpecial() {
+    wristPosition = 93;
   }
 
   private void setWristFlatIntake() {

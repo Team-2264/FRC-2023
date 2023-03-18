@@ -129,7 +129,7 @@ public final class Constants {
             public static final int angleMotorID = 41;
             public static final int canCoderID = 48;
 
-            public static final double angleOffset = 203.8;
+            public static final double angleOffset = 201.5;
             public static final boolean angleInverted = false;
             public static final boolean driveInverted = false;
 
@@ -144,7 +144,7 @@ public final class Constants {
             public static final int angleMotorID = 43;
             public static final int canCoderID = 49;
 
-            public static final double angleOffset = 26.1;
+            public static final double angleOffset = 25.7;
             public static final boolean angleInverted = false;
             public static final boolean driveInverted = true;
 
@@ -159,7 +159,7 @@ public final class Constants {
             public static final int angleMotorID = 47;
             public static final int canCoderID = 50;
 
-            public static final double angleOffset = 330.18359375;
+            public static final double angleOffset = 330;
 
             public static final boolean angleInverted = false;
             public static final boolean driveInverted = false;
@@ -175,7 +175,7 @@ public final class Constants {
             public static final int angleMotorID = 45;
             public static final int canCoderID = 51;
 
-            public static final double angleOffset = 125;
+            public static final double angleOffset = 122.6;
 
             public static final boolean angleInverted = false;
             public static final boolean driveInverted = false;

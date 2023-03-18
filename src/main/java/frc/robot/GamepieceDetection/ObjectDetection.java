@@ -2,7 +2,7 @@ package frc.robot.GamepieceDetection;
 
 import java.util.Optional;
 
-import org.apache.commons.lang3.Conversion;
+// import org.apache.commons.lang3.Conversion;
 
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -14,6 +14,7 @@ public class ObjectDetection {
     public float pitch;
     public float yaw;
     //public float area;
+    public float distance;
     public ObjectType type;
 
     public static Optional<ObjectDetection> getBestDetectionAdjustedForArm(Arm arm) {
@@ -57,6 +58,7 @@ public class ObjectDetection {
 
         detection.pitch = pitch;
         detection.yaw = yaw;
+        detection.distance = distance;
         detection.type = ObjectType.Cone;
 
         return Optional.of(detection);
