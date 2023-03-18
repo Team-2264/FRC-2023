@@ -188,16 +188,17 @@ public final class Constants {
     }
 
     public static final class AutoConstants {
-        public static final double kMaxSpeedMetersPerSecond = 1;
+        public static final double kMaxSpeedMetersPerSecond = 3;
         // public static final double kMaxSpeedMetersPerSecond = 3;
-        public static final double kMaxAccelerationMetersPerSecondSquared = .75;
+        public static final double kMaxAccelerationMetersPerSecondSquared = 1.75;
         // public static final double kMaxAccelerationMetersPerSecondSquared = 3;
         public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
         public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI / 2;
 
         public static final double kPXController = 1;
         public static final double kPYController = 1;
-        public static final double kPThetaController = 3.2/2;
+        public static final double kPThetaController = 4;
+        // public static final double kPThetaController = 0.5;
 
         public static final double AUTO_BALANCE_MAX_SPEED_Y = 0.1; // m/s
         public static final double AUTO_BALANCE_MAX_SPEED_X = 0.1; // m/s

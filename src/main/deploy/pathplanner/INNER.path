@@ -77,7 +77,7 @@
         "names": [
           "HALT",
           "CLOSE_CLAW",
-          "DELAY_0.2"
+          "DELAY_0,2"
         ],
         "executionBehavior": "sequential",
         "waitBehavior": "after",
@@ -136,6 +136,9 @@
       }
     }
   ],
+  "maxVelocity": 2.0,
+  "maxAcceleration": 1.5,
+  "isReversed": null,
   "markers": [
     {
       "position": 0.17818936434659088,

@@ -45,8 +45,8 @@
       "isStopPoint": true,
       "stopEvent": {
         "names": [
-          "DELAY_0.3",
-          "OPEN_CLAW"
+          "OPEN_CLAW",
+          "DELAY_0.1"
         ],
         "executionBehavior": "sequential",
         "waitBehavior": "after",
@@ -81,15 +81,15 @@
     {
       "anchorPoint": {
         "x": 6.8,
-        "y": 4.58
+        "y": 4.45
       },
       "prevControl": {
         "x": 6.858878432161344,
-        "y": 4.551046924060719
+        "y": 4.421046924060719
       },
       "nextControl": {
         "x": 6.793586425574544,
-        "y": 4.583153832406298
+        "y": 4.453153832406298
       },
       "holonomicAngle": 0.05,
       "isReversal": false,
@@ -100,7 +100,7 @@
         "names": [
           "HALT",
           "CLOSE_CLAW",
-          "DELAY_0.2",
+          "DELAY_0.7",
           "HOME"
         ],
         "executionBehavior": "sequential",
