@@ -103,6 +103,9 @@ public class RobotContainer {
 
   private AutonomousEvents autoEvents;
 
+  private LockToObject lockObject;
+  private GoToObject goObject;
+
   /**
    * `
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -110,6 +113,9 @@ public class RobotContainer {
   public RobotContainer() {
     BooleanSupplier fieldRelative = () -> robotCentric.getAsBoolean();
     boolean openLoop = true;
+
+    lockObject = new LockToObject(s_Swerve, objectVision);
+    goObject = new GoToObject(s_Swerve, objectVision);
 
     s_Swerve.setDefaultCommand(
         new TeleopSwerve(s_Swerve, driver, arm, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
@@ -158,10 +164,12 @@ public class RobotContainer {
 
     objectDetection = ObjectDetection.getBestDetectionRaw();
 
-    // if(objectDetection.isPresent()) {
-      lockToObject.onTrue(new LockToObject(s_Swerve, objectVision));
-      goToObject.onTrue(new GoToObject(s_Swerve, objectVision));
-    // }
+    if(objectVision.getObject()) {
+      lockToObject.whileTrue(lockObject);
+      goToObject.whileTrue(goObject);
+    } 
+
+    
 
     testingButton.onTrue(new InstantCommand(() -> s_Arm.forceEnableArm()));
 
@@ -232,13 +240,25 @@ public class RobotContainer {
         s_Swerve.setPose(LimelightHelpers.getBotPose2d_wpiBlue(""));
 
         // s_Arm.intake();
-        autoCommandTwo = new TeleopAutoTwo(
+        if(DriverStation.getAlliance() == Alliance.Blue) {
+          autoCommandTwo = new TeleopAutoTwo(
+              s_Swerve,
+              new Pose2d(
+                  15.3,
+                  6,
+                  new Rotation2d(0)),
+              m_field);
+        } else {
+          
+
+              autoCommandTwo = new TeleopAutoTwo(
             s_Swerve,
             new Pose2d(
-                15.3,
-                6.2,
-                new Rotation2d(0)),
+                1.23,
+                7.5,
+                new Rotation2d(Math.PI)),
             m_field);
+        }
 
         autoCommandTwo.schedule();
       }
@@ -250,13 +270,23 @@ public class RobotContainer {
         s_Swerve.setPose(LimelightHelpers.getBotPose2d_wpiBlue(""));
 
         // s_Arm.intake();
-        autoCommandTwo = new TeleopAutoTwo(
-            s_Swerve,
-            new Pose2d(
-                15.3,
-                7.8,
-                new Rotation2d(0)),
-            m_field);
+        if(DriverStation.getAlliance() == Alliance.Blue) {
+          autoCommandTwo = new TeleopAutoTwo(
+              s_Swerve,
+              new Pose2d(
+                  15.3,
+                  7.5,
+                  new Rotation2d(0)),
+              m_field);
+        } else {
+          autoCommandTwo = new TeleopAutoTwo(
+              s_Swerve,
+              new Pose2d(
+                  1.23,
+                  6,
+                  new Rotation2d(Math.PI)),
+              m_field);
+        }
 
         autoCommandTwo.schedule();
       }

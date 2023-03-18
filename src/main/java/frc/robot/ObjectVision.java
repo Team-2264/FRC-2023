@@ -22,4 +22,8 @@ public class ObjectVision {
 
     };
 
+    public boolean getObject() {
+        return TABLE.getValue("detected").getBoolean();
+    }
+
 }

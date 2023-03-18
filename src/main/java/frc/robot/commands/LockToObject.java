@@ -44,6 +44,6 @@ public class LockToObject extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return Math.abs(s_Swerve.pidgey.getYaw() - targetAngle) < 2;
+        return Math.abs(s_Swerve.pidgey.getYaw() - targetAngle) < 3;
     }
 }
