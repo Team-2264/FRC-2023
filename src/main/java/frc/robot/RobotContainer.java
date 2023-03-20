@@ -33,6 +33,7 @@ import java.util.Optional;
 
 import frc.robot.enums.*;
 
+import edu.wpi.first.wpilibj2.command.RepeatCommand;
 /**
  * This class is where the bulk of the robot should be declared. Since
  * Command-based is a
@@ -54,8 +55,8 @@ public class RobotContainer {
   private final int rotationAxis = (int) (Joystick.AxisType.kZ.value);
 
   /* Driver Buttons */
-  private final JoystickButton lockToObject = new JoystickButton(driver, PS4Controller.Button.kOptions.value);
-  private final JoystickButton goToObject = new JoystickButton(driver, PS4Controller.Button.kShare.value);
+  private final JoystickButton lockToObject = new JoystickButton(driver, PS4Controller.Button.kR2.value);
+  private final JoystickButton goToObject = new JoystickButton(driver, PS4Controller.Button.kL2.value);
 
   private final JoystickButton zeroGyro = new JoystickButton(driver, PS4Controller.Button.kL3.value);
   private final JoystickButton robotCentric = new JoystickButton(driver, PS4Controller.Button.kR3.value);

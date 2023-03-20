@@ -284,7 +284,7 @@ public class Arm extends SubsystemBase {
   }
 
   private void setWristSpecial() {
-    wristPosition = 93;
+    wristPosition = 95;
   }
 
   private void setWristFlatIntake() {
