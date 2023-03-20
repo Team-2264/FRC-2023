@@ -73,7 +73,7 @@
         "names": [
           "HALT",
           "CLOSE_CLAW",
-          "DELAY_0.7",
+          "DELAY_0.9",
           "HOME"
         ],
         "executionBehavior": "sequential",
@@ -127,7 +127,7 @@
       "stopEvent": {
         "names": [
           "OPEN_CLAW",
-          "DELAY_0.1"
+          "DELAY_0.2"
         ],
         "executionBehavior": "sequential",
         "waitBehavior": "none",
@@ -162,37 +162,37 @@
   "isReversed": null,
   "markers": [
     {
-      "position": 1.287174849076704,
-      "names": [
-        "HOME"
-      ]
-    },
-    {
-      "position": 1.8778797496448842,
-      "names": [
-        "INTAKE_LOW"
-      ]
-    },
-    {
       "position": 2.0207785866477277,
       "names": [
         "INTAKE_LOW"
       ]
     },
     {
-      "position": 3.4472727272726935,
-      "names": [
-        "HOME"
-      ]
-    },
-    {
-      "position": 3.75,
+      "position": 3.2986006303267064,
       "names": [
         "CONE_SIMBA"
       ]
     },
     {
       "position": 0.290740966796875,
+      "names": [
+        "HOME"
+      ]
+    },
+    {
+      "position": 1.1198785955255668,
+      "names": [
+        "INTAKE_LOW"
+      ]
+    },
+    {
+      "position": 2.5171508789062487,
+      "names": [
+        "HOME"
+      ]
+    },
+    {
+      "position": 4.267456054687501,
       "names": [
         "HOME"
       ]
