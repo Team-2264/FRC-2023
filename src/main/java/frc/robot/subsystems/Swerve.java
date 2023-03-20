@@ -117,7 +117,7 @@ public class Swerve extends SubsystemBase {
 
     public void driveStraight() {
         SwerveModuleState[] swerveModuleStates = Constants.Swerve.swerveKinematics
-                .toSwerveModuleStates(new ChassisSpeeds(0.5, 0, 0));
+                .toSwerveModuleStates(new ChassisSpeeds(1.0, 0, 0));
 
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.Swerve.maxSpeed);
 

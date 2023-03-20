@@ -19,9 +19,9 @@ public class GoToObject extends CommandBase {
 
     double pitch;
 
-    public GoToObject(Swerve s_Swerve, ObjectVision objectVision) {
-        this.s_Swerve = s_Swerve;
-        this.objectVision = objectVision;
+    public GoToObject(Swerve feedSwerve, ObjectVision feedVision) {
+        this.s_Swerve = feedSwerve;
+        this.objectVision = feedVision;
         
         addRequirements(s_Swerve);
     }
@@ -37,12 +37,12 @@ public class GoToObject extends CommandBase {
         pitch = objectVision.getPitch();
 
         // new TeleopAutoTwo(s_Swerve, new Pose2d(s_Swerve.getPose().getX(), s_Swerve.getPose().getY(), new Rotation2d()), null);
-
+        s_Swerve.driveStraight();
 
     }
 
     @Override
     public boolean isFinished() {
-        return pitch > .17;
+        return pitch < -1;
     }
 }

@@ -38,7 +38,7 @@ public class LockToObject extends CommandBase {
 
         yaw = objectVision.getYaw();
 
-        s_Swerve.drive(new Translation2d(), (yaw / 90) * Constants.Swerve.maxAngularVelocity/2, false, false);
+        s_Swerve.drive(new Translation2d(), (yaw / 90) * Constants.Swerve.maxAngularVelocity, false, false);
 
     }
 
