@@ -56,10 +56,10 @@ public class AutoBalance extends CommandBase {
 
     @Override
     public void execute() {
-        double currAngle = (s_Swerve.pidgey.getPitch() * 180) / Math.PI;
+        double currAngle = (s_Swerve.pidgey.getRoll() * 180) / Math.PI;
         double speedX = Constants.AutoConstants.AUTO_BALANCE_MAX_SPEED_X;
 
-        speedX = (currAngle > 12.5) ? Constants.AutoConstants.AUTO_BALANCE_MAX_SPEED_X
+        speedX = (currAngle > 5) ? Constants.AutoConstants.AUTO_BALANCE_MAX_SPEED_X
                 : Constants.AutoConstants.AUTO_BALANCE_MAX_SPEED_X / 2;
 
         if (currAngle > DEGREE_DEADZONE) {
@@ -75,7 +75,7 @@ public class AutoBalance extends CommandBase {
         } else {
             if (lastBalanced == -1)
                 lastBalanced = System.currentTimeMillis();
-            else if (System.currentTimeMillis() - lastBalanced > 2000)
+            else if (System.currentTimeMillis() - lastBalanced > 100)
                 balanced = true;
             s_Swerve.setModuleStates(
                     Constants.Swerve.swerveKinematics.toSwerveModuleStates(new ChassisSpeeds(0, 0, 0)));

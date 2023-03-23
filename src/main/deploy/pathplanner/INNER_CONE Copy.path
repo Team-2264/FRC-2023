@@ -184,45 +184,5 @@
       }
     }
   ],
-  "maxVelocity": null,
-  "maxAcceleration": 2.0,
-  "isReversed": null,
-  "markers": [
-    {
-      "position": 1.287174849076704,
-      "names": [
-        "HOME"
-      ]
-    },
-    {
-      "position": 1.8778797496448842,
-      "names": [
-        "INTAKE_LOW"
-      ]
-    },
-    {
-      "position": 2.0207785866477277,
-      "names": [
-        "INTAKE_LOW"
-      ]
-    },
-    {
-      "position": 3.4472727272726935,
-      "names": [
-        "HOME"
-      ]
-    },
-    {
-      "position": 3.75,
-      "names": [
-        "CONE_SIMBA"
-      ]
-    },
-    {
-      "position": 5.389223410866477,
-      "names": [
-        "HOME"
-      ]
-    }
-  ]
+  "markers": []
 }

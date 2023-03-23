@@ -34,6 +34,7 @@ import java.util.Optional;
 import frc.robot.enums.*;
 
 import edu.wpi.first.wpilibj2.command.RepeatCommand;
+
 /**
  * This class is where the bulk of the robot should be declared. Since
  * Command-based is a
@@ -86,6 +87,7 @@ public class RobotContainer {
   private final JoystickButton testingButton = new JoystickButton(arm, 6);
   // Emergency Buttons
   private final JoystickButton disableCommandButton = new JoystickButton(driver, PS4Controller.Button.kL1.value);
+  private final JoystickButton AUTObALANCE = new JoystickButton(driver, PS4Controller.Button.kR1.value);
 
   // private static final NetworkTableInstance TABLE =
   // NetworkTableInstance.getDefault();
@@ -165,14 +167,14 @@ public class RobotContainer {
 
     objectDetection = ObjectDetection.getBestDetectionRaw();
 
-    if(objectVision.getObject()) {
+    if (objectVision.getObject()) {
       lockToObject.whileTrue(lockObject);
       goToObject.whileTrue(goObject);
-    } 
-
-    
+    }
 
     testingButton.onTrue(new InstantCommand(() -> s_Arm.forceEnableArm()));
+
+    AUTObALANCE.onTrue(new AutoBalance(s_Swerve, MovementDirection.NONE));
 
     /* Driver Buttons */
 
@@ -241,7 +243,7 @@ public class RobotContainer {
         s_Swerve.setPose(LimelightHelpers.getBotPose2d_wpiBlue(""));
 
         // s_Arm.intake();
-        if(DriverStation.getAlliance() == Alliance.Blue) {
+        if (DriverStation.getAlliance() == Alliance.Blue) {
           autoCommandTwo = new TeleopAutoTwo(
               s_Swerve,
               new Pose2d(
@@ -250,15 +252,14 @@ public class RobotContainer {
                   new Rotation2d(0)),
               m_field);
         } else {
-          
 
-              autoCommandTwo = new TeleopAutoTwo(
-            s_Swerve,
-            new Pose2d(
-                1.23,
-                7.5,
-                new Rotation2d(Math.PI)),
-            m_field);
+          autoCommandTwo = new TeleopAutoTwo(
+              s_Swerve,
+              new Pose2d(
+                  1.23,
+                  7.5,
+                  new Rotation2d(Math.PI)),
+              m_field);
         }
 
         autoCommandTwo.schedule();
@@ -271,7 +272,7 @@ public class RobotContainer {
         s_Swerve.setPose(LimelightHelpers.getBotPose2d_wpiBlue(""));
 
         // s_Arm.intake();
-        if(DriverStation.getAlliance() == Alliance.Blue) {
+        if (DriverStation.getAlliance() == Alliance.Blue) {
           autoCommandTwo = new TeleopAutoTwo(
               s_Swerve,
               new Pose2d(
@@ -336,7 +337,7 @@ public class RobotContainer {
 
   public void updateRobotPose() {
 
-    SmartDashboard.putNumber("pitch", s_Swerve.pidgey.getPitch());
+    SmartDashboard.putNumber("pitch", s_Swerve.pidgey.getRoll());
     // System.out.println(s_Swerve.getPose().toString());
     m_field.setRobotPose(s_Swerve.getPose());
     // if(Math.abs(arm.getRawAxis(1)) > .1) s_Arm.adjustWrist(arm.getRawAxis(1));
