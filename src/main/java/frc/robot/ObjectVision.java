@@ -6,24 +6,35 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 public class ObjectVision {
     private static final NetworkTable TABLE = NetworkTableInstance.getDefault().getTable("ObjectVision");
 
-    public ObjectVision() {};
+    public ObjectVision() {
+    };
 
     public double getYaw() {
-        double yaw = TABLE.getValue("yaw").getDouble(); 
-      
-        return -yaw * (180/Math.PI);
+        try {
+            double yaw = TABLE.getValue("yaw").getDouble();
+            return -yaw * (180 / Math.PI);
+        } catch (Exception e) {
+            return 0;
+        }
 
     };
 
     public double getPitch() {
-        double pitch = TABLE.getValue("pitch").getDouble(); 
-      
-        return pitch;
+        try {
+            double pitch = TABLE.getValue("pitch").getDouble();
+            return pitch;
+        } catch (Exception e) {
+            return 0;
+        }
 
     };
 
     public boolean getObject() {
-        return TABLE.getValue("detected").getBoolean();
+        try {
+            return TABLE.getValue("detected").getBoolean();
+        } catch (Exception e) {
+            return false;
+        }
     }
 
 }
