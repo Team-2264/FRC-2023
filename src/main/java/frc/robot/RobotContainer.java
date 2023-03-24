@@ -87,7 +87,7 @@ public class RobotContainer {
   private final JoystickButton testingButton = new JoystickButton(arm, 6);
   // Emergency Buttons
   private final JoystickButton disableCommandButton = new JoystickButton(driver, PS4Controller.Button.kL1.value);
-  private final JoystickButton AUTObALANCE = new JoystickButton(driver, PS4Controller.Button.kR1.value);
+  private final JoystickButton autoBalance = new JoystickButton(driver, PS4Controller.Button.kR1.value);
 
   // private static final NetworkTableInstance TABLE =
   // NetworkTableInstance.getDefault();
@@ -174,7 +174,7 @@ public class RobotContainer {
 
     testingButton.onTrue(new InstantCommand(() -> s_Arm.forceEnableArm()));
 
-    AUTObALANCE.onTrue(new AutoBalance(s_Swerve, MovementDirection.NONE));
+    autoBalance.onTrue(new AutoBalance(s_Swerve, MovementDirection.NONE));
 
     /* Driver Buttons */
 
