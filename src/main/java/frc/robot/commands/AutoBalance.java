@@ -12,7 +12,7 @@ public class AutoBalance extends CommandBase {
     private MovementDirection direction;
     private boolean balanced = false;
     private long lastBalanced;
-    private double DEGREE_DEADZONE = 5;
+    private double DEGREE_DEADZONE = 5 * 2;
 
     public AutoBalance(Swerve s_Swerve, MovementDirection direction) {
         this.s_Swerve = s_Swerve;
@@ -63,20 +63,20 @@ public class AutoBalance extends CommandBase {
                 : Constants.AutoConstants.AUTO_BALANCE_MAX_SPEED_X / 2;
 
         if (currAngle > DEGREE_DEADZONE) {
-            lastBalanced = -1;
+            // lastBalanced = -1;
             s_Swerve.setModuleStates(
                     Constants.Swerve.swerveKinematics.toSwerveModuleStates(
                             new ChassisSpeeds(-speedX, 0, 0)));
         } else if (currAngle < -DEGREE_DEADZONE) {
-            lastBalanced = -1;
+            // lastBalanced = -1;
             s_Swerve.setModuleStates(
                     Constants.Swerve.swerveKinematics.toSwerveModuleStates(
                             new ChassisSpeeds(speedX, 0, 0)));
         } else {
-            if (lastBalanced == -1)
-                lastBalanced = System.currentTimeMillis();
-            else if (System.currentTimeMillis() - lastBalanced > 100)
-                balanced = true;
+            // if (lastBalanced == -1)
+            // lastBalanced = System.currentTimeMillis();
+            // else if (System.currentTimeMillis() - lastBalanced > 100)
+            balanced = true;
             s_Swerve.setModuleStates(
                     Constants.Swerve.swerveKinematics.toSwerveModuleStates(new ChassisSpeeds(0, 0, 0)));
         }
