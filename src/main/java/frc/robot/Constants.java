@@ -2,8 +2,10 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import frc.lib.util.SwerveModuleConstants;
@@ -70,6 +72,13 @@ public final class Constants {
 
         public static final double driveGearRatio = (6.75 / 1.0); // 6.75:1
         public static final double angleGearRatio = (12.8 / 1.0); // 12.8:1
+
+        public static final SwerveModuleState[] towModuleStates = new SwerveModuleState[] {
+                new SwerveModuleState(0.01, Rotation2d.fromDegrees(45)),
+                new SwerveModuleState(0.01, Rotation2d.fromDegrees(135)),
+                new SwerveModuleState(0.01, Rotation2d.fromDegrees(-45)),
+                new SwerveModuleState(0.01, Rotation2d.fromDegrees(-135)),
+        };
 
         public static final SwerveDriveKinematics swerveKinematics = new SwerveDriveKinematics(
                 new Translation2d(wheelBase / 2.0, trackWidth / 2.0),

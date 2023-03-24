@@ -174,7 +174,7 @@ public class RobotContainer {
 
     testingButton.onTrue(new InstantCommand(() -> s_Arm.forceEnableArm()));
 
-    autoBalance.onTrue(new AutoBalance(s_Swerve, MovementDirection.NONE));
+    // autoBalance.onTrue(new AutoBalance(s_Swerve, MovementDirection.NONE));
 
     /* Driver Buttons */
 
