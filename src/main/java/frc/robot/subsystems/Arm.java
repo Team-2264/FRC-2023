@@ -185,7 +185,7 @@ public class Arm extends SubsystemBase {
 
   public void setMidCone() {
     setArmMidCone();
-    setWristMid();
+    setWristMidCone();
     bringShoulderIn();
 
     startTime = System.currentTimeMillis();
@@ -260,7 +260,7 @@ public class Arm extends SubsystemBase {
   }
 
   private void setArmMidCone() {
-    armPosition = 60;
+    armPosition = 68;
   }
 
   private void setArmHigh() {
@@ -301,6 +301,10 @@ public class Arm extends SubsystemBase {
 
   private void setWristMid() {
     wristPosition = 30;
+  }
+
+  private void setWristMidCone() {
+    wristPosition = 50;
   }
 
   private void setWristHigh() {
