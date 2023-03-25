@@ -60,7 +60,7 @@ public class AutoBalance extends CommandBase {
         double speedX = Constants.AutoConstants.AUTO_BALANCE_MAX_SPEED_X;
 
         speedX = (currAngle > 5) ? Constants.AutoConstants.AUTO_BALANCE_MAX_SPEED_X
-                : Constants.AutoConstants.AUTO_BALANCE_MAX_SPEED_X / 2;
+                : Constants.AutoConstants.AUTO_BALANCE_MAX_SPEED_X / 3;
 
         if (currAngle > DEGREE_DEADZONE) {
             // lastBalanced = -1;
@@ -95,7 +95,7 @@ public class AutoBalance extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return false;
+        return balanced;
     }
 
 }
