@@ -24,11 +24,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.lib.AutonomousEvents;
+import frc.lib.AutonomousPositions;
 import frc.robot.GamepieceDetection.ObjectDetection;
 import frc.robot.autos.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 
+import java.util.HashMap;
 import java.util.Optional;
 
 import frc.robot.enums.*;
@@ -104,10 +106,13 @@ public class RobotContainer {
 
   SendableChooser<String> autoPathChooser = new SendableChooser<>();
 
-  private AutonomousEvents autoEvents;
+  private HashMap<String, Command> EVENT_MAP = new AutonomousEvents(s_Swerve, s_Arm).getEventMap();
+  private HashMap<AutoPosition, String> POSITION_MAP = new AutonomousPositions().getPositionMap();
 
   private LockToObject lockObject;
   private GoToObject goObject;
+
+  private final AutoSwerve autoSwerve = new AutoSwerve(s_Swerve, s_Arm);
 
   /**
    * `
@@ -147,7 +152,6 @@ public class RobotContainer {
     pdh.clearStickyFaults();
 
     pdh.close();
-    autoEvents = new AutonomousEvents(s_Swerve, s_Arm);
 
   }
 
@@ -330,9 +334,12 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
+    return autoSwerve.getCommand(getAutoPosition());
+
     // Command will run in autonomous
-    return new AutoSwerve(s_Swerve, s_Arm, getAutoPosition())
-        .getCommand();
+    // return new AutoSwerve(s_Swerve, s_Arm, getAutoPosition(), EVENT_MAP,
+    // POSITION_MAP)
+    // .getCommand();
   }
 
   public void updateRobotPose() {
