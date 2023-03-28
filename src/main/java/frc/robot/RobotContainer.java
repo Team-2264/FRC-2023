@@ -178,7 +178,7 @@ public class RobotContainer {
 
     testingButton.onTrue(new InstantCommand(() -> s_Arm.forceEnableArm()));
 
-    autoBalance.onTrue(new AutoBalance(s_Swerve, MovementDirection.NONE));
+    // autoBalance.onTrue(new AutoBalance(s_Swerve, MovementDirection.NONE));
 
     /* Driver Buttons */
 
@@ -344,7 +344,7 @@ public class RobotContainer {
 
   public void updateRobotPose() {
 
-    SmartDashboard.putNumber("pitch", s_Swerve.pidgey.getPitch());
+    SmartDashboard.putNumber("pitch", s_Swerve.pidgey.getRoll());
     // System.out.println(s_Swerve.getPose().toString());
     m_field.setRobotPose(s_Swerve.getPose());
     // if(Math.abs(arm.getRawAxis(1)) > .1) s_Arm.adjustWrist(arm.getRawAxis(1));

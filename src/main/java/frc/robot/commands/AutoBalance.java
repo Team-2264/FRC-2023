@@ -12,7 +12,7 @@ public class AutoBalance extends CommandBase {
     private MovementDirection direction;
     private boolean balanced = false;
     private long lastBalanced;
-    private double DEGREE_DEADZONE = 5;
+    private double DEGREE_DEADZONE = 5 * 2;
 
     public AutoBalance(Swerve s_Swerve, MovementDirection direction) {
         this.s_Swerve = s_Swerve;
@@ -56,29 +56,33 @@ public class AutoBalance extends CommandBase {
 
     @Override
     public void execute() {
-        double currAngle = (s_Swerve.pidgey.getPitch() * 180) / Math.PI;
+        double currAngle = (s_Swerve.pidgey.getRoll() * 180) / Math.PI;
         double speedX = Constants.AutoConstants.AUTO_BALANCE_MAX_SPEED_X;
 
-        speedX = (currAngle > 12.5) ? Constants.AutoConstants.AUTO_BALANCE_MAX_SPEED_X
-                : Constants.AutoConstants.AUTO_BALANCE_MAX_SPEED_X / 2;
+        speedX = (currAngle > 5) ? Constants.AutoConstants.AUTO_BALANCE_MAX_SPEED_X
+                : Constants.AutoConstants.AUTO_BALANCE_MAX_SPEED_X / 3;
 
         if (currAngle > DEGREE_DEADZONE) {
-            lastBalanced = -1;
+            // lastBalanced = -1;
             s_Swerve.setModuleStates(
                     Constants.Swerve.swerveKinematics.toSwerveModuleStates(
                             new ChassisSpeeds(-speedX, 0, 0)));
         } else if (currAngle < -DEGREE_DEADZONE) {
-            lastBalanced = -1;
+            // lastBalanced = -1;
             s_Swerve.setModuleStates(
                     Constants.Swerve.swerveKinematics.toSwerveModuleStates(
                             new ChassisSpeeds(speedX, 0, 0)));
         } else {
-            if (lastBalanced == -1)
-                lastBalanced = System.currentTimeMillis();
-            else if (System.currentTimeMillis() - lastBalanced > 2000)
-                balanced = true;
+            // if (lastBalanced == -1)
+            // lastBalanced = System.currentTimeMillis();
+            // else if (System.currentTimeMillis() - lastBalanced > 100)
+            balanced = true;
+            // s_Swerve.setModuleStates(
+            // Constants.Swerve.swerveKinematics.toSwerveModuleStates(new ChassisSpeeds(0,
+            // 0, 0)));
             s_Swerve.setModuleStates(
-                    Constants.Swerve.swerveKinematics.toSwerveModuleStates(new ChassisSpeeds(0, 0, 0)));
+                    Constants.Swerve.towModuleStates);
+
         }
 
     }
@@ -86,7 +90,7 @@ public class AutoBalance extends CommandBase {
     public void end() {
         // Turn wheels sideways so we do not slip if some funny business happens
         s_Swerve.setModuleStates(
-                Constants.Swerve.swerveKinematics.toSwerveModuleStates(new ChassisSpeeds(0, 0.0001, 0)));
+                Constants.Swerve.towModuleStates);
     }
 
     @Override

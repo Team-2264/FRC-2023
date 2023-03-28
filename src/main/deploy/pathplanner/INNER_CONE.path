@@ -80,16 +80,16 @@
     },
     {
       "anchorPoint": {
-        "x": 6.8,
-        "y": 4.45
+        "x": 6.81,
+        "y": 4.59
       },
       "prevControl": {
-        "x": 6.858878432161344,
-        "y": 4.421046924060719
+        "x": 6.868878432161344,
+        "y": 4.561046924060719
       },
       "nextControl": {
-        "x": 6.793586425574544,
-        "y": 4.453153832406298
+        "x": 6.803586425574544,
+        "y": 4.593153832406298
       },
       "holonomicAngle": 0.05,
       "isReversal": false,
@@ -135,40 +135,12 @@
     },
     {
       "anchorPoint": {
-        "x": 1.8892709968016221,
-        "y": 4.894376008438179
+        "x": 1.9258644622852725,
+        "y": 4.924108199143645
       },
       "prevControl": {
-        "x": 1.8416511480978404,
-        "y": 4.913201382592834
-      },
-      "nextControl": {
-        "x": 1.9772913147250752,
-        "y": 4.8595792700355
-      },
-      "holonomicAngle": -180.0,
-      "isReversal": false,
-      "velOverride": null,
-      "isLocked": false,
-      "isStopPoint": true,
-      "stopEvent": {
-        "names": [
-          "OPEN_CLAW",
-          "DELAY_0.1"
-        ],
-        "executionBehavior": "sequential",
-        "waitBehavior": "none",
-        "waitTime": 0
-      }
-    },
-    {
-      "anchorPoint": {
-        "x": 6.452018724294224,
-        "y": 4.5170058956380394
-      },
-      "prevControl": {
-        "x": 6.453147677452739,
-        "y": 4.51306362020249
+        "x": 1.8782446135814908,
+        "y": 4.9429335732982995
       },
       "nextControl": null,
       "holonomicAngle": -180.0,
@@ -177,8 +149,10 @@
       "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
-        "names": [],
-        "executionBehavior": "parallel",
+        "names": [
+          "DELAY_0.1"
+        ],
+        "executionBehavior": "sequential",
         "waitBehavior": "none",
         "waitTime": 0
       }
@@ -208,18 +182,6 @@
     },
     {
       "position": 3.4472727272726935,
-      "names": [
-        "HOME"
-      ]
-    },
-    {
-      "position": 3.75,
-      "names": [
-        "CONE_SIMBA"
-      ]
-    },
-    {
-      "position": 5.389223410866477,
       "names": [
         "HOME"
       ]

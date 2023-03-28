@@ -185,7 +185,7 @@ public class Arm extends SubsystemBase {
 
   public void setMidCone() {
     setArmMidCone();
-    setWristMid();
+    setWristMidCone();
     bringShoulderIn();
 
     startTime = System.currentTimeMillis();
@@ -248,7 +248,7 @@ public class Arm extends SubsystemBase {
   }
 
   private void setArmLowIntake() {
-    armPosition = 5;
+    armPosition = 0;
   }
 
   private void setArmLow() {
@@ -260,7 +260,7 @@ public class Arm extends SubsystemBase {
   }
 
   private void setArmMidCone() {
-    armPosition = 60;
+    armPosition = 68;
   }
 
   private void setArmHigh() {
@@ -284,7 +284,7 @@ public class Arm extends SubsystemBase {
   }
 
   private void setWristSpecial() {
-    wristPosition = 95;
+    wristPosition = 107;
   }
 
   private void setWristFlatIntake() {
@@ -303,11 +303,15 @@ public class Arm extends SubsystemBase {
     wristPosition = 30;
   }
 
+  private void setWristMidCone() {
+    wristPosition = 50;
+  }
+
   private void setWristHigh() {
     wristPosition = 0;
   }
 
-  // SETFUNCTIONS 
+  // SETFUNCTIONS
 
   private void setElbow(double deg) {
     leftBelt.set(ControlMode.MotionMagic, (deg - 5) * Constants.Arm.ENCODER_UNITS_PER_DEGREE_ELBOW,
