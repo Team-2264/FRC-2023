@@ -1,5 +1,9 @@
 package frc.robot.subsystems;
 
+import java.nio.file.ClosedWatchServiceException;
+
+import javax.management.timer.TimerMBean;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -18,6 +22,10 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 
+import edu.wpi.first.wpilibj.AnalogInput;
+
+import edu.wpi.first.wpilibj.Ultrasonic;
+
 import edu.wpi.first.wpilibj.Joystick;
 
 public class Arm extends SubsystemBase {
@@ -29,17 +37,23 @@ public class Arm extends SubsystemBase {
   boolean compressorOn = false;
   DigitalInput shoulderLimitSwitch;
 
+  public DigitalInput dioOne, dioTwo, dioThree;
+
   public double armPosition, wristPosition, startTime;
   boolean canUseArm, canUseWrist;
   int i;
 
-  private ArmStatus status;
+  public ArmStatus status;
 
   private Joystick arm;
 
   StringBuilder _sb = new StringBuilder();
 
   public Arm(Joystick input) {
+
+    dioOne = new DigitalInput(0);
+    dioTwo = new DigitalInput(1);
+    dioThree = new DigitalInput(2);
 
     arm = input;
 
@@ -362,6 +376,7 @@ public class Arm extends SubsystemBase {
       arms.solenoidToggle();
   }
 
+
   /**
    * An example method querying a boolean state of the subsystem (for example, a
    * digital sensor).
@@ -375,6 +390,11 @@ public class Arm extends SubsystemBase {
 
   @Override
   public void periodic() {
+
+    SmartDashboard.putBoolean("DIOONE", dioOne.get());
+    SmartDashboard.putBoolean("DIOTWO", dioTwo.get());
+
+
     SmartDashboard.putNumber("LEFT BELT",
         leftBelt.getSelectedSensorPosition() / Constants.Arm.ENCODER_UNITS_PER_DEGREE_ELBOW);
     SmartDashboard.putNumber("RIGHT BELT", rightBelt.getSelectedSensorPosition());

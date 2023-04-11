@@ -126,6 +126,28 @@ public class Swerve extends SubsystemBase {
         }
     }
 
+    public void driveStraightBack() {
+        SwerveModuleState[] swerveModuleStates = Constants.Swerve.swerveKinematics
+                .toSwerveModuleStates(new ChassisSpeeds(-1, 0, 0));
+
+        SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.Swerve.maxSpeed);
+
+        for (SwerveModule mod : mSwerveMods) {
+            mod.setDesiredState(swerveModuleStates[mod.moduleNumber], false);
+        }
+    }
+
+    public void stop() {
+        SwerveModuleState[] swerveModuleStates = Constants.Swerve.swerveKinematics
+                .toSwerveModuleStates(new ChassisSpeeds(0, 0, 0));
+
+        SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.Swerve.maxSpeed);
+
+        for (SwerveModule mod : mSwerveMods) {
+            mod.setDesiredState(swerveModuleStates[mod.moduleNumber], false);
+        }
+    }
+
     /* Used by SwerveControllerCommand in Auto */
     public void setModuleStates(SwerveModuleState[] desiredStates) {
         SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, Constants.Swerve.maxSpeed);

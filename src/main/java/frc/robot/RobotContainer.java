@@ -35,6 +35,8 @@ import frc.robot.enums.*;
 
 import edu.wpi.first.wpilibj2.command.RepeatCommand;
 
+import frc.robot.commands.AutoCloseClaw;
+
 /**
  * This class is where the bulk of the robot should be declared. Since
  * Command-based is a
@@ -172,7 +174,8 @@ public class RobotContainer {
       goToObject.whileTrue(goObject);
     }
 
-    testingButton.onTrue(new InstantCommand(() -> s_Arm.forceEnableArm()));
+    // testingButton.onTrue(new InstantCommand(() -> s_Arm.forceEnableArm()));
+    testingButton.onTrue(new AutoCloseClaw(s_Arm, s_Swerve));
 
     // autoBalance.onTrue(new AutoBalance(s_Swerve, MovementDirection.NONE));
 
