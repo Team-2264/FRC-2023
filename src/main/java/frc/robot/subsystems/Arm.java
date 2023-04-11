@@ -262,7 +262,7 @@ public class Arm extends SubsystemBase {
   }
 
   private void setArmLowIntake() {
-    armPosition = 5;
+    armPosition = 0;
   }
 
   private void setArmLow() {
@@ -298,7 +298,7 @@ public class Arm extends SubsystemBase {
   }
 
   private void setWristSpecial() {
-    wristPosition = 95;
+    wristPosition = 107;
   }
 
   private void setWristFlatIntake() {
@@ -325,7 +325,7 @@ public class Arm extends SubsystemBase {
     wristPosition = 0;
   }
 
-  // SETFUNCTIONS 
+  // SETFUNCTIONS
 
   private void setElbow(double deg) {
     leftBelt.set(ControlMode.MotionMagic, (deg - 5) * Constants.Arm.ENCODER_UNITS_PER_DEGREE_ELBOW,

@@ -20,7 +20,7 @@ public class LockToObject extends CommandBase {
     public LockToObject(Swerve s_Swerve, ObjectVision objectVision) {
         this.s_Swerve = s_Swerve;
         this.objectVision = objectVision;
-        
+
         addRequirements(s_Swerve);
     }
 

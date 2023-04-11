@@ -35,6 +35,33 @@ public class AutoSwerve {
     }
 
     /**
+     * @param s_Swerve    - Swerve Drive Subsystem
+     * @param s_Arm       - Subsystem for the Robot Arm
+     * @param position    - Position of Robot
+     * @param eventMap    - Map of Autonomous Events
+     * @param positionMap - Map of Autonomous Positions
+     */
+    public AutoSwerve(Swerve s_Swerve, Arm s_Arm, AutoPosition position, HashMap<String, Command> eventMap,
+            HashMap<AutoPosition, String> positionMap) {
+        this.s_Swerve = s_Swerve;
+        this.position = position;
+        // initialize the event map which requires the Arm and Swerve Subsystems
+        this.EVENT_MAP = eventMap;
+        this.POSITION_MAP = positionMap;
+    }
+
+    /**
+     * @param s_Swerve - Swerve Drive Subsystem
+     * @param s_Arm    - Subsystem for the Robot Arm
+     */
+    public AutoSwerve(Swerve s_Swerve, Arm s_Arm) {
+        this.s_Swerve = s_Swerve;
+        // initialize the event map which requires the Arm and Swerve Subsystems
+        this.EVENT_MAP = new AutonomousEvents(s_Swerve, s_Arm).getEventMap();
+        this.POSITION_MAP = new AutonomousPositions().getPositionMap();
+    }
+
+    /**
      * Selects the correct command to run based on the AprilTag being viewed by
      * limelight. Returns an Instant Command that resolves instantly if no AprilTag
      * is in vision.
@@ -47,6 +74,15 @@ public class AutoSwerve {
             return new InstantCommand();
 
         return new PathGroupAuto(s_Swerve, POSITION_MAP.get(position),
+                EVENT_MAP);
+
+    }
+
+    public Command getCommand(AutoPosition autoPosition) {
+        if (autoPosition == AutoPosition.NONE || POSITION_MAP.get(autoPosition) == null)
+            return new InstantCommand();
+
+        return new PathGroupAuto(s_Swerve, POSITION_MAP.get(autoPosition),
                 EVENT_MAP);
 
     }
