@@ -37,7 +37,7 @@ public class Arm extends SubsystemBase {
   boolean compressorOn = false;
   DigitalInput shoulderLimitSwitch;
 
-  public DigitalInput dioOne, dioTwo, dioThree;
+  public DigitalInput dioOne, dioTwo;
 
   public double armPosition, wristPosition, startTime;
   boolean canUseArm, canUseWrist;
@@ -53,7 +53,6 @@ public class Arm extends SubsystemBase {
 
     dioOne = new DigitalInput(0);
     dioTwo = new DigitalInput(1);
-    dioThree = new DigitalInput(2);
 
     arm = input;
 
