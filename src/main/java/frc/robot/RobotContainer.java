@@ -68,7 +68,7 @@ public class RobotContainer {
   private final JoystickButton armMidCone = new JoystickButton(arm, 9);
   private final JoystickButton armMidCube = new JoystickButton(arm, 10);
 
-  private final JoystickButton armLow = new JoystickButton(arm, 11);
+  private final JoystickButton autoIntake = new JoystickButton(arm, 11);
   private final JoystickButton armLowIntake = new JoystickButton(arm, 12);
 
   private final JoystickButton resetWrist = new JoystickButton(arm, 5);
@@ -76,7 +76,7 @@ public class RobotContainer {
   private final JoystickButton moveWristDown = new JoystickButton(arm, 3);
   private final JoystickButton moveWristUp = new JoystickButton(arm, 4);
 
-  private final JoystickButton autoIntake = new JoystickButton(arm, 6);
+  private final JoystickButton forceReset = new JoystickButton(arm, 6);
   // Emergency Buttons
   private final JoystickButton disableCommandButton = new JoystickButton(driver, PS4Controller.Button.kL1.value);
 
@@ -182,7 +182,7 @@ public class RobotContainer {
     }));
 
     // armLow.onTrue(new InstantCommand(() -> s_Arm.midIntake()));
-    armLow.onTrue(new InstantCommand(() -> s_Arm.forceEnableArm()));
+    forceReset.onTrue(new InstantCommand(() -> s_Arm.forceEnableArm()));
     armLowIntake.onTrue(new InstantCommand(() -> s_Arm.setLowIntake()));
 
     armMidCone.onTrue(new InstantCommand(() -> s_Arm.setMidCone()));
