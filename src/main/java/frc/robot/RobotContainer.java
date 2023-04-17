@@ -55,6 +55,7 @@ public class RobotContainer {
 
   /* Driver Buttons */
   private final JoystickButton lockToObject = new JoystickButton(driver, PS4Controller.Button.kR2.value);
+  private final JoystickButton dropObject = new JoystickButton(driver, PS4Controller.Button.kL2.value);
 
   private final JoystickButton zeroGyro = new JoystickButton(driver, PS4Controller.Button.kL3.value);
   private final JoystickButton robotCentric = new JoystickButton(driver, PS4Controller.Button.kR3.value);
@@ -172,6 +173,8 @@ public class RobotContainer {
     }));
 
     clawToggleButton.onTrue(new InstantCommand(() -> s_Arm.toggleClaw()));
+
+    dropObject.onTrue(new InstantCommand(() -> s_Arm.toggleClaw()));
 
     armIntake.onTrue(new InstantCommand(() -> {
       if (s_Arm.getStatus() == ArmStatus.HOME) {
