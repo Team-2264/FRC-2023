@@ -31,7 +31,6 @@ import java.util.Optional;
 
 import frc.robot.enums.*;
 
-
 import frc.robot.commands.AutoCloseClaw;
 
 /**
@@ -54,7 +53,8 @@ public class RobotContainer {
   private final int rotationAxis = (int) (Joystick.AxisType.kZ.value);
 
   /* Driver Buttons */
-  private final JoystickButton lockToObject = new JoystickButton(driver, PS4Controller.Button.kR2.value);
+  // private final JoystickButton lockToObject = new JoystickButton(driver,
+  // PS4Controller.Button.kR2.value);
   private final JoystickButton dropObject = new JoystickButton(driver, PS4Controller.Button.kL2.value);
 
   private final JoystickButton zeroGyro = new JoystickButton(driver, PS4Controller.Button.kL3.value);
@@ -79,7 +79,6 @@ public class RobotContainer {
 
   private final JoystickButton forceReset = new JoystickButton(arm, 6);
   // Emergency Buttons
-  private final JoystickButton disableCommandButton = new JoystickButton(driver, PS4Controller.Button.kL1.value);
 
   // private static final NetworkTableInstance TABLE =
   // NetworkTableInstance.getDefault();
@@ -94,7 +93,7 @@ public class RobotContainer {
 
   SendableChooser<String> autoPathChooser = new SendableChooser<>();
 
-  private LockToObject lockObject;
+  // private LockToObject lockObject;
 
   private final AutoSwerve autoSwerve = new AutoSwerve(s_Swerve, s_Arm);
 
@@ -106,7 +105,7 @@ public class RobotContainer {
     BooleanSupplier fieldRelative = () -> robotCentric.getAsBoolean();
     boolean openLoop = true;
 
-    lockObject = new LockToObject(s_Swerve, objectVision);
+    // lockObject = new LockToObject(s_Swerve, objectVision);
 
     s_Swerve.setDefaultCommand(
         new TeleopSwerve(s_Swerve, driver, arm, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
@@ -150,27 +149,12 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
 
-    try {
-      if (objectVision.getObject()) {
-        lockToObject.whileTrue(lockObject);
-      }
-    } catch (Exception e) {
-      System.out.println(e);
-    }
-
     // testingButton.onTrue(new InstantCommand(() -> s_Arm.forceEnableArm()));
     autoIntake.onTrue(new AutoCloseClaw(s_Arm, s_Swerve));
 
     /* Driver Buttons */
 
     zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
-
-    disableCommandButton.onTrue(new InstantCommand(() -> {
-      if (autoCommand.isScheduled())
-        autoCommand.end(true);
-      if (autoCommandTwo.isScheduled())
-        autoCommandTwo.end(true);
-    }));
 
     clawToggleButton.onTrue(new InstantCommand(() -> s_Arm.toggleClaw()));
 
@@ -245,25 +229,23 @@ public class RobotContainer {
   }
 }
 
-
-
 // followMiddle.onTrue(new InstantCommand(() -> {
-//   if (limelight.getAutoPosition() != null) {
-//     s_Swerve.setPose(limelight.getBotPose().toPose2d());
-//     autoCommandTwo = new TeleopAutoTwo(
-//         s_Swerve,
-//         new Pose2d(
-//             s_Swerve.getPose().getX() - limelight.getTargetToRobot().getX() + .87,
-//             s_Swerve.getPose().getY() - limelight.getTargetToRobot().getY(),
-//             new Rotation2d((Math.PI))),
-//         m_field);
+// if (limelight.getAutoPosition() != null) {
+// s_Swerve.setPose(limelight.getBotPose().toPose2d());
+// autoCommandTwo = new TeleopAutoTwo(
+// s_Swerve,
+// new Pose2d(
+// s_Swerve.getPose().getX() - limelight.getTargetToRobot().getX() + .87,
+// s_Swerve.getPose().getY() - limelight.getTargetToRobot().getY(),
+// new Rotation2d((Math.PI))),
+// m_field);
 
-//     autoCommandTwo.schedule();
-//     if (driver.getRawButton(PS4Controller.Button.kR1.value))
-//       s_Arm.simbaCube();
-//     else
-//       s_Arm.setMidCube();
-//   }
+// autoCommandTwo.schedule();
+// if (driver.getRawButton(PS4Controller.Button.kR1.value))
+// s_Arm.simbaCube();
+// else
+// s_Arm.setMidCube();
+// }
 // }));
 
 // // followLeft.onTrue(new InstantCommand(() -> {
@@ -287,76 +269,78 @@ public class RobotContainer {
 // // }));
 
 // followIntakeButton.onTrue(new InstantCommand(() -> {
-//   if ((int) limelight.getTargetID() != -1) {
+// if ((int) limelight.getTargetID() != -1) {
 
-//     s_Swerve.setPose(LimelightHelpers.getBotPose2d_wpiBlue(""));
+// s_Swerve.setPose(LimelightHelpers.getBotPose2d_wpiBlue(""));
 
-//     // s_Arm.intake();
-//     autoCommandTwo = new TeleopAutoTwo(
-//         s_Swerve,
-//         new Pose2d(
-//             14.2,
-//             7.3,
-//             new Rotation2d(Math.PI / 2)),
-//         m_field);
+// // s_Arm.intake();
+// autoCommandTwo = new TeleopAutoTwo(
+// s_Swerve,
+// new Pose2d(
+// 14.2,
+// 7.3,
+// new Rotation2d(Math.PI / 2)),
+// m_field);
 
-//     autoCommandTwo.schedule();
-//   }
+// autoCommandTwo.schedule();
+// }
 // }));
 
 // followRight.onTrue(new InstantCommand(() -> {
-//   if ((int) limelight.getTargetID() == 4 || (int) limelight.getTargetID() == 5) {
+// if ((int) limelight.getTargetID() == 4 || (int) limelight.getTargetID() == 5)
+// {
 
-//     s_Swerve.setPose(LimelightHelpers.getBotPose2d_wpiBlue(""));
+// s_Swerve.setPose(LimelightHelpers.getBotPose2d_wpiBlue(""));
 
-//     // s_Arm.intake();
-//     if (DriverStation.getAlliance() == Alliance.Blue) {
-//       autoCommandTwo = new TeleopAutoTwo(
-//           s_Swerve,
-//           new Pose2d(
-//               15.3,
-//               6,
-//               new Rotation2d(0)),
-//           m_field);
-//     } else {
+// // s_Arm.intake();
+// if (DriverStation.getAlliance() == Alliance.Blue) {
+// autoCommandTwo = new TeleopAutoTwo(
+// s_Swerve,
+// new Pose2d(
+// 15.3,
+// 6,
+// new Rotation2d(0)),
+// m_field);
+// } else {
 
-//       autoCommandTwo = new TeleopAutoTwo(
-//           s_Swerve,
-//           new Pose2d(
-//               1.23,
-//               7.5,
-//               new Rotation2d(Math.PI)),
-//           m_field);
-//     }
+// autoCommandTwo = new TeleopAutoTwo(
+// s_Swerve,
+// new Pose2d(
+// 1.23,
+// 7.5,
+// new Rotation2d(Math.PI)),
+// m_field);
+// }
 
-//     autoCommandTwo.schedule();
-//   }
+// autoCommandTwo.schedule();
+// }
 // }));
 
 // followLeft.onTrue(new InstantCommand(() -> {
-//   if ((int) limelight.getTargetID() == 4 || (int) limelight.getTargetID() == 5) {
+// if ((int) limelight.getTargetID() == 4 || (int) limelight.getTargetID() == 5)
+// {
 
-//     s_Swerve.setPose(LimelightHelpers.getBotPose2d_wpiBlue(""));
+// s_Swerve.setPose(LimelightHelpers.getBotPose2d_wpiBlue(""));
 
-//     // s_Arm.intake();
-//     if (DriverStation.getAlliance() == Alliance.Blue) {
-//       autoCommandTwo = new TeleopAutoTwo(
-//           s_Swerve,
-//           new Pose2d(
-//               15.3,
-//               7.5,
-//               new Rotation2d(0)),
-//           m_field);
-//     } else {
-//       autoCommandTwo = new TeleopAutoTwo(
-//           s_Swerve,
-//           new Pose2d(
-//               1.23,
-//               6,
-//               new Rotation2d(Math.PI)),
-//           m_field);
-//     }
+// // s_Arm.intake();
+// if (DriverStation.getAlliance() == Alliance.Blue) {
+// autoCommandTwo = new TeleopAutoTwo(
+// s_Swerve,
+// new Pose2d(
+// 15.3,
+// 7.5,
+// new Rotation2d(0)),
+// m_field);
+// } else {
+// autoCommandTwo = new TeleopAutoTwo(
+// s_Swerve,
+// new Pose2d(
+// 1.23,
+// 6,
+// new Rotation2d(Math.PI)),
+// m_field);
+// }
 
-//     autoCommandTwo.schedule();
-//   }
+// autoCommandTwo.schedule();
+// }
 // }));

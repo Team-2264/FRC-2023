@@ -297,7 +297,7 @@ public class Arm extends SubsystemBase {
   }
 
   private void setWristSpecial() {
-    wristPosition = 107;
+    wristPosition = 102;
   }
 
   private void setWristFlatIntake() {
@@ -375,7 +375,6 @@ public class Arm extends SubsystemBase {
       arms.solenoidToggle();
   }
 
-
   /**
    * An example method querying a boolean state of the subsystem (for example, a
    * digital sensor).
@@ -392,7 +391,6 @@ public class Arm extends SubsystemBase {
 
     SmartDashboard.putBoolean("DIOONE", dioOne.get());
     SmartDashboard.putBoolean("DIOTWO", dioTwo.get());
-
 
     SmartDashboard.putNumber("LEFT BELT",
         leftBelt.getSelectedSensorPosition() / Constants.Arm.ENCODER_UNITS_PER_DEGREE_ELBOW);

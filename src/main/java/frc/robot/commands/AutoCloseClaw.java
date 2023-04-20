@@ -36,18 +36,25 @@ public class AutoCloseClaw extends CommandBase {
 
     @Override
     public void execute() {
-        if(dioOne.get() || dioTwo.get()) {
-            if(System.currentTimeMillis() - saveTime > 1500)    isFinished = true;
-
-            if(System.currentTimeMillis() - saveTime > 500) {
-                swerve.driveStraightBack();
-                if(arm.status == ArmStatus.INTAKE_LOW) arm.bringArmHome();
+        if (dioOne.get() || dioTwo.get()) {
+            if (System.currentTimeMillis() - saveTime > 1300) {
+                arm.bringArmHome();
+                isFinished = true;
             }
 
-            if(System.currentTimeMillis() - saveTime > 2 && System.currentTimeMillis() - saveTime < 500) {
+            if (System.currentTimeMillis() - saveTime > 300) {
+
+                if (arm.status == ArmStatus.INTAKE_LOW && System.currentTimeMillis() - saveTime > 750) {
+                    arm.bringArmHome();
+                } else {
+                    swerve.driveStraightBack();
+                }
+            }
+
+            if (System.currentTimeMillis() - saveTime > 2 && System.currentTimeMillis() - saveTime < 300) {
                 arm.closeClaw();
                 swerve.stop();
-            } 
+            }
         } else {
             saveTime = System.currentTimeMillis();
         }
