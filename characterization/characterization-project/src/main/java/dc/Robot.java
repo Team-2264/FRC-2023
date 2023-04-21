@@ -53,7 +53,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import java.util.ArrayList; 
+import java.util.ArrayList;
 
 public class Robot extends TimedRobot {
 
@@ -61,12 +61,11 @@ public class Robot extends TimedRobot {
   static private int PIDIDX = 0;
   static private int ENCODER_EPR = 2048;
   static private double GEARING = 6.75;
-  
+
   private double encoderConstant = (1 / GEARING) * (1 / ENCODER_EDGES_PER_REV);
 
   Joystick stick;
   DifferentialDrive drive;
-
 
   Supplier<Double> leftEncoderPosition;
   Supplier<Double> leftEncoderRate;
@@ -79,13 +78,14 @@ public class Robot extends TimedRobot {
   NetworkTableEntry rotateEntry = NetworkTableInstance.getDefault().getEntry("/robot/rotate");
 
   String data = "";
-  
+
   int counter = 0;
   double startTime = 0;
   double priorAutospeed = 0;
 
   double[] numberArray = new double[10];
   ArrayList<Double> entries = new ArrayList<Double>();
+
   public Robot() {
     super(.005);
     LiveWindow.disableAllTelemetry();
@@ -105,52 +105,41 @@ public class Robot extends TimedRobot {
     motor.configFactoryDefault();
     motor.setNeutralMode(NeutralMode.Brake);
     motor.setInverted(inverted);
-    
+
     // setup encoder if motor isn't a follower
     if (side != Sides.FOLLOWER) {
-    
-      
+
       motor.configSelectedFeedbackSensor(
-            FeedbackDevice.IntegratedSensor,
-            PIDIDX, 10
-      );    
+          FeedbackDevice.IntegratedSensor,
+          PIDIDX, 10);
 
+      switch (side) {
+        // setup encoder and data collecting methods
 
+        case RIGHT:
+          // set right side methods = encoder methods
 
-    switch (side) {
-      // setup encoder and data collecting methods
+          motor.setSensorPhase(false);
+          rightEncoderPosition = () -> motor.getSelectedSensorPosition(PIDIDX) * encoderConstant;
+          rightEncoderRate = () -> motor.getSelectedSensorVelocity(PIDIDX) * encoderConstant *
+              10;
 
-      case RIGHT:
-        // set right side methods = encoder methods
+          break;
+        case LEFT:
+          motor.setSensorPhase(false);
 
-          
-        motor.setSensorPhase(false);
-        rightEncoderPosition = ()
-          -> motor.getSelectedSensorPosition(PIDIDX) * encoderConstant;
-        rightEncoderRate = ()
-          -> motor.getSelectedSensorVelocity(PIDIDX) * encoderConstant *
-               10;          
+          leftEncoderPosition = () -> motor.getSelectedSensorPosition(PIDIDX) * encoderConstant;
+          leftEncoderRate = () -> motor.getSelectedSensorVelocity(PIDIDX) * encoderConstant *
+              10;
 
-        break;
-      case LEFT:
-        motor.setSensorPhase(false);
-        
-        leftEncoderPosition = ()
-          -> motor.getSelectedSensorPosition(PIDIDX) * encoderConstant;
-        leftEncoderRate = ()
-          -> motor.getSelectedSensorVelocity(PIDIDX) * encoderConstant *
-               10;
-        
-
-        break;
-      default:
-        // probably do nothing
-        break;
+          break;
+        default:
+          // probably do nothing
+          break;
 
       }
-    
+
     }
-    
 
     return motor;
 
@@ -158,10 +147,11 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
-    if (!isReal()) SmartDashboard.putData(new SimEnabler());
+    if (!isReal())
+      SmartDashboard.putData(new SimEnabler());
 
     stick = new Joystick(0);
-    
+
     // create left motor
     WPI_TalonFX leftMotor = setupWPI_TalonFX(40, Sides.LEFT, false);
 
@@ -169,7 +159,7 @@ public class Robot extends TimedRobot {
     leftFollowerID46.follow(leftMotor);
 
     WPI_TalonFX rightMotor = setupWPI_TalonFX(42, Sides.RIGHT, true);
-    WPI_TalonFX rightFollowerID44 = setupWPI_TalonFX(44, Sides.FOLLOWER, false);    
+    WPI_TalonFX rightFollowerID44 = setupWPI_TalonFX(44, Sides.FOLLOWER, false);
     rightFollowerID44.follow(rightMotor);
     drive = new DifferentialDrive(leftMotor, rightMotor);
     drive.setDeadband(0);
@@ -220,6 +210,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("l_encoder_rate", leftEncoderRate.get());
     SmartDashboard.putNumber("r_encoder_pos", rightEncoderPosition.get());
     SmartDashboard.putNumber("r_encoder_rate", rightEncoderRate.get());
+
   }
 
   @Override
@@ -240,13 +231,13 @@ public class Robot extends TimedRobot {
   }
 
   /**
-  * If you wish to just use your own robot program to use with the data logging
-  * program, you only need to copy/paste the logic below into your code and
-  * ensure it gets called periodically in autonomous mode
-  * 
-  * Additionally, you need to set NetworkTables update rate to 10ms using the
-  * setUpdateRate call.
-  */
+   * If you wish to just use your own robot program to use with the data logging
+   * program, you only need to copy/paste the logic below into your code and
+   * ensure it gets called periodically in autonomous mode
+   * 
+   * Additionally, you need to set NetworkTables update rate to 10ms using the
+   * setUpdateRate call.
+   */
   @Override
   public void autonomousPeriodic() {
 
@@ -271,9 +262,8 @@ public class Robot extends TimedRobot {
 
     // command motors to do things
     drive.tankDrive(
-      (rotateEntry.getBoolean(false) ? -1 : 1) * autospeed, autospeed,
-      false
-    );
+        (rotateEntry.getBoolean(false) ? -1 : 1) * autospeed, autospeed,
+        false);
 
     numberArray[0] = now;
     numberArray[1] = battery;
