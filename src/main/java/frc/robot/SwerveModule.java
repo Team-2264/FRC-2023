@@ -73,6 +73,10 @@ public class SwerveModule {
         // SmartDashboard.putNumber("module " + moduleNumber + " Desired Angle",
         // desiredState.angle.getDegrees());
         SmartDashboard.putNumber("module " + moduleNumber + " Current Angle", getState().angle.getDegrees());
+
+        // debugging
+        SmartDashboard.putNumber("Module " + moduleNumber + " Current Voltage", mDriveMotor.getMotorOutputVoltage());
+        SmartDashboard.putNumber("Module " + moduleNumber + " Current RPM", mDriveMotor.getSelectedSensorVelocity());
     }
 
     private void setSpeed(SwerveModuleState desiredState, boolean isOpenLoop) {

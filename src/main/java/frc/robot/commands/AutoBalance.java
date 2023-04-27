@@ -6,13 +6,15 @@ import frc.robot.Constants;
 import frc.robot.enums.MovementDirection;
 import frc.robot.subsystems.Swerve;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 public class AutoBalance extends CommandBase {
 
     private Swerve s_Swerve;
     private MovementDirection direction;
     private boolean balanced = false;
     private long lastBalanced;
-    private double DEGREE_DEADZONE = 5 * 2;
+    private double DEGREE_DEADZONE = 7.5;
 
     public AutoBalance(Swerve s_Swerve, MovementDirection direction) {
         this.s_Swerve = s_Swerve;
@@ -22,80 +24,71 @@ public class AutoBalance extends CommandBase {
 
     @Override
     public void initialize() {
-        switch (direction) {
-            case FORWARD:
-                s_Swerve.setModuleStates(
-                        Constants.Swerve.swerveKinematics.toSwerveModuleStates(
-                                new ChassisSpeeds(-Constants.AutoConstants.AUTO_BALANCE_MAX_SPEED_X, 0, 0)));
-                break;
-            case BACKWARD:
-                s_Swerve.setModuleStates(
-                        Constants.Swerve.swerveKinematics.toSwerveModuleStates(
-                                new ChassisSpeeds(Constants.AutoConstants.AUTO_BALANCE_MAX_SPEED_X, 0, 0)));
-                break;
-            case LEFT:
-                s_Swerve.setModuleStates(
-                        Constants.Swerve.swerveKinematics.toSwerveModuleStates(
-                                new ChassisSpeeds(0, Constants.AutoConstants.AUTO_BALANCE_MAX_SPEED_Y, 0)));
-                break;
-            case RIGHT:
-                s_Swerve.setModuleStates(
-                        Constants.Swerve.swerveKinematics.toSwerveModuleStates(new ChassisSpeeds(
-                                0, -Constants.AutoConstants.AUTO_BALANCE_MAX_SPEED_Y, 0)));
-                break;
-            case RELATIVE:
-                s_Swerve.setModuleStates(Constants.Swerve.swerveKinematics
-                        .toSwerveModuleStates(ChassisSpeeds.fromFieldRelativeSpeeds(
-                                Constants.AutoConstants.AUTO_BALANCE_MAX_SPEED_X, 0.0, 0.0, s_Swerve.getYaw())));
-            default:
-                s_Swerve.setModuleStates(
-                        Constants.Swerve.swerveKinematics.toSwerveModuleStates(new ChassisSpeeds(0, 0, 0)));
-                break;
-        }
+
     }
+
+    double currAngle;
 
     @Override
     public void execute() {
-        double currAngle = (s_Swerve.pidgey.getPitch() * 180) / Math.PI;
-        double speedX = Constants.AutoConstants.AUTO_BALANCE_MAX_SPEED_X;
+        SmartDashboard.putNumber("ANGLE WE THINK", currAngle);
+        if (!balanced) {
 
-        speedX = (currAngle > 5) ? Constants.AutoConstants.AUTO_BALANCE_MAX_SPEED_X
-                : Constants.AutoConstants.AUTO_BALANCE_MAX_SPEED_X / 3;
+            currAngle = s_Swerve.pidgey.getRoll();
+            double speedX = Constants.AutoConstants.AUTO_BALANCE_MAX_SPEED_X;
 
-        if (currAngle > DEGREE_DEADZONE) {
-            // lastBalanced = -1;
-            s_Swerve.setModuleStates(
-                    Constants.Swerve.swerveKinematics.toSwerveModuleStates(
-                            new ChassisSpeeds(-speedX, 0, 0)));
-        } else if (currAngle < -DEGREE_DEADZONE) {
-            // lastBalanced = -1;
-            s_Swerve.setModuleStates(
-                    Constants.Swerve.swerveKinematics.toSwerveModuleStates(
-                            new ChassisSpeeds(speedX, 0, 0)));
+            speedX = (currAngle > 5) ? Constants.AutoConstants.AUTO_BALANCE_MAX_SPEED_X
+                    : Constants.AutoConstants.AUTO_BALANCE_MAX_SPEED_X / 3;
+
+            if (currAngle > DEGREE_DEADZONE) {
+                // lastBalanced = -1;
+                s_Swerve.setModuleStates(
+                        Constants.Swerve.swerveKinematics.toSwerveModuleStates(
+                                new ChassisSpeeds(-speedX, 0, 0)));
+
+                SmartDashboard.putString("DIRECTION", "FORWARD");
+
+                // SmartDashboard.putNum
+            } else if (currAngle < -DEGREE_DEADZONE) {
+                // lastBalanced = -1;
+                s_Swerve.setModuleStates(
+                        Constants.Swerve.swerveKinematics.toSwerveModuleStates(
+                                new ChassisSpeeds(speedX, 0, 0)));
+
+                SmartDashboard.putString("DIRECTION", "REVERSE");
+            } else {
+                // if (lastBalanced == -1)
+                // lastBalanced = System.currentTimeMillis();
+                // else if (System.currentTimeMillis() - lastBalanced > 100)
+
+                s_Swerve.setModuleStates(
+                        Constants.Swerve.swerveKinematics.toSwerveModuleStates(new ChassisSpeeds(0,
+                                0, 0)));
+
+                balanced = true;
+
+            }
         } else {
-            // if (lastBalanced == -1)
-            // lastBalanced = System.currentTimeMillis();
-            // else if (System.currentTimeMillis() - lastBalanced > 100)
-            balanced = true;
-            // s_Swerve.setModuleStates(
-            // Constants.Swerve.swerveKinematics.toSwerveModuleStates(new ChassisSpeeds(0,
-            // 0, 0)));
+
+            SmartDashboard.putString("DIRECTION", "STOPPED");
+
             s_Swerve.setModuleStates(
-                    Constants.Swerve.towModuleStates);
+                    Constants.Swerve.swerveKinematics.toSwerveModuleStates(new ChassisSpeeds(0,
+                            0, 0)));
 
         }
 
     }
 
     public void end() {
-        // Turn wheels sideways so we do not slip if some funny business happens
         s_Swerve.setModuleStates(
-                Constants.Swerve.towModuleStates);
+                Constants.Swerve.swerveKinematics.toSwerveModuleStates(new ChassisSpeeds(0,
+                        0, 0)));
     }
 
     @Override
     public boolean isFinished() {
-        return balanced;
+        return false;
     }
 
 }

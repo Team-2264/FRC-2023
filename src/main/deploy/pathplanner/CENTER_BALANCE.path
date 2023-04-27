@@ -28,47 +28,20 @@
     },
     {
       "anchorPoint": {
-        "x": 2.4,
+        "x": 4.004830720075135,
         "y": 2.755945369237385
       },
       "prevControl": {
-        "x": 2.3744295386394576,
-        "y": 2.755945369237385
+        "x": 4.009217871915846,
+        "y": 2.769899628943865
       },
       "nextControl": {
-        "x": 2.4914836637091247,
-        "y": 2.755945369237385
+        "x": 4.000443568234424,
+        "y": 2.7419911095309053
       },
       "holonomicAngle": -180.0,
       "isReversal": false,
       "velOverride": null,
-      "isLocked": false,
-      "isStopPoint": true,
-      "stopEvent": {
-        "names": [
-          "HOME"
-        ],
-        "executionBehavior": "sequential",
-        "waitBehavior": "after",
-        "waitTime": 1.0
-      }
-    },
-    {
-      "anchorPoint": {
-        "x": 3.879040682475088,
-        "y": 2.7788162851646674
-      },
-      "prevControl": {
-        "x": 3.883427834315799,
-        "y": 2.7927705448711473
-      },
-      "nextControl": {
-        "x": 3.874653530634377,
-        "y": 2.7648620254581875
-      },
-      "holonomicAngle": -180.0,
-      "isReversal": false,
-      "velOverride": 1.0,
       "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
@@ -93,7 +66,7 @@
       },
       "holonomicAngle": 180.0,
       "isReversal": false,
-      "velOverride": 1.0,
+      "velOverride": 0.75,
       "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
@@ -130,12 +103,12 @@
     },
     {
       "anchorPoint": {
-        "x": 3.55,
-        "y": 2.7727624149638483
+        "x": 3.8904761404387282,
+        "y": 2.767380827201026
       },
       "prevControl": {
-        "x": 3.538216664665751,
-        "y": 2.7645235938800856
+        "x": 3.8786928051044796,
+        "y": 2.7591420061172633
       },
       "nextControl": null,
       "holonomicAngle": -180.0,
@@ -145,16 +118,25 @@
       "isStopPoint": false,
       "stopEvent": {
         "names": [
-          "BALANCE"
+          "HALT",
+          "BALANCE",
+          "HALT"
         ],
         "executionBehavior": "sequential",
-        "waitBehavior": "before",
-        "waitTime": 0.4
+        "waitBehavior": "none",
+        "waitTime": 1.0
       }
     }
   ],
   "maxVelocity": 3.0,
-  "maxAcceleration": 1.75,
+  "maxAcceleration": 2.5,
   "isReversed": null,
-  "markers": []
+  "markers": [
+    {
+      "position": 0.3781818181817843,
+      "names": [
+        "HOME"
+      ]
+    }
+  ]
 }

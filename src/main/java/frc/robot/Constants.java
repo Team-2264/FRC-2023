@@ -64,7 +64,7 @@ public final class Constants {
         /* Drivetrain Constants */
         public static final double trackWidth = Units.inchesToMeters(25.5);
         public static final double wheelBase = Units.inchesToMeters(30);
-        public static final double wheelDiameter = Units.inchesToMeters(3.92);
+        public static final double wheelDiameter = Units.inchesToMeters(4.05);
         public static final double wheelCircumference = wheelDiameter * Math.PI;
 
         public static final double openLoopRamp = 0.5;
@@ -74,10 +74,10 @@ public final class Constants {
         public static final double angleGearRatio = (12.8 / 1.0); // 12.8:1
 
         public static final SwerveModuleState[] towModuleStates = new SwerveModuleState[] {
-                new SwerveModuleState(0.01, Rotation2d.fromDegrees(45)),
-                new SwerveModuleState(0.01, Rotation2d.fromDegrees(135)),
-                new SwerveModuleState(0.01, Rotation2d.fromDegrees(-45)),
-                new SwerveModuleState(0.01, Rotation2d.fromDegrees(-135)),
+                new SwerveModuleState(0.000, Rotation2d.fromDegrees(45)),
+                new SwerveModuleState(0.000, Rotation2d.fromDegrees(135)),
+                new SwerveModuleState(0.000, Rotation2d.fromDegrees(-45)),
+                new SwerveModuleState(0.000, Rotation2d.fromDegrees(-135)),
         };
 
         public static final SwerveDriveKinematics swerveKinematics = new SwerveDriveKinematics(
@@ -199,7 +199,7 @@ public final class Constants {
     public static final class AutoConstants {
         public static final double kMaxSpeedMetersPerSecond = 3;
         // public static final double kMaxSpeedMetersPerSecond = 3;
-        public static final double kMaxAccelerationMetersPerSecondSquared = 1.75;
+        public static final double kMaxAccelerationMetersPerSecondSquared = 2;
         // public static final double kMaxAccelerationMetersPerSecondSquared = 3;
         public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
         public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI / 2;

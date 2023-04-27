@@ -25,6 +25,7 @@ import frc.robot.GamepieceDetection.ObjectDetection;
 import frc.robot.autos.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
+import frc.robot.enums.*;
 
 import java.util.HashMap;
 import java.util.Optional;
@@ -60,6 +61,7 @@ public class RobotContainer {
 
   private final JoystickButton zeroGyro = new JoystickButton(driver, PS4Controller.Button.kL3.value);
   private final JoystickButton robotCentric = new JoystickButton(driver, PS4Controller.Button.kR3.value);
+  private final JoystickButton testBalance = new JoystickButton(driver, PS4Controller.Button.kR2.value);
 
   private final JoystickButton clawToggleButton = new JoystickButton(arm, 1);
   private final JoystickButton armIntake = new JoystickButton(arm, 2);
@@ -150,6 +152,8 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
 
+    testBalance.onTrue(new AutoBalance(s_Swerve, MovementDirection.NONE));
+
     // testingButton.onTrue(new InstantCommand(() -> s_Arm.forceEnableArm()));
     autoIntake.onTrue(new AutoCloseClaw(s_Arm, s_Swerve));
 
@@ -222,7 +226,7 @@ public class RobotContainer {
   public void postCurrentAutonomousCommand() {
     SmartDashboard.putString("Current Autonomous Command",
         getAutoPosition().toString());
-    SmartDashboard.putNumber("Pigeon Pitch", s_Swerve.pidgey.getPitch());
+    SmartDashboard.putNumber("Pigeon Pitch", (s_Swerve.pidgey.getPitch() * 180) / Math.PI);
     SmartDashboard.putNumber("Pigeon Roll", s_Swerve.pidgey.getRoll());
   }
 
